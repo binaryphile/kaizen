@@ -5,15 +5,13 @@ abspath () {
   # generate absolute path from relative path
   # $1     : relative filename
   # return : absolute path
-  if [ -d "$1" ]; then
-    # dir
-    (cd "$1"; pwd)
-  elif [ -f "$1" ]; then
-    # file
-    if [[ $1 == */* ]]; then
+  if is_dir "${1}"; then
+    (cd "${1}"; pwd)
+  elif is_file "${1}"; then
+    if [[ "${1}" == */* ]]; then
       echo "$(cd "${1%/*}"; pwd)/${1##*/}"
     else
-      echo "$(pwd)/$1"
+      echo "$(pwd)/${1}"
     fi
   fi
 }
@@ -25,6 +23,10 @@ apply () {
   shift 2
   "${f}" "${x}"
   apply "${f}" "${@}"
+}
+
+dir_exists () {
+  [[ -d "${1}" ]]
 }
 
 # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
@@ -40,8 +42,16 @@ file_exists () {
   [[ -f "${1}" ]]
 }
 
+is_dir () {
+  dir_exists "${1}"
+}
+
 is_empty () {
   [[ -z "${1}" ]]
+}
+
+is_file () {
+  file_exists "${1}"
 }
 
 load_config () {
