@@ -38,6 +38,14 @@ errexit_is_set () {
   [[ "${-}" =~ e ]]
 }
 
+exit_if_is_on_path () {
+  is_on_path "${1}" && exit
+}
+
+exit_if_package_is_installed () {
+  package_is_installed "${1}" && exit
+}
+
 file_exists () {
   [[ -f "${1}" ]]
 }
@@ -52,6 +60,10 @@ is_empty () {
 
 is_file () {
   file_exists "${1}"
+}
+
+is_on_path () {
+  which "${1}" >/dev/null
 }
 
 load_config () {
@@ -90,6 +102,14 @@ parse_yml () {
   }'
 }
 
+pop_dir () {
+  popd >/dev/null
+}
+
+push_dir () {
+  pushd "${1}" >/dev/null
+}
+
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
 script_is_sourced () {
   [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]
@@ -107,4 +127,10 @@ source_relaxed () {
   source "${1}"
   ! is_empty "${errexit}" && set -o errexit
   ! is_empty "${nounset}" && set -o nounset
+}
+
+use_strict_mode () {
+  set -o errexit
+  set -o nounset
+  set -o pipefail
 }
