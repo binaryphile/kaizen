@@ -190,10 +190,10 @@ substitute_in_file () {
   sed -i -e "s|${2}|${3}|" "${1}"
 }
 
-trace_on () {
-  set -o xtrace
-}
-
 trace_off () {
   set +o xtrace
+}
+
+trace_on () {
+  set -o xtrace
 }
