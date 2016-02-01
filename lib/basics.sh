@@ -84,6 +84,19 @@ make_symlink () {
   ln -sfT "${2}" "${1}"
 }
 
+make_group_dir () {
+  sudo mkdir "${1}"
+  sudo chown "${USER}:${2:-prodadm}" "${1}"
+  chmod g+rws "${1}"
+  setfacl -m d:g::rwx "${1}"
+}
+
+make_group_file () {
+  sudo touch "${1}"
+  sudo chown "${USER}:${2:-prodadm}" "${1}"
+  chmod g+rw "${1}"
+}
+
 match () {
   [[ "${1}" == "${2}" ]]
 }
@@ -151,4 +164,8 @@ strict_mode_on () {
   set -o errexit
   set -o nounset
   set -o pipefail
+}
+
+substitute_in_file () {
+  sed -i -e "s|${2}|${3}|" "${1}"
 }
