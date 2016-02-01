@@ -29,6 +29,22 @@ base_name () {
   echo "${1##*/}"
 }
 
+# from http://danielgibbs.co.uk/2013/04/bash-how-to-detect-os/
+detect_os () {
+  local os
+
+  if [ -f /etc/lsb-release ]; then
+    os=$(echo $(lsb_release -s -d | awk '{print tolower($1)}'))
+  elif [ -f /etc/debian_version ]; then
+    os="Debian $(cat /etc/debian_version | awk '{print tolower($1)}')"
+  elif [ -f /etc/redhat-release ]; then
+    os=$(cat /etc/redhat-release | awk '{print tolower($1)}')
+  else
+    os=$(uname -s | awk '{print tolower($1)}')
+  fi
+  echo "${os}"
+}
+
 # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
 echoerr () {
   cat <<< "${@}" 1>&2;
