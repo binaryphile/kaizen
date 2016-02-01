@@ -29,10 +29,6 @@ base_name () {
   echo "${1##*/}"
 }
 
-dir_exists () {
-  [[ -d "${1}" ]]
-}
-
 # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
 echoerr () {
   cat <<< "${@}" 1>&2;
@@ -40,6 +36,10 @@ echoerr () {
 
 errexit_is_set () {
   [[ "${-}" =~ e ]]
+}
+
+exit_if_is_directory () {
+  is_directory "${1}" && exit
 }
 
 exit_if_is_on_path () {
@@ -50,12 +50,12 @@ exit_if_package_is_installed () {
   package_is_installed "${1}" && exit
 }
 
-file_exists () {
+is_file () {
   [[ -f "${1}" ]]
 }
 
-is_dir () {
-  dir_exists "${1}"
+is_directory () {
+  [[ -d "${1}" ]]
 }
 
 is_empty () {
