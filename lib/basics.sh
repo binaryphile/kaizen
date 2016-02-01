@@ -25,6 +25,10 @@ apply () {
   apply "${f}" "${@}"
 }
 
+base_name () {
+  echo "${1##*/}"
+}
+
 dir_exists () {
   [[ -d "${1}" ]]
 }
@@ -74,6 +78,14 @@ load_config () {
 
 load_yml () {
   eval "$(parse_yml "${@}")"
+}
+
+make_symlink () {
+  ln -sfT "${2}" "${1}"
+}
+
+match () {
+  [[ "${1}" == "${2}" ]]
 }
 
 nounset_is_set () {
@@ -129,7 +141,13 @@ source_relaxed () {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-use_strict_mode () {
+strict_mode_off () {
+  set +o errexit
+  set +o nounset
+  set +o pipefail
+}
+
+strict_mode_on () {
   set -o errexit
   set -o nounset
   set -o pipefail
