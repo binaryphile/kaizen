@@ -55,19 +55,19 @@ errexit_is_set () {
 }
 
 exit_if_is_directory () {
-  is_directory "${1}" && exit
+  ! is_directory "${1}" || exit
 }
 
 exit_if_is_link () {
-  is_link "${1}" && exit
+  ! is_link "${1}" || exit
 }
 
 exit_if_is_on_path () {
-  is_on_path "${1}" && exit
+  ! is_on_path "${1}" || exit
 }
 
 exit_if_package_is_installed () {
-  package_is_installed "${1}" && exit
+  ! package_is_installed "${1}" || exit
 }
 
 is_file () {
