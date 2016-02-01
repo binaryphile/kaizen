@@ -58,6 +58,10 @@ exit_if_is_directory () {
   is_directory "${1}" && exit
 }
 
+exit_if_is_link () {
+  is_link "${1}" && exit
+}
+
 exit_if_is_on_path () {
   is_on_path "${1}" && exit
 }
@@ -78,8 +82,8 @@ is_empty () {
   [[ -z "${1}" ]]
 }
 
-is_file () {
-  file_exists "${1}"
+is_link () {
+  [[ -h "${1}" ]]
 }
 
 is_on_path () {
