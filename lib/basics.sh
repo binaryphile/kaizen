@@ -32,13 +32,14 @@ base_name () {
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 detect_os () {
   local os
+  local version
 
   if is_on_filesystem "/etc/debian_version"; then
     os="$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')"
     if ! grep -q '/' /etc/debian_version; then
       version="$(cat /etc/debian_version)"
     fi
-    if is_empty "${version}" && is_on_filesystem "/etc/lsb-release"; then
+    if is_empty "${version:-}" && is_on_filesystem "/etc/lsb-release"; then
       source /etc/lsb-release
       version=${DISTRIB_RELEASE}
     fi
@@ -59,7 +60,7 @@ detect_os () {
       os="rhel"
     fi
   fi
-  echo "${os}"
+  echo "${os}-${version}"
 }
 
 # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
