@@ -33,20 +33,31 @@ base_name () {
 detect_os () {
   local os
 
-  if is_on_filesystem "/etc/lsb-release"; then
-    source /etc/lsb-release
-    os="$(echo ${DISTRIB_ID} | awk '{ print tolower($1) }')"
-  elif is_on_path "lsb_release"; then
-    os="$(lsb_release -i | cut -f2 | awk '{ print tolower($1) }')"
-  elif is_on_filesystem "/etc/debian_version"; then
+  if is_on_filesystem "/etc/debian_version"; then
     os="$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')"
+    if ! grep -q '/' /etc/debian_version; then
+      version="$(cat /etc/debian_version)"
+    fi
+    if is_empty "${version}" && is_on_filesystem "/etc/lsb-release"; then
+      source /etc/lsb-release
+      version=${DISTRIB_RELEASE}
+    fi
   elif is_on_filesystem "/etc/fedora-release"; then
     os="fedora"
+    version="$(cut -f3 --delimiter=' ' /etc/fedora-release)"
   elif is_on_filesystem "/etc/oracle-release"; then
     os="ol"
+    version="$(cut -f5 --delimiter=' ' /etc/oracle-release)"
   elif is_on_filesystem "/etc/redhat-release"; then
     os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }')"
-    match "${os}" "centos" || match "${os}" "scientific" || os="redhatenterpriseserver"
+    if match "${os}" "centos"; then
+      version="$(cat /etc/redhat-release | awk '{ print $4 }')"
+    elif match "${os}" "scientific"; then
+      version="$(cat /etc/redhat-release | awk '{ print $4 }')"
+    else
+      version="$(cat /etc/redhat-release  | awk '{ print tolower($7) }')"
+      os="rhel"
+    fi
   fi
   echo "${os}"
 }
