@@ -29,18 +29,24 @@ base_name () {
   echo "${1##*/}"
 }
 
-# from http://danielgibbs.co.uk/2013/04/bash-how-to-detect-os/
+# https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 detect_os () {
   local os
 
-  if [ -f /etc/lsb-release ]; then
-    os=$(echo $(lsb_release -s -d | awk '{print tolower($1)}'))
-  elif [ -f /etc/debian_version ]; then
-    os="Debian $(cat /etc/debian_version | awk '{print tolower($1)}')"
-  elif [ -f /etc/redhat-release ]; then
-    os=$(cat /etc/redhat-release | awk '{print tolower($1)}')
-  else
-    os=$(uname -s | awk '{print tolower($1)}')
+  if is_on_filesystem "/etc/lsb-release"; then
+    source /etc/lsb-release
+    os="$(echo ${DISTRIB_ID} | awk '{ print tolower($1) }')"
+  elif is_on_path "lsb_release"; then
+    os="$(lsb_release -i | cut -f2 | awk '{ print tolower($1) }')"
+  elif is_on_filesystem "/etc/debian_version"; then
+    os="$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')"
+  elif is_on_filesystem "/etc/fedora-release"; then
+    os="fedora"
+  elif is_on_filesystem "/etc/oracle-release"; then
+    os="ol"
+  elif is_on_filesystem "/etc/redhat-release"; then
+    os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }')"
+    match "${os}" "centos" || match "${os}" "scientific" || os="redhatenterpriseserver"
   fi
   echo "${os}"
 }
@@ -86,8 +92,12 @@ is_link () {
   [[ -h "${1}" ]]
 }
 
+is_on_filesystem () {
+  [[ -e "${1}" ]]
+}
+
 is_on_path () {
-  which "${1}" >/dev/null
+  which "${1}" >/dev/null 2>&1
 }
 
 load_config () {
