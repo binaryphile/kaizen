@@ -52,7 +52,7 @@ detect_os () {
   elif is_on_filesystem "/etc/redhat-release"; then
     os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }')"
     if match "${os}" "centos"; then
-      version="$(cat /etc/redhat-release | awk '{ print $4 }')"
+      version="$(cat /etc/redhat-release | awk '{ print $3 }')"
     elif match "${os}" "scientific"; then
       version="$(cat /etc/redhat-release | awk '{ print $4 }')"
     else
