@@ -37,26 +37,26 @@ detect_os () {
   if is_on_filesystem "/etc/debian_version"; then
     os="$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')"
     if ! grep -q '/' /etc/debian_version; then
-      version="$(cat /etc/debian_version)"
+      version="$(cat /etc/debian_version | cut -d. -f1)"
     fi
     if is_empty "${version:-}" && is_on_filesystem "/etc/lsb-release"; then
       source /etc/lsb-release
-      version=${DISTRIB_RELEASE}
+      version="$(echo ${DISTRIB_RELEASE} | cut -d. -f1)"
     fi
   elif is_on_filesystem "/etc/fedora-release"; then
     os="fedora"
-    version="$(cut -f3 --delimiter=' ' /etc/fedora-release)"
+    version="$(cut -f3 --delimiter=' ' /etc/fedora-release | cut -d. -f1)"
   elif is_on_filesystem "/etc/oracle-release"; then
     os="ol"
     version="$(cut -f5 --delimiter=' ' /etc/oracle-release)"
   elif is_on_filesystem "/etc/redhat-release"; then
-    os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }')"
+    os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }' | cut -d. -f1)"
     if match "${os}" "centos"; then
-      version="$(cat /etc/redhat-release | awk '{ print $3 }')"
+      version="$(cat /etc/redhat-release | awk '{ print $3 }' | cut -d. -f1)"
     elif match "${os}" "scientific"; then
-      version="$(cat /etc/redhat-release | awk '{ print $4 }')"
+      version="$(cat /etc/redhat-release | awk '{ print $4 }' | cut -d. -f1)"
     else
-      version="$(cat /etc/redhat-release  | awk '{ print tolower($7) }')"
+      version="$(cat /etc/redhat-release  | awk '{ print tolower($7) }' | cut -d. -f1)"
       os="rhel"
     fi
   fi
