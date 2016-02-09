@@ -114,7 +114,7 @@ is_on_path () {
 
 load_config () {
   load_yml etc/defaults.yml
-  is_empty "${1}" && return
+  ! is_empty "${1}" || return 0
   load_yml "etc/${1}"
 }
 
@@ -177,6 +177,14 @@ push_dir () {
   pushd "${1}" >/dev/null
 }
 
+shell_is () {
+  [[ "${SHELL}" == "${1}" ]]
+}
+
+shell_is_bash () {
+  shell_is "/bin/bash"
+}
+
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
 script_is_sourced () {
   [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]
@@ -186,7 +194,7 @@ source_relaxed () {
   local errexit
   local nounset
 
-  ! file_exists "${1}" && return
+  is_file "${1}" || return 0
   errexit_is_set && errexit="y"
   nounset_is_set && nounset="y"
   set +o errexit
