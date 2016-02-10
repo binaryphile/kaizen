@@ -223,7 +223,7 @@ substitute_in_file () {
   sed -i -e "s|${2}|${3}|" "${1}"
 }
 
-trace_off () {
+trace () {
   case "${1}" in
     "on" )
       set -o xtrace
