@@ -204,16 +204,19 @@ source_relaxed () {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-strict_mode_off () {
-  set +o errexit
-  set +o nounset
-  set +o pipefail
-}
-
-strict_mode_on () {
-  set -o errexit
-  set -o nounset
-  set -o pipefail
+strict_mode () {
+  case "${1}" in
+    "on" )
+      set -o errexit
+      set -o nounset
+      set -o pipefail
+      ;;
+    "off" )
+      set +o errexit
+      set +o nounset
+      set +o pipefail
+      ;;
+  esac
 }
 
 substitute_in_file () {
@@ -221,9 +224,12 @@ substitute_in_file () {
 }
 
 trace_off () {
-  set +o xtrace
-}
-
-trace_on () {
-  set -o xtrace
+  case "${1}" in
+    "on" )
+      set -o xtrace
+      ;;
+    "off" )
+      set +o xtrace
+      ;;
+  esac
 }

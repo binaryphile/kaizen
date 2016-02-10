@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../lib/basics.sh
+source ../lib/stdlib
 
 main () {
   local filename
