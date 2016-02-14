@@ -76,6 +76,10 @@ exit_if_is_directory () {
   ! is_directory "${1}" || exit 0
 }
 
+exit_if_is_file () {
+  ! is_file "${1}" || exit 0
+}
+
 exit_if_is_link () {
   ! is_link "${1}" || exit 0
 }
@@ -177,8 +181,26 @@ push_dir () {
   pushd "${1}" >/dev/null
 }
 
+set_editor () {
+  if is_file "/usr/bin/vim"; then
+    echo "${EDITOR:-/usr/bin/vim}"
+  elif is_file "/usr/bin/nano"
+    echo "${EDITOR:-/usr/bin/nano}"
+  else
+    echo "${EDITOR:-}"
+  fi
+}
+
+set_pager () {
+  if is_file "/usr/bin/less"; then
+    echo "${PAGER:-/usr/bin/less}"
+  else
+    echo "${PAGER:-}"
+  fi
+}
+
 shell_is () {
-  [[ "${SHELL}" == "${1}" ]]
+  [[ "${SHELL:-}" == "${1}" ]]
 }
 
 shell_is_bash () {
