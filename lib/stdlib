@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 
-# https://stackoverflow.com/questions/3915040/bash-fish-command-to-print-absolute-path-to-a-file#answer-23002317
-abspath () {
-  # generate absolute path from relative path
-  # $1     : relative filename
-  # return : absolute path
-  if is_directory "${1}"; then
-    (cd "${1}"; pwd)
-  elif is_file "${1}"; then
-    if [[ "${1}" == */* ]]; then
-      echo "$(cd "${1%/*}"; pwd)/${1##*/}"
-    else
-      echo "$(pwd)/${1}"
-    fi
-  fi
+# https://github.com/basecamp/sub/blob/master/libexec/sub
+abs_dirname() {
+  local cwd="$(pwd)"
+  local path="$1"
+
+  while [ -n "$path" ]; do
+    cd "${path%/*}"
+    local name="${path##*/}"
+    path="$(resolve_link "$name" || true)"
+  done
+
+  pwd
+  cd "$cwd"
 }
 
 # https://onthebalcony.wordpress.com/2008/03/08/just-for-fun-map-as-higher-order-function-in-bash/
@@ -179,6 +178,10 @@ pop_dir () {
 
 push_dir () {
   pushd "${1}" >/dev/null
+}
+
+resolve_link() {
+  $(type -p greadlink readlink | head -1) "$1"
 }
 
 set_editor () {
