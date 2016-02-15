@@ -5,7 +5,7 @@ abspath () {
   # generate absolute path from relative path
   # $1     : relative filename
   # return : absolute path
-  if is_dir "${1}"; then
+  if is_directory "${1}"; then
     (cd "${1}"; pwd)
   elif is_file "${1}"; then
     if [[ "${1}" == */* ]]; then
