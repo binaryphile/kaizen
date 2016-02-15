@@ -184,7 +184,7 @@ push_dir () {
 set_editor () {
   if is_file "/usr/bin/vim"; then
     echo "${EDITOR:-/usr/bin/vim}"
-  elif is_file "/usr/bin/nano"
+  elif is_file "/usr/bin/nano"; then
     echo "${EDITOR:-/usr/bin/nano}"
   else
     echo "${EDITOR:-}"
