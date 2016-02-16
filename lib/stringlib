@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
-join_str () {
-  local d="${1}"
+str_join () {
+  local delim="${1}"
   shift
   echo -n "${1}"
   shift
-  printf "%s" "${@/#/$d}"
+  printf "%s" "${@/#/${delim}}"
 }
