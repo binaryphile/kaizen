@@ -107,6 +107,10 @@ is_link () {
   [[ -h "${1}" ]]
 }
 
+is_not_empty () {
+  ! is_empty "${1}"
+}
+
 is_on_filesystem () {
   [[ -e "${1}" ]]
 }
