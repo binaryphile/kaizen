@@ -136,7 +136,7 @@ make_symlink () {
 make_group_dir () {
   sudo mkdir "${1}"
   sudo chown "${USER}:${2:-prodadm}" "${1}"
-  chmod g+rws "${1}"
+  chmod g+rwxs "${1}"
   setfacl -m d:g::rwx "${1}"
 }
 
