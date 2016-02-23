@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+source stdlib
+
+exit_if_package_is_installed () {
+  ! package_is_installed "${1}" || exit 0
+}
+
+install_package () {
+  local package
+
+  package="${1}"
+  ! package_is_installed "${package}" || return 0
+  sudo yum install "${1}"
+}
+
+package_is_installed () {
+  yum list installed "${1}" >/dev/null
+}
+
+reinstall_package () {
+  local package
+
+  package="${1}"
+  uninstall_package "${package}"
+  install_package "${package}"
+}
+
+uninstall_package () {
+  local package
+
+  package="${1}"
+  package_is_installed "${package}" || return 0
+  sudo yum remove "${package}"
+}
