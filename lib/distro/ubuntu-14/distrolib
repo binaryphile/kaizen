@@ -6,6 +6,10 @@ exit_if_package_is_installed () {
   ! package_is_installed "${1}" || exit 0
 }
 
+install_local_package () {
+  sudo dpkg -i "${1}"
+}
+
 install_package () {
   local package
 
