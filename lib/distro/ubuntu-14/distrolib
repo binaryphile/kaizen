@@ -31,6 +31,18 @@ reinstall_package () {
   install_package "${package}"
 }
 
+start_service () {
+  sudo service "${1}" start
+}
+
+stop_service () {
+  sudo service "${1}" stop
+}
+
+reload_service () {
+  sudo service "${1}" reload
+}
+
 uninstall_package () {
   local package
 
