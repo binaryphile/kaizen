@@ -91,6 +91,12 @@ exit_if_package_is_installed () {
   ! package_is_installed "${1}" || exit 0
 }
 
+in_directory () {
+  push_dir "${1}"
+  eval "${2}"
+  pop_dir
+}
+
 is_directory () {
   [[ -d "${1}" ]]
 }
