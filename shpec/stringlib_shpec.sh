@@ -3,7 +3,7 @@
 
 source lib/stringlib
 
-describe "the string joining function"
+describe "str_join"
   it "joins array elements"
     array=( a b c )
     assert equal "$(str_join "|" "${array[@]}")" "a|b|c"
@@ -12,5 +12,13 @@ describe "the string joining function"
   it "allows a multicharacter delimiter"
     array=( a b c )
     assert equal "$(str_join " | " "${array[@]}")" "a | b | c"
+  end
+end
+
+describe "str_split"
+  it "splits on the specified delimiter"
+    str="a/b/c"
+    result=( a b c )
+    assert equal "$(str_split "/" "${str}")" "${result[*]}"
   end
 end
