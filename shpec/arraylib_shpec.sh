@@ -21,3 +21,19 @@ describe "array_find"
     assert equal "$(array_find "b" "${letters[@]}")" 1
   end
 end
+
+describe "array_remove"
+  it "removes the last element of an array on exact match"
+    letters=( a b c )
+    result=( $(array_remove "c" "${letters[@]}") )
+    target=( a b )
+    assert equal "${result[*]}" "${target[*]}"
+  end
+
+  it "doesn't remove elements which aren't there"
+    letters=( a b c )
+    result=( $(array_remove "d" "${letters[@]}") )
+    target=( a b )
+    assert unequal "${result[*]}" "${target[*]}"
+  end
+end

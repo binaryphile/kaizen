@@ -27,3 +27,17 @@ array_find () {
   done
   return 1
 }
+
+array_remove () {
+  local i
+  local item
+  local result
+
+  item="${1}"
+  shift
+  result=( )
+  for i in "${@}"; do
+    [[ "${i}" == "${item}" ]] || result+=( "${i}" )
+  done
+  echo "${result[@]}"
+}
