@@ -12,10 +12,5 @@ str_join () {
 }
 
 str_split () {
-  local delim
-  local target
-
-  delim="${1}"
-  target="${2}"
-  echo $( set -- "${target}"; IFS="${delim}"; declare -a array=( ${*} ); echo "${array[@]}" )
+  echo $( IFS="${1}"; read -a array <<< "${2}"; echo "${array[@]}" )
 }
