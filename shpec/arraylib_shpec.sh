@@ -33,7 +33,7 @@ describe "array_remove"
   it "doesn't remove elements which aren't there"
     letters=( a b c )
     result=( $(array_remove "d" "${letters[@]}") )
-    target=( a b )
-    assert unequal "${result[*]}" "${target[*]}"
+    target=( a b c )
+    assert equal "${result[*]}" "${target[*]}"
   end
 end
