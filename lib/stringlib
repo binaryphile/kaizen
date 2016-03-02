@@ -1,16 +1,5 @@
 #!/usr/bin/env bash
 
-# https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
-str_join () {
-  local delim
-
-  delim="${1}"
-  shift
-  echo -n "${1}"
-  shift
-  printf "%s" "${@/#/${delim}}"
-}
-
 str_split () {
   echo $( IFS="${1}"; read -a array <<< "${2}"; echo "${array[@]}" )
 }

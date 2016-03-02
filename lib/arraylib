@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
+# https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
+ary_join () {
+  local delim
+
+  delim="${1}"
+  shift
+  echo -n "${1}"
+  shift
+  printf "%s" "${@/#/${delim}}"
+}
+
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
-array_contains () {
+ary_contains () {
   local elem
   for elem in "${@:2}"; do
     if [[ "${elem}" == "${1}" ]]; then
@@ -11,7 +22,7 @@ array_contains () {
   return 1
 }
 
-array_find () {
+ary_find () {
   local i
   local item
   local array
@@ -28,7 +39,7 @@ array_find () {
   return 1
 }
 
-array_remove () {
+ary_remove () {
   local i
   local item
   local result
