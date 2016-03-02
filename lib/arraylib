@@ -52,3 +52,17 @@ ary_remove () {
   done
   echo "${result[@]}"
 }
+
+ary_slice () {
+  local first
+  local last
+  local array
+  local result
+
+  first="${1}"
+  shift
+  last="${1}"
+  shift
+  array=( "${@}" )
+  echo "${array[@]:${first}:$((${last}-${first}+1))}"
+}

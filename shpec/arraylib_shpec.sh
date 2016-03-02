@@ -49,3 +49,12 @@ describe "ary_remove"
     assert equal "${result[*]}" "${target[*]}"
   end
 end
+
+describe "ary_slice"
+  it "returns the middle slice"
+    letters=( a b c )
+    result=( $(ary_slice "1" "1" "${letters[@]}") )
+    target=( b )
+    assert equal "${result[*]}" "${target[*]}"
+  end
+end
