@@ -92,7 +92,11 @@ exit_if_package_is_installed () {
 }
 
 in_directory () {
-  push_dir "${1}"
+  local directory
+
+  directory="${1}"
+  mkdir -p "${directory}"
+  push_dir "${directory}"
   eval "${2}"
   pop_dir
 }
