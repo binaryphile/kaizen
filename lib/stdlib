@@ -91,19 +91,6 @@ exit_if_package_is_installed () {
   ! package_is_installed "${1}" || exit 0
 }
 
-in_directory () {
-  local directory
-
-  directory="${1}"
-  shift
-  function="${1}"
-  shift
-  mkdir -p "${directory}"
-  push_dir "${directory}"
-  eval "${function} \"${@}\""
-  pop_dir
-}
-
 is_directory () {
   [[ -d "${1}" ]]
 }
@@ -211,6 +198,19 @@ push_dir () {
 
 resolve_link() {
   $(type -p greadlink readlink | head -1) "$1"
+}
+
+run_in_directory () {
+  local directory
+
+  directory="${1}"
+  shift
+  function="${1}"
+  shift
+  mkdir -p "${directory}"
+  push_dir "${directory}"
+  eval "${function} \"${@}\""
+  pop_dir
 }
 
 set_editor () {
