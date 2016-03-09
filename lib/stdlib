@@ -95,9 +95,12 @@ in_directory () {
   local directory
 
   directory="${1}"
+  shift
+  function="${1}"
+  shift
   mkdir -p "${directory}"
   push_dir "${directory}"
-  eval "${2}"
+  eval "${function} \"${@}\""
   pop_dir
 }
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim: set ft=sh:
+# vim: ft=sh
 
 source lib/stringlib
 
