@@ -213,6 +213,10 @@ run_in_directory () {
   pop_dir
 }
 
+set_default () {
+  eval "${1}=\${${1}:-${2}}"
+}
+
 set_editor () {
   if is_file "/usr/bin/vim"; then
     echo "${EDITOR:-/usr/bin/vim}"
