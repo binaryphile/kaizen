@@ -282,3 +282,10 @@ trace () {
       ;;
   esac
 }
+
+usage_and_exit_if_is_empty () {
+  if is_empty "${1}"; then
+    usage
+    exit 1
+  fi
+}
