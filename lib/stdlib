@@ -200,19 +200,6 @@ resolve_link() {
   $(type -p greadlink readlink | head -1) "$1"
 }
 
-run_in_directory () {
-  local directory
-
-  directory="${1}"
-  shift
-  function="${1}"
-  shift
-  mkdir -p "${directory}"
-  push_dir "${directory}"
-  eval "${function} \"${@}\""
-  pop_dir
-}
-
 set_default () {
   eval "${1}=\${${1}:-${2}}"
 }
