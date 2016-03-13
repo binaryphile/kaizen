@@ -75,6 +75,10 @@ exit_if_is_directory () {
   ! is_directory "${1}" || exit 0
 }
 
+exit_if_is_empty () {
+  ! is_empty "${1}" || exit 0
+}
+
 exit_if_is_file () {
   ! is_file "${1}" || exit 0
 }
