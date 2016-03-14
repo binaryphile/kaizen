@@ -50,9 +50,9 @@ detect_os () {
     version="$(cut -f5 --delimiter=' ' /etc/oracle-release)"
   elif is_on_filesystem "/etc/redhat-release"; then
     os="$(cat /etc/redhat-release  | awk '{ print tolower($1) }' | cut -d. -f1)"
-    if match "${os}" "centos"; then
+    if is_match "${os}" "centos"; then
       version="$(cat /etc/redhat-release | awk '{ print $3 }' | cut -d. -f1)"
-    elif match "${os}" "scientific"; then
+    elif is_match "${os}" "scientific"; then
       version="$(cat /etc/redhat-release | awk '{ print $4 }' | cut -d. -f1)"
     else
       version="$(cat /etc/redhat-release  | awk '{ print tolower($7) }' | cut -d. -f1)"
@@ -111,6 +111,10 @@ is_link () {
   [[ -h "${1}" ]]
 }
 
+is_match () {
+  [[ "${1}" == "${2}" ]]
+}
+
 is_not_empty () {
   ! is_empty "${1}"
 }
@@ -121,6 +125,10 @@ is_not_file () {
 
 is_not_directory () {
   ! is_directory "${1}"
+}
+
+is_not_match () {
+  ! is_match "${1}" "${2}"
 }
 
 is_not_on_path () {
@@ -160,10 +168,6 @@ make_group_file () {
   sudo touch "${1}"
   sudo chown "${USER}:${2:-prodadm}" "${1}"
   chmod g+rw "${1}"
-}
-
-match () {
-  [[ "${1}" == "${2}" ]]
 }
 
 nounset_is_set () {
