@@ -98,6 +98,10 @@ is_empty () {
   [[ -z "${1}" ]]
 }
 
+is_error () {
+  ! is_not_error "${1}"
+}
+
 is_file () {
   [[ -f "${1}" ]]
 }
@@ -112,6 +116,10 @@ is_match () {
 
 is_not_empty () {
   ! is_empty "${1}"
+}
+
+is_not_error () {
+  is_match "${1}" "0"
 }
 
 is_not_file () {
