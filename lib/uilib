@@ -23,3 +23,8 @@ choose () {
     *     ) return 1
   esac
 }
+
+# https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
+echoerr () {
+  cat <<< "${@}" 1>&2;
+}

@@ -62,11 +62,6 @@ detect_os () {
   echo "${os}-${version}"
 }
 
-# https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
-echoerr () {
-  cat <<< "${@}" 1>&2;
-}
-
 errexit_is_set () {
   [[ "${-}" =~ e ]]
 }
