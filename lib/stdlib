@@ -212,7 +212,7 @@ resolve_link() {
 }
 
 set_default () {
-  eval "${1}=\${${1}:-${2}}"
+  eval "export ${1}=\${${1}:-${2}}"
 }
 
 set_editor () {
