@@ -186,12 +186,12 @@ parse_yml () {
   local prefix=$2
   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
   sed -ne "s|^\($s\):|\1|" \
-       -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
-       -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+    -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+    -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
   awk -F$fs '{
-    indent = length($1)/2;
-    vname[indent] = $2;
-    for (i in vname) {if (i > indent) {delete vname[i]}}
+  indent = length($1)/2;
+  vname[indent] = $2;
+  for (i in vname) {if (i > indent) {delete vname[i]}}
     if (length($3) > 0) {
       vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
       printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
@@ -207,8 +207,15 @@ push_dir () {
   pushd "${1}" >/dev/null
 }
 
-resolve_link() {
+resolve_link () {
   $(type -p greadlink readlink | head -1) "$1"
+}
+
+runas () {
+  local user;
+  user="${1}";
+  shift;
+  sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "${@}"
 }
 
 set_default () {
