@@ -17,11 +17,11 @@ abs_dirname() {
 
 # https://onthebalcony.wordpress.com/2008/03/08/just-for-fun-map-as-higher-order-function-in-bash/
 apply () {
-  local f="${1}"
-  local x="${2}"
+  local f="$1"
+  local x="$2"
   shift 2
   "${f}" "${x}"
-  apply "${f}" "${@}"
+  apply "${f}" "$@"
 }
 
 base_name () {
@@ -67,110 +67,110 @@ errexit_is_set () {
 }
 
 exit_if_is_directory () {
-  ! is_directory "${1}" || exit 0
+  ! is_directory "$1" || exit 0
 }
 
 exit_if_is_empty () {
-  ! is_empty "${1}" || exit 0
+  ! is_empty "$1" || exit 0
 }
 
 exit_if_is_file () {
-  ! is_file "${1}" || exit 0
+  ! is_file "$1" || exit 0
 }
 
 exit_if_is_link () {
-  ! is_link "${1}" || exit 0
+  ! is_link "$1" || exit 0
 }
 
 exit_if_is_on_path () {
-  ! is_on_path "${1}" || exit 0
+  ! is_on_path "$1" || exit 0
 }
 
 exit_if_package_is_installed () {
-  ! package_is_installed "${1}" || exit 0
+  ! package_is_installed "$1" || exit 0
 }
 
 is_directory () {
-  [[ -d "${1}" ]]
+  [[ -d "$1" ]]
 }
 
 is_empty () {
-  [[ -z "${1}" ]]
+  [[ -z "$1" ]]
 }
 
 is_error () {
-  ! is_not_error "${1}"
+  ! is_not_error "$1"
 }
 
 is_file () {
-  [[ -f "${1}" ]]
+  [[ -f "$1" ]]
 }
 
 is_link () {
-  [[ -h "${1}" ]]
+  [[ -h "$1" ]]
 }
 
 is_match () {
-  [[ "${1}" == "${2}" ]]
+  [[ "$1" == "$2" ]]
 }
 
 is_not_empty () {
-  ! is_empty "${1}"
+  ! is_empty "$1"
 }
 
 is_not_error () {
-  is_match "${1}" "0"
+  is_match "$1" "0"
 }
 
 is_not_file () {
-  ! is_file "${1}"
+  ! is_file "$1"
 }
 
 is_not_directory () {
-  ! is_directory "${1}"
+  ! is_directory "$1"
 }
 
 is_not_match () {
-  ! is_match "${1}" "${2}"
+  ! is_match "$1" "$2"
 }
 
 is_not_on_path () {
-  ! is_on_path "${1}"
+  ! is_on_path "$1"
 }
 
 is_on_filesystem () {
-  [[ -e "${1}" ]]
+  [[ -e "$1" ]]
 }
 
 is_on_path () {
-  which "${1}" >/dev/null 2>&1
+  which "$1" >/dev/null 2>&1
 }
 
 load_config () {
   load_yml etc/defaults.yml
-  ! is_empty "${1}" || return 0
-  load_yml "etc/${1}"
+  ! is_empty "$1" || return 0
+  load_yml "etc/$1"
 }
 
 load_yml () {
-  eval "$(parse_yml "${@}")"
+  eval "$(parse_yml "$@")"
 }
 
 make_symlink () {
-  ln -sfT "${2}" "${1}"
+  ln -sfT "$2" "$1"
 }
 
 make_group_dir () {
-  sudo mkdir "${1}"
-  sudo chown "${USER}:${2:-prodadm}" "${1}"
-  chmod g+rwxs "${1}"
-  setfacl -m d:g::rwx "${1}"
+  sudo mkdir "$1"
+  sudo chown "${USER}:${2:-prodadm}" "$1"
+  chmod g+rwxs "$1"
+  setfacl -m d:g::rwx "$1"
 }
 
 make_group_file () {
-  sudo touch "${1}"
-  sudo chown "${USER}:${2:-prodadm}" "${1}"
-  chmod g+rw "${1}"
+  sudo touch "$1"
+  sudo chown "${USER}:${2:-prodadm}" "$1"
+  chmod g+rw "$1"
 }
 
 nounset_is_set () {
@@ -204,7 +204,7 @@ pop_dir () {
 }
 
 push_dir () {
-  pushd "${1}" >/dev/null
+  pushd "$1" >/dev/null
 }
 
 resolve_link () {
@@ -213,13 +213,13 @@ resolve_link () {
 
 runas () {
   local user;
-  user="${1}";
+  user="$1";
   shift;
-  sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "${@}"
+  sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "$@"
 }
 
 set_default () {
-  eval "export ${1}=\${${1}:-${2}}"
+  eval "export $1=\${$1:-$2}"
 }
 
 set_editor () {
@@ -241,7 +241,7 @@ set_pager () {
 }
 
 shell_is () {
-  [[ "${SHELL:-}" == "${1}" ]]
+  [[ "${SHELL:-}" == "$1" ]]
 }
 
 shell_is_bash () {
@@ -257,18 +257,18 @@ source_relaxed () {
   local errexit
   local nounset
 
-  is_file "${1}" || return 0
+  is_file "$1" || return 0
   errexit_is_set && errexit="y"
   nounset_is_set && nounset="y"
   set +o errexit
   set +o nounset
-  source "${1}"
+  source "$1"
   ! is_empty "${errexit}" && set -o errexit
   ! is_empty "${nounset}" && set -o nounset
 }
 
 strict_mode () {
-  case "${1}" in
+  case "$1" in
     "on" )
       set -o errexit
       set -o nounset
@@ -283,11 +283,11 @@ strict_mode () {
 }
 
 substitute_in_file () {
-  sed -i -e "s|${2}|${3}|" "${1}"
+  sed -i -e "s|$2|$3|" "$1"
 }
 
 trace () {
-  case "${1}" in
+  case "$1" in
     "on" )
       set -o xtrace
       ;;
@@ -298,7 +298,7 @@ trace () {
 }
 
 usage_and_exit_if_is_empty () {
-  if is_empty "${1}"; then
+  if is_empty "$1"; then
     usage
     exit 1
   fi

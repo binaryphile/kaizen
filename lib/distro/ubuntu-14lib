@@ -3,50 +3,50 @@
 source stdlib
 
 exit_if_package_is_installed () {
-  ! package_is_installed "${1}" || exit 0
+  ! package_is_installed "$1" || exit 0
 }
 
 install_local_package () {
-  sudo dpkg -i "${1}"
+  sudo dpkg -i "$1"
 }
 
 install_package () {
   local package
 
-  package="${1}"
+  package="$1"
   ! package_is_installed "${package}" || return 0
   update_apt
   sudo apt-get install "${package}"
 }
 
 package_is_installed () {
-  dpkg --get-selections "${1}" 2>/dev/null | grep -q "^${1}\\(:amd64\\)\\?[[:space:]]\\+install\$" >/dev/null
+  dpkg --get-selections "$1" 2>/dev/null | grep -q "^$1\\(:amd64\\)\\?[[:space:]]\\+install\$" >/dev/null
 }
 
 reinstall_package () {
   local package
 
-  package="${1}"
+  package="$1"
   uninstall_package "${package}"
   install_package "${package}"
 }
 
 start_service () {
-  sudo service "${1}" start
+  sudo service "$1" start
 }
 
 stop_service () {
-  sudo service "${1}" stop
+  sudo service "$1" stop
 }
 
 reload_service () {
-  sudo service "${1}" reload
+  sudo service "$1" reload
 }
 
 uninstall_package () {
   local package
 
-  package="${1}"
+  package="$1"
   package_is_installed "${package}" || return 0
   sudo apt-get purge "${package}"
 }

@@ -4,9 +4,9 @@
 ary_join () {
   local delim
 
-  delim="${1}"
+  delim="$1"
   shift
-  echo -n "${1}"
+  echo -n "$1"
   shift
   printf "%s" "${@/#/${delim}}"
 }
@@ -15,7 +15,7 @@ ary_join () {
 ary_contains () {
   local elem
   for elem in "${@:2}"; do
-    if [[ "${elem}" == "${1}" ]]; then
+    if [[ "${elem}" == "$1" ]]; then
       return 0
     fi
   done
@@ -27,9 +27,9 @@ ary_find () {
   local item
   local array
 
-  item="${1}"
+  item="$1"
   shift
-  array=( "${@}" )
+  array=( "$@" )
   for i in "${!array[@]}"; do
     if [[ "${array[${i}]}" == "${item}" ]]; then
       echo "${i}"
@@ -44,10 +44,10 @@ ary_remove () {
   local item
   local result
 
-  item="${1}"
+  item="$1"
   shift
   result=( )
-  for i in "${@}"; do
+  for i in "$@"; do
     [[ "${i}" == "${item}" ]] || result+=( "${i}" )
   done
   echo "${result[@]}"
@@ -59,10 +59,10 @@ ary_slice () {
   local array
   local result
 
-  first="${1}"
+  first="$1"
   shift
-  last="${1}"
+  last="$1"
   shift
-  array=( "${@}" )
+  array=( "$@" )
   echo "${array[@]:${first}:$((${last}-${first}+1))}"
 }
