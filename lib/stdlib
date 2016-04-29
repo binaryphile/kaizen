@@ -63,7 +63,7 @@ detect_os () {
 }
 
 errexit_is_set () {
-  [[ "${-}" =~ e ]]
+  [[ "$-" =~ e ]]
 }
 
 exit_if_is_directory () {
@@ -174,7 +174,7 @@ make_group_file () {
 }
 
 nounset_is_set () {
-  [[ "${-}" =~ u ]]
+  [[ "$-" =~ u ]]
 }
 
 parse_yml () {
