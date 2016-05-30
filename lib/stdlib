@@ -80,7 +80,7 @@ is_equal()                      {   [[ "$1" == "$2"  ]];                        
 is_error()                      { ! is_not_error "$1";                            }
 is_file()                       {   [[ -f "$1" ]];                                }
 is_link()                       {   [[ -h "$1" ]];                                }
-is_match()                      {   [[ "$1" == "$2" ]];                           }
+is_match()                      {   is_equal "$1" "$2";                           }
 is_not_directory()              { ! is_directory "$1";                            }
 is_not_empty()                  { ! is_empty "$1";                                }
 is_not_equal()                  { ! is_equal "$1" "$2";                           }
