@@ -76,15 +76,18 @@ exit_if_is_on_path()            { ! is_on_path "$1"           || exit "${2:-0}";
 exit_if_package_is_installed()  { ! package_is_installed "$1" || exit "${2:-0}";  }
 is_directory()                  {   [[ -d "$1" ]];                                }
 is_empty()                      {   [[ -z "$1" ]];                                }
+is_equal()                      {   [[ "$1" == "$2"  ]];                          }
 is_error()                      { ! is_not_error "$1";                            }
 is_file()                       {   [[ -f "$1" ]];                                }
 is_link()                       {   [[ -h "$1" ]];                                }
 is_match()                      {   [[ "$1" == "$2" ]];                           }
+is_not_directory()              { ! is_directory "$1";                            }
 is_not_empty()                  { ! is_empty "$1";                                }
+is_not_equal()                  { ! is_equal "$1" "$2";                           }
 is_not_error()                  {   is_match "$1" "0";                            }
 is_not_file()                   { ! is_file "$1";                                 }
-is_not_directory()              { ! is_directory "$1";                            }
 is_not_match()                  { ! is_match "$1" "$2";                           }
+is_not_older_than()             { ! [[ "$1" -ot "$2" ]];                          } # NOT the same as is_newer_than since they can be equal
 is_not_on_path()                { ! is_on_path "$1";                              }
 is_on_filesystem()              {   [[ -e "$1" ]];                                }
 is_on_path()                    {   which "$1" >/dev/null 2>&1;                   }
