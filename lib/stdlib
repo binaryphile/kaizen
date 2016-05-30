@@ -2,9 +2,11 @@
 
 # https://github.com/basecamp/sub/blob/master/libexec/sub
 abs_dirname() {
-  local cwd="$(pwd)"
-  local path="$1"
+  local cwd
+  local path
 
+  cwd="$(pwd)"
+  path="$1"
   while [ -n "$path" ]; do
     cd "${path%/*}"
     local name="${path##*/}"
