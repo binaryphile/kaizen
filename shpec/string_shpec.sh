@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: ft=sh
 
-source lib/stringlib
+source lib/string.sh
 
 describe "str_split"
   it "splits on the specified delimiter"

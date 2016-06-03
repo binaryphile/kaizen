@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: ft=sh
 
-source lib/arraylib
+source lib/array.sh
 
 describe "ary_join"
   it "joins array elements"
