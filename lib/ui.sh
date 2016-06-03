@@ -6,7 +6,7 @@
 # e.g. choose "y" \
 #       "Do you want to play a game?" \
 # Returns: 0 for yes and 1 for anything else
-choose () {
+ui::choose () {
   local default
   local prompt
   local answer
@@ -25,16 +25,16 @@ choose () {
 }
 
 # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr#answer-2990533
-echoerr () {
+ui::echoerr () {
   cat <<< "$@" 1>&2;
 }
 
-default_flags () {
+ui::default_flags () {
   DEFINE_boolean 'trace' false 'enable tracing' 't'
   DEFINE_boolean 'strict' true 'enable strict mode'
 }
 
-exec_flags () {
+ui::exec_flags () {
   is_match "${FLAGS_trace}" "${FLAGS_FALSE}" || trace on
   is_match "${FLAGS_strict}" "${FLAGS_FALSE}" || strict_mode on
 }

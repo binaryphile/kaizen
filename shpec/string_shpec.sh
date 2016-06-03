@@ -3,10 +3,10 @@
 
 source lib/string.sh
 
-describe "str_split"
+describe "str::split"
   it "splits on the specified delimiter"
     str="a/b/c"
     result=( a b c )
-    assert equal "$(str_split "/" "${str}")" "${result[*]}"
+    assert equal "$(str::split "/" "${str}")" "${result[*]}"
   end
 end

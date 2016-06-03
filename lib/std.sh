@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # https://github.com/basecamp/sub/blob/master/libexec/sub
-abs_dirname() {
+std::abs_dirname() {
   local cwd
   local path
 
@@ -18,7 +18,7 @@ abs_dirname() {
 }
 
 # https://onthebalcony.wordpress.com/2008/03/08/just-for-fun-map-as-higher-order-function-in-bash/
-apply() {
+std::apply() {
   local f
   local x
 
@@ -29,12 +29,12 @@ apply() {
   apply "${f}" "$@"
 }
 
-base_name() {
+std::base_name() {
   echo "${1##*/}"
 }
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
-detect_os() {
+std::detect_os() {
   local os
   local version
 
@@ -67,56 +67,56 @@ detect_os() {
   echo "${os}-${version}"
 }
 
-errexit_is_set()                {   [[ "$-" =~ e ]];                              }
-exit_if_is_directory()          { ! is_directory "$1"         || exit "${2:-0}";  }
-exit_if_is_empty()              { ! is_empty "$1"             || exit "${2:-0}";  }
-exit_if_is_file ()              { ! is_file "$1"              || exit "${2:-0}";  }
-exit_if_is_link()               { ! is_link "$1"              || exit "${2:-0}";  }
-exit_if_is_on_path()            { ! is_on_path "$1"           || exit "${2:-0}";  }
-exit_if_package_is_installed()  { ! package_is_installed "$1" || exit "${2:-0}";  }
-is_directory()                  {   [[ -d "$1" ]];                                }
-is_empty()                      {   [[ -z "$1" ]];                                }
-is_equal()                      {   [[ "$1" == "$2"  ]];                          }
-is_error()                      { ! is_not_error "$1";                            }
-is_file()                       {   [[ -f "$1" ]];                                }
-is_link()                       {   [[ -h "$1" ]];                                }
-is_match()                      {   is_equal "$1" "$2";                           }
-is_not_directory()              { ! is_directory "$1";                            }
-is_not_empty()                  { ! is_empty "$1";                                }
-is_not_equal()                  { ! is_equal "$1" "$2";                           }
-is_not_error()                  {   is_match "$1" "0";                            }
-is_not_file()                   { ! is_file "$1";                                 }
-is_not_match()                  { ! is_match "$1" "$2";                           }
-is_not_older_than()             { ! [[ "$1" -ot "$2" ]];                          } # NOT the same as is_newer_than since they can be equal
-is_not_on_path()                { ! is_on_path "$1";                              }
-is_on_filesystem()              {   [[ -e "$1" ]];                                }
-is_on_path()                    {   which "$1" >/dev/null 2>&1;                   }
+std::errexit_is_set()                {   [[ "$-" =~ e ]];                              }
+std::exit_if_is_directory()          { ! is_directory "$1"         || exit "${2:-0}";  }
+std::exit_if_is_empty()              { ! is_empty "$1"             || exit "${2:-0}";  }
+std::exit_if_is_file ()              { ! is_file "$1"              || exit "${2:-0}";  }
+std::exit_if_is_link()               { ! is_link "$1"              || exit "${2:-0}";  }
+std::exit_if_is_on_path()            { ! is_on_path "$1"           || exit "${2:-0}";  }
+std::exit_if_package_is_installed()  { ! package_is_installed "$1" || exit "${2:-0}";  }
+std::is_directory()                  {   [[ -d "$1" ]];                                }
+std::is_empty()                      {   [[ -z "$1" ]];                                }
+std::is_equal()                      {   [[ "$1" == "$2"  ]];                          }
+std::is_error()                      { ! is_not_error "$1";                            }
+std::is_file()                       {   [[ -f "$1" ]];                                }
+std::is_link()                       {   [[ -h "$1" ]];                                }
+std::is_match()                      {   is_equal "$1" "$2";                           }
+std::is_not_directory()              { ! is_directory "$1";                            }
+std::is_not_empty()                  { ! is_empty "$1";                                }
+std::is_not_equal()                  { ! is_equal "$1" "$2";                           }
+std::is_not_error()                  {   is_match "$1" "0";                            }
+std::is_not_file()                   { ! is_file "$1";                                 }
+std::is_not_match()                  { ! is_match "$1" "$2";                           }
+std::is_not_older_than()             { ! [[ "$1" -ot "$2" ]];                          } # NOT the same as is_newer_than since they can be equal
+std::is_not_on_path()                { ! is_on_path "$1";                              }
+std::is_on_filesystem()              {   [[ -e "$1" ]];                                }
+std::is_on_path()                    {   which "$1" >/dev/null 2>&1;                   }
 
-load_config() {
+std::load_config() {
   load_yml etc/defaults.yml
   ! is_empty "$1" || return 0
   load_yml "etc/$1"
 }
 
-load_yml()      { eval "$(parse_yml "$@")"; }
-make_symlink()  { ln -sfT "$2" "$1";        }
+std::load_yml()      { eval "$(parse_yml "$@")"; }
+std::make_symlink()  { ln -sfT "$2" "$1";        }
 
-make_group_dir() {
+std::make_group_dir() {
   sudo mkdir "$1"
   sudo chown "${USER}:${2:-prodadm}" "$1"
   chmod g+rwxs "$1"
   setfacl -m d:g::rwx "$1"
 }
 
-make_group_file() {
+std::make_group_file() {
   sudo touch "$1"
   sudo chown "${USER}:${2:-prodadm}" "$1"
   chmod g+rw "$1"
 }
 
-nounset_is_set() { [[ "$-" =~ u ]]; }
+std::nounset_is_set() { [[ "$-" =~ u ]]; }
 
-parse_yml() {
+std::parse_yml() {
   # http://stackoverflow.com/questions/5014632/how-can-i-parse-a-yaml-file-from-a-linux-shell-script#answer-21189044
   # parse a yml file into flattened variable names, concatenated with underscore
   # - argument allows specifying a prefix for the returned variables so they are namespaced
@@ -143,20 +143,20 @@ parse_yml() {
   }'
 }
 
-pop_dir()       { popd >/dev/null;                              }
-push_dir()      { pushd "$1" >/dev/null;                        }
-resolve_link()  { $(type -p greadlink readlink | head -1) "$1"; }
+std::pop_dir()       { popd >/dev/null;                              }
+std::push_dir()      { pushd "$1" >/dev/null;                        }
+std::resolve_link()  { $(type -p greadlink readlink | head -1) "$1"; }
 
-runas() {
+std::runas() {
   local user;
   user="$1";
   shift;
   sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "$@"
 }
 
-set_default() { eval "export $1=\${$1:-$2}"; }
+std::set_default() { eval "export $1=\${$1:-$2}"; }
 
-set_editor() {
+std::set_editor() {
   if is_file "/usr/bin/vim"; then
     printf "%s" "${EDITOR:-/usr/bin/vim}"
   elif is_file "/usr/bin/nano"; then
@@ -166,7 +166,7 @@ set_editor() {
   fi
 }
 
-set_pager() {
+std::set_pager() {
   if is_file "/usr/bin/less"; then
     printf "%s" "${PAGER:-/usr/bin/less}"
   else
@@ -174,13 +174,13 @@ set_pager() {
   fi
 }
 
-shell_is()      { [[ "${SHELL:-}" == "$1" ]]; }
-shell_is_bash() { shell_is "/bin/bash";       }
+std::shell_is()      { [[ "${SHELL:-}" == "$1" ]]; }
+std::shell_is_bash() { shell_is "/bin/bash";       }
 
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
-script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
+std::script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
 
-source_files_if_exist() {
+std::source_files_if_exist() {
   local filename
 
   for filename in "$@"; do
@@ -188,7 +188,7 @@ source_files_if_exist() {
   done
 }
 
-source_relaxed() {
+std::source_relaxed() {
   local errexit
   local nounset
 
@@ -202,7 +202,7 @@ source_relaxed() {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-strict_mode () {
+std::strict_mode () {
   case "$1" in
     "on" )
       set -o errexit
@@ -217,9 +217,9 @@ strict_mode () {
   esac
 }
 
-substitute_in_file() { sed -i -e "s|$2|$3|" "$1"; }
+std::substitute_in_file() { sed -i -e "s|$2|$3|" "$1"; }
 
-trace() {
+std::trace() {
   case "$1" in
     "on" )
       set -o xtrace
@@ -230,7 +230,7 @@ trace() {
   esac
 }
 
-usage_and_exit_if_is_empty() {
+std::usage_and_exit_if_is_empty() {
   if is_empty "$1"; then
     usage
     exit 1

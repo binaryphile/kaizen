@@ -3,58 +3,58 @@
 
 source lib/array.sh
 
-describe "ary_join"
+describe "ary::join"
   it "joins array elements"
     array=( a b c )
-    assert equal "$(ary_join "|" "${array[@]}")" "a|b|c"
+    assert equal "$(ary::join "|" "${array[@]}")" "a|b|c"
   end
 
   it "allows a multicharacter delimiter"
     array=( a b c )
-    assert equal "$(ary_join " | " "${array[@]}")" "a | b | c"
+    assert equal "$(ary::join " | " "${array[@]}")" "a | b | c"
   end
 end
 
-describe "ary_contains"
+describe "ary::contains"
   it "tests for element membership"
     letters=( a b c )
-    ary_contains "a" "${letters[@]}"
+    ary::contains "a" "${letters[@]}"
     assert equal "${?}" 0
   end
 end
 
-describe "ary_find"
+describe "ary::find"
   it "finds the index of the first element on exact match"
     letters=( a b c )
-    assert equal "$(ary_find "a" "${letters[@]}")" 0
+    assert equal "$(ary::find "a" "${letters[@]}")" 0
   end
 
   it "finds the index of the second element on exact match"
     letters=( a b c )
-    assert equal "$(ary_find "b" "${letters[@]}")" 1
+    assert equal "$(ary::find "b" "${letters[@]}")" 1
   end
 end
 
-describe "ary_remove"
+describe "ary::remove"
   it "removes the last element of an array on exact match"
     letters=( a b c )
-    result=( $(ary_remove "c" "${letters[@]}") )
+    result=( $(ary::remove "c" "${letters[@]}") )
     target=( a b )
     assert equal "${result[*]}" "${target[*]}"
   end
 
   it "doesn't remove elements which aren't there"
     letters=( a b c )
-    result=( $(ary_remove "d" "${letters[@]}") )
+    result=( $(ary::remove "d" "${letters[@]}") )
     target=( a b c )
     assert equal "${result[*]}" "${target[*]}"
   end
 end
 
-describe "ary_slice"
+describe "ary::slice"
   it "returns the middle slice"
     letters=( a b c )
-    result=( $(ary_slice "1" "1" "${letters[@]}") )
+    result=( $(ary::slice "1" "1" "${letters[@]}") )
     target=( b )
     assert equal "${result[*]}" "${target[*]}"
   end

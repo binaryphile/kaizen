@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-str_split () {
-  echo $( IFS="$1"; read -a array <<< "$2"; echo "${array[@]}" )
+str::split () {
+  printf "%s" "$( IFS="$1"; read -a array <<< "$2"; echo "${array[@]}" )"
 }
