@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source stdlib
-
 exit_if_package_is_installed () {
   ! package_is_installed "$1" || exit 0
 }
@@ -59,7 +57,7 @@ update_apt () {
 
   apt_date="$(stat -c %Y '/var/cache/apt/pkgcache.bin')"
   now_date="$(date +'%s')"
-  last_update="$((${now_date} - ${apt_date}))"
+  last_update="$((now_date - apt_date))"
   update_interval="$((24 * 60 * 60))"
   [[ "${last_update}" -lt "${update_interval}" ]] || sudo apt-get update -qq
 }

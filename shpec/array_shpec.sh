@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# vim: ft=sh
 
 source lib/array.sh
 
@@ -19,7 +18,7 @@ describe "ary::contains"
   it "tests for element membership"
     letters=( a b c )
     ary::contains "a" "${letters[@]}"
-    assert equal "${?}" 0
+    assert equal "$?" 0
   end
 end
 
