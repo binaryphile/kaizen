@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Functions for interacting with the user
 
 # Let the user make a choice about something and execute code based on
 # the answer
@@ -30,11 +31,18 @@ ui::echoerr () {
 }
 
 ui::default_flags () {
-  DEFINE_boolean 'trace' false 'enable tracing' 't'
-  DEFINE_boolean 'strict' true 'enable strict mode'
+  DEFINE_boolean 'trace'  false 'enable tracing'      't'
+  DEFINE_boolean 'strict' true  'enable strict mode'
 }
 
 ui::exec_flags () {
-  is_match "${FLAGS_trace}" "${FLAGS_FALSE}" || trace on
+  is_match "${FLAGS_trace}"  "${FLAGS_FALSE}" || trace on
   is_match "${FLAGS_strict}" "${FLAGS_FALSE}" || strict_mode on
+}
+
+ui::usage_and_exit_if_is_empty() {
+  if is_empty "$1"; then
+    usage
+    exit 1
+  fi
 }

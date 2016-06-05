@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-exit_if_package_is_installed () {
+dst::exit_if_package_is_installed () {
   ! package_is_installed "$1" || exit 0
 }
 
-install_local_package () {
+dst::install_local_package () {
   sudo dpkg -i "$1"
 }
 
-install_package () {
+dst::install_package () {
   local package
 
   package="$1"
@@ -17,11 +17,11 @@ install_package () {
   sudo apt-get install "${package}"
 }
 
-package_is_installed () {
+dst::package_is_installed () {
   dpkg --get-selections "$1" 2>/dev/null | grep -q "^$1\\(:amd64\\)\\?[[:space:]]\\+install\$" >/dev/null
 }
 
-reinstall_package () {
+dst::reinstall_package () {
   local package
 
   package="$1"
@@ -29,19 +29,19 @@ reinstall_package () {
   install_package "${package}"
 }
 
-start_service () {
+dst::start_service () {
   sudo service "$1" start
 }
 
-stop_service () {
+dst::stop_service () {
   sudo service "$1" stop
 }
 
-reload_service () {
+dst::reload_service () {
   sudo service "$1" reload
 }
 
-uninstall_package () {
+dst::uninstall_package () {
   local package
 
   package="$1"
@@ -49,7 +49,7 @@ uninstall_package () {
   sudo apt-get purge "${package}"
 }
 
-update_apt () {
+dst::update_apt () {
   local apt_date
   local now_date
   local last_update

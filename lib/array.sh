@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Functions for array manipulation
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 ary::contains () {
