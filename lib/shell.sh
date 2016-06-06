@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Functions dealing with the shell or environment
 
+source string.sh
+
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
 # which distro library to load
@@ -38,6 +40,8 @@ sh::detect_os() {
 }
 
 sh::errexit_is_set()  {   [[ "$-" =~ e ]];            }
+sh::exit_if_is_empty()   { ! is_empty "$1"   || exit "${2:-0}" ;}
+sh::exit_if_is_on_path() { ! is_on_path "$1" || exit "${2:-0}" ;}
 sh::is_error()        { ! is_not_error "$1";          }
 sh::is_not_error()    {   is_match "$1" "0";          }
 sh::is_not_on_path()  { ! is_on_path "$1";            }

@@ -4,7 +4,7 @@ source lib/functional.sh
 
 describe "fnc::map"
   it "maps an array"
-    array=( 1 2 3 )
-    assert equal "$(fnc::map "printf" "${array[@]}")" "123"
+    array=( "a" "b" "c" )
+    assert equal "$(fnc::map "printf" "${array[@]}")" "abc"
   end
 end

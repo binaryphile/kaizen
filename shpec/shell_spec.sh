@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-source lib/sh.sh
+source lib/shell.sh

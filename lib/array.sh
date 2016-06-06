@@ -2,7 +2,7 @@
 # Functions for array manipulation
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
-ary::contains () {
+ary::include? () {
   local elem
   for elem in "${@:2}"; do
     if [[ "${elem}" == "$1" ]]; then
@@ -12,7 +12,7 @@ ary::contains () {
   return 1
 }
 
-ary::find () {
+ary::index() {
   local i
   local item
   local array
@@ -30,7 +30,7 @@ ary::find () {
 }
 
 # https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
-ary::join () {
+ary::join() {
   local delim
 
   delim="$1"
@@ -40,7 +40,7 @@ ary::join () {
   printf "%s" "${@/#/${delim}}"
 }
 
-ary::remove () {
+ary::remove() {
   local i
   local item
   local result
@@ -54,7 +54,7 @@ ary::remove () {
   echo "${result[@]}"
 }
 
-ary::slice () {
+ary::slice() {
   local first
   local last
   local array
@@ -65,5 +65,5 @@ ary::slice () {
   last="$1"
   shift
   array=( "$@" )
-  echo "${array[@]:${first}:$((${last}-${first}+1))}"
+  echo "${array[@]:${first}:$((last-first+1))}"
 }

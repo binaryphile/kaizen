@@ -7,7 +7,6 @@ fnc::map() {
 
   local func="$1"
   local param="$2"
-
   shift 2
   "${func}" "${param}"
   fnc::map "${func}" "$@"
