@@ -10,3 +10,19 @@ describe "str::split"
     assert equal "$(str::split str "/")" "${result[*]}"
   end
 end
+
+describe "str::eql?"
+  it "checks equality"
+    # shellcheck disable=SC2034
+    nonce="abc"
+    str::eql? nonce "abc"
+    assert equal $? 0
+  end
+
+  it "fails inequality"
+    # shellcheck disable=SC2034
+    nonce="abc"
+    str::eql? nonce "abcd"
+    assert unequal $? 0
+  end
+end
