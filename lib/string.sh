@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Functions for string testing and manipulation
 
-source ../../../fvue/BashByRef/upvar.sh
-
 str::split () {
   local array
 
@@ -10,9 +8,5 @@ str::split () {
   echo "${array[@]}"
 }
 
-str::is_empty()           {   [[ -z "$1"      ]]  ;}
-str::eql? ()              {   eval "[[ \"\$$1\" == \"$2\" ]]"  ;}
-str::is_match()           {   is_equal "$1" "$2"  ;}
-str::is_not_empty()       { ! is_empty "$1"       ;}
-str::is_not_equal()       { ! is_equal "$1" "$2"  ;}
-str::is_not_match()       { ! is_match "$1" "$2"  ;}
+str::blank? ()            {   eval "[[ -z \$$1 ]] || [[ \$$1 =~ ^[[:space:]]+$ ]]" ;}
+str::eql? ()              {   eval "[[ \$$1 == $2 ]]"  ;}
