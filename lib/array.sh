@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # Functions for array manipulation
 
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+
+source "${_lib_dir}/core.sh"
+
+cor::blank? _array_loaded || return 0
+# shellcheck disable=SC2034
+declare -r _array_loaded="true"
+
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 ary::include? () {
   local elem

@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 # Functions for interacting with the user
 
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+
+source "${_lib_dir}/core.sh"
+
+cor.blank? _ui_loaded || return 0
+# shellcheck disable=SC2034
+declare -r _ui_loaded="true"
+
+
 # Let the user make a choice about something and execute code based on
 # the answer
 # Called like: choose <default (y or n)> <prompt>
@@ -36,12 +46,12 @@ ui::default_flags () {
 }
 
 ui::exec_flags () {
-  is_match "${FLAGS_trace}"  "${FLAGS_FALSE}" || trace on
-  is_match "${FLAGS_strict}" "${FLAGS_FALSE}" || strict_mode on
+  cor::eql? FLAGS_trace  "${FLAGS_FALSE}" || sh::trace on
+  cor::eql? FLAGS_strict "${FLAGS_FALSE}" || sh::strict_mode on
 }
 
-ui::usage_and_exit_if_is_empty() {
-  if is_empty "$1"; then
+ui::usage_and_exit_if_blank? () {
+  if cor::blank? 1; then
     usage
     exit 1
   fi

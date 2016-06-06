@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # Functions dealing with files and paths
 
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+
+source "${_lib_dir}/core.sh"
+
+cor::blank? _path_loaded || return 0
+# shellcheck disable=SC2034
+declare -r _path_loaded="true"
+
 # https://github.com/basecamp/sub/blob/master/libexec/sub
 pth::abs_dirname() {
   local cwd
@@ -46,5 +55,5 @@ pth::make_group_dir() {
   setfacl -m d:g::rwx "${dirname}"
 }
 
-pth::resolve_link()       { $(type -p greadlink readlink | head -1) "$1" ;}
+pth::readlink() { eval "readlink \"\$$1\""  ;}
 pth::substitute_in_file() { sed -i -e "s|$2|$3|" "$1" ;}

@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # Functions dealing with the shell or environment
 
-source string.sh
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+
+source "${_lib_dir}/core.sh"
+
+cor::blank? _shell_loaded || return 0
+# shellcheck disable=SC2034
+declare -r _shell_loaded="true"
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
@@ -40,7 +47,6 @@ sh::detect_os() {
 }
 
 sh::errexit_is_set()  {   [[ "$-" =~ e ]];            }
-sh::exit_if_is_empty()   { ! is_empty "$1"   || exit "${2:-0}" ;}
 sh::exit_if_is_on_path() { ! is_on_path "$1" || exit "${2:-0}" ;}
 sh::is_error()        { ! is_not_error "$1";          }
 sh::is_not_error()    {   is_match "$1" "0";          }
