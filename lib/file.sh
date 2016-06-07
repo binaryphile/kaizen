@@ -10,5 +10,8 @@ cor.blank? _file_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _file_loaded="true"
 
-fil.dirname()  {   eval "printf \"%s\" \"\${$1%/*}\""  ;}
-fil.readlink() {   eval "readlink \"\$$1\""            ;}
+fil.basename()  { eval "printf \"%s\" \"\${$1##*/}\"" ;}
+fil.dirname()   { eval "printf \"%s\" \"\${$1%/*}\""  ;}
+fil.exist? ()   { eval "[[ -f \$$1 ]]"                ;}
+fil.readlink()  { eval "readlink \"\$$1\""            ;}
+fil.symlink? () { eval "[[ -h \$$1 ]]"                ;}

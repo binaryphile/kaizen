@@ -6,7 +6,7 @@
 
 source "${_lib_dir}/core.sh"
 
-cor::blank? _functional_loaded || return 0
+cor.blank? _functional_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _functional_loaded="true"
 

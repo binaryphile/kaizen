@@ -12,6 +12,8 @@ declare -r _pathname_loaded="true"
 
 source "${_lib_dir}/file.sh"
 
+pnm.exist? () { fil.exist? "$@" ;}
+
 # https://github.com/basecamp/sub/blob/master/libexec/sub
 pnm.realdirpath() {
   local cwd
@@ -20,17 +22,17 @@ pnm.realdirpath() {
 
   cwd="$(pwd)"
   while ! cor.blank? path; do
-    cd "$(fil::dirname path)"
+    cd "$(fil.dirname path)"
     # shellcheck disable=SC2034
     name="$(pnm.basename path)"
     # shellcheck disable=SC2034
-    path="$(fil::readlink name || true)"
+    path="$(fil.readlink name || true)"
   done
 
   pwd
   cd "${cwd}"
 }
 
-pnm.basename() {   eval "printf \"%s\" \"\${$1##*/}\"" ;}
-pnm.dirname()  {   fil::dirname "$@"                   ;}
-pnm.readlink() {   fil::readlink "$@"                  ;}
+pnm.basename() { fil.basename "$@"  ;}
+pnm.dirname()  { fil.dirname "$@"   ;}
+pnm.readlink() { fil.readlink "$@"  ;}

@@ -10,11 +10,11 @@ cor.blank? _string_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _string_loaded="true"
 
-str.split () {
+str.split() {
   local array
 
-  eval "IFS=\"$2\" read -ra array <<< \${$1}"
-  echo "${array[@]}"
+  eval "IFS=\"$2\" read -ra array <<< \"\$$1\""
+  cat <<< "${array[@]}"
 }
 
 str.blank? ()          {   cor.blank? "$@"  ;}
