@@ -64,15 +64,9 @@ ary.remove() {
 }
 
 ary.slice() {
-  local first
-  local last
-  local array
-  local result
+  local first=$2
+  local last=$3
+  eval "local array=(\"\${$1[@]}\")"
 
-  first="$1"
-  shift
-  last="$1"
-  shift
-  array=( "$@" )
-  echo "${array[@]:${first}:$((last-first+1))}"
+  cat <<< "${array[@]:${first}:$((last-first+1))}"
 }

@@ -56,7 +56,7 @@ end
 describe "ary.slice"
   it "returns the middle slice"
     letters=( "a" "b" "c" )
-    result=( $(ary.slice "1" "1" "${letters[@]}") )
+    result=( $(ary.slice letters 1 1) )
     target=( "b" )
     assert equal "${result[*]}" "${target[*]}"
   end
