@@ -10,15 +10,15 @@ cor::blank? _yaml_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _yaml_loaded="true"
 
-yml::load_config() {
+yml.load_config() {
   load_yml etc/defaults.yml
   ! is_empty "$1" || return 0
   load_yml "etc/$1"
 }
 
-yml::load_yml()      { eval "$(parse_yml "$@")"; }
+yml.load_yml()      { eval "$(parse_yml "$@")"; }
 
-yml::parse_yml() {
+yml.parse_yml() {
   # http://stackoverflow.com/questions/5014632/how-can-i-parse-a-yaml-file-from-a-linux-shell-script#answer-21189044
   # parse a yml file into flattened variable names, concatenated with underscore
   # - argument allows specifying a prefix for the returned variables so they are namespaced

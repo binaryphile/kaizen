@@ -6,14 +6,14 @@
 
 source "${_lib_dir}/core.sh"
 
-cor::blank? _shell_loaded || return 0
+cor.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
 # which distro library to load
-sh::detect_os() {
+sh.detect_os() {
   local os
   local version
 
@@ -46,26 +46,26 @@ sh::detect_os() {
   echo "${os}-${version}"
 }
 
-sh::errexit_is_set()  {   [[ "$-" =~ e ]];            }
-sh::exit_if_is_on_path() { ! is_on_path "$1" || exit "${2:-0}" ;}
-sh::is_error()        { ! is_not_error "$1";          }
-sh::is_not_error()    {   is_match "$1" "0";          }
-sh::is_not_on_path()  { ! is_on_path "$1";            }
-sh::is_on_path()      {   which "$1" >/dev/null 2>&1; }
-sh::nounset_is_set()  { [[ "$-" =~ u ]];              }
-sh::pop_dir()         { popd >/dev/null;              } # Not a file command, just CWD and environment vars
-sh::push_dir()        { pushd "$1" >/dev/null;        }
+sh.errexit_is_set()  {   [[ "$-" =~ e ]];            }
+sh.exit_if_is_on_path() { ! is_on_path "$1" || exit "${2:-0}" ;}
+sh.is_error()        { ! is_not_error "$1";          }
+sh.is_not_error()    {   is_match "$1" "0";          }
+sh.is_not_on_path()  { ! is_on_path "$1";            }
+sh.is_on_path()      {   which "$1" >/dev/null 2>&1; }
+sh.nounset_is_set()  { [[ "$-" =~ u ]];              }
+sh.pop_dir()         { popd >/dev/null;              } # Not a file command, just CWD and environment vars
+sh.push_dir()        { pushd "$1" >/dev/null;        }
 
-sh::runas() {
+sh.runas() {
   local user;
   user="$1";
   shift;
   sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "$@"
 }
 
-sh::set_default() { eval "export $1=\${$1:-$2}"; }
+sh.set_default() { eval "export $1=\${$1:-$2}"; }
 
-sh::set_editor() {
+sh.set_editor() {
   if is_file "/usr/bin/vim"; then
     printf "%s" "${EDITOR:-/usr/bin/vim}"
   elif is_file "/usr/bin/nano"; then
@@ -75,7 +75,7 @@ sh::set_editor() {
   fi
 }
 
-sh::set_pager() {
+sh.set_pager() {
   if is_file "/usr/bin/less"; then
     printf "%s" "${PAGER:-/usr/bin/less}"
   else
@@ -83,13 +83,13 @@ sh::set_pager() {
   fi
 }
 
-sh::shell_is()      { [[ "${SHELL:-}" == "$1" ]]; }
-sh::shell_is_bash() { shell_is "/bin/bash";       }
+sh.shell_is()      { [[ "${SHELL:-}" == "$1" ]]; }
+sh.shell_is_bash() { shell_is "/bin/bash";       }
 
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
-sh::script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
+sh.script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
 
-sh::source_files_if_exist() {
+sh.source_files_if_exist() {
   local filename
 
   for filename in "$@"; do
@@ -97,7 +97,7 @@ sh::source_files_if_exist() {
   done
 }
 
-sh::source_relaxed() {
+sh.source_relaxed() {
   local errexit
   local nounset
 
@@ -111,28 +111,5 @@ sh::source_relaxed() {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-sh::strict_mode () {
-  case "$1" in
-    "on" )
-      set -o errexit
-      set -o nounset
-      set -o pipefail
-      ;;
-    "off" )
-      set +o errexit
-      set +o nounset
-      set +o pipefail
-      ;;
-  esac
-}
-
-sh::trace() {
-  case "$1" in
-    "on" )
-      set -o xtrace
-      ;;
-    "off" )
-      set +o xtrace
-      ;;
-  esac
-}
+sh.strict_mode() { cor.strict_mode "$@" ;}
+sh.trace()       { cor.trace "$@"       ;}

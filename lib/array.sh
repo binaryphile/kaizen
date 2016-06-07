@@ -6,12 +6,12 @@
 
 source "${_lib_dir}/core.sh"
 
-cor::blank? _array_loaded || return 0
+cor.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
-ary::include? () {
+ary.include? () {
   local elem
   for elem in "${@:2}"; do
     if [[ "${elem}" == "$1" ]]; then
@@ -21,7 +21,7 @@ ary::include? () {
   return 1
 }
 
-ary::index() {
+ary.index() {
   local i
   local item
   local array
@@ -39,7 +39,7 @@ ary::index() {
 }
 
 # https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
-ary::join() {
+ary.join() {
   local delim
 
   delim="$1"
@@ -49,7 +49,7 @@ ary::join() {
   printf "%s" "${@/#/${delim}}"
 }
 
-ary::remove() {
+ary.remove() {
   local i
   local item
   local result
@@ -63,7 +63,7 @@ ary::remove() {
   echo "${result[@]}"
 }
 
-ary::slice() {
+ary.slice() {
   local first
   local last
   local array

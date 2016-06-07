@@ -6,17 +6,17 @@
 
 source "${_lib_dir}/core.sh"
 
-cor::blank? _string_loaded || return 0
+cor.blank? _string_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _string_loaded="true"
 
-str::split () {
+str.split () {
   local array
 
   eval "IFS=\"$2\" read -ra array <<< \${$1}"
   echo "${array[@]}"
 }
 
-str::blank? ()          {   cor::blank? "$@"  ;}
-str::eql? ()            {   cor::eql? "$@"    ;}
-str::exit_if_blank? ()  { ! str::blank? 1     || exit "${2:-0}" ;}
+str.blank? ()          {   cor.blank? "$@"  ;}
+str.eql? ()            {   cor.eql? "$@"    ;}
+str.exit_if_blank? ()  { ! str.blank? 1     || exit "${2:-0}" ;}
