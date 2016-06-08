@@ -5,7 +5,7 @@
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
 source "$_lib_dir"/core.sh
-source "$_lib_dir"/../../../fvue/BashByRef/upvar.sh
+source "$_lib_dir"/upvar.sh
 
 core.blank? _array_loaded || return 0
 # shellcheck disable=SC2034

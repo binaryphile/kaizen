@@ -4,6 +4,10 @@
 [[ -z $_core_loaded ]] || return 0
 declare -r _core_loaded="true"
 
+core.alias_function() {
+  eval "${1}() { $2 \"\$@\" ;}"
+}
+
 core.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
 
 core.deref() {

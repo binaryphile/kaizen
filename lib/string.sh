@@ -17,6 +17,6 @@ str.split() {
   cat <<< "${array[@]}"
 }
 
-str.blank? ()          {   core.blank? "$@"  ;}
-str.eql? ()            {   core.eql? "$@"    ;}
+core.alias_function str.blank?  core.blank?
+core.alias_function str.eql?    core.eql?
 str.exit_if_blank? ()  { ! str.blank? 1     || exit "${2:-0}" ;}

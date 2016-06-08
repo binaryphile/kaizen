@@ -13,8 +13,8 @@ declare -r _pathname_loaded="true"
 source "$_lib_dir"/file.sh
 
 path.basename() { file.basename "$@"  ;}
-path.dirname()  { file.dirname "$@"   ;}
-path.exist? ()  { file.exist? "$@"    ;}
+path.dirname()  { file.dirname  "$@"  ;}
+path.exist? ()  { file.exist?   "$@"  ;}
 path.readlink() { file.readlink "$@"  ;}
 
 # https://github.com/basecamp/sub/blob/master/libexec/sub

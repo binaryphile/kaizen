@@ -5,7 +5,7 @@
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
 source "$_lib_dir"/core.sh
-source "$_lib_dir"/../../../fvue/BashByRef/upvar.sh
+source "$_lib_dir"/upvar.sh
 
 core.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
@@ -114,6 +114,6 @@ sh.source_relaxed() {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-sh.strict_mode()  { core.strict_mode "$@"    ;}
-sh.trace()        { core.trace "$@"          ;}
-sh.value()        { core.value "$@"          ;}
+core.alias_function sh.strict_mode  core.strict_mode
+core.alias_function sh.trace        core.trace
+core.alias_function sh.value        core.value
