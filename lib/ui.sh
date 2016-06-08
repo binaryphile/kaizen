@@ -17,20 +17,21 @@ declare -r _ui_loaded="true"
 #       "Do you want to play a game?" \
 # Returns: 0 for yes and 1 for anything else
 ui.choose() {
-  local default
-  local prompt
   local answer
+  local default="$1"
+  local prompt="$2"
 
-  default="$1"
-  prompt="$2"
   read -ep "$prompt" answer
   ! _core.blank? answer || answer="$default"
 
   case "$answer" in
-    [yY1] ) return 0
+    [yY1] )
+      return 0
       # error check
       ;;
-    *     ) return 1
+    * )
+      return 1
+      ;;
   esac
 }
 

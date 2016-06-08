@@ -23,12 +23,12 @@ _core.eql? ()    { eval "[[ \${$1:-} == $2 ]]" ;}
 
 _core.strict_mode() {
   case "$1" in
-    "on" )
+    on )
       set -o errexit
       set -o nounset
       set -o pipefail
       ;;
-    "off" )
+    off )
       set +o errexit
       set +o nounset
       set +o pipefail
