@@ -43,7 +43,7 @@ describe "ary.new"
     # shellcheck disable=SC2034
     local copy
     ary.new copy array
-    assert equal "${array[*]}" "a b c"
+    assert equal "${copy[*]}" "a b c"
   end
 end
 

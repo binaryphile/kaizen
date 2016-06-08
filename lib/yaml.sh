@@ -4,16 +4,16 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "${_lib_dir}/core.sh"
+source "$_lib_dir"/core.sh
 
-cor::blank? _yaml_loaded || return 0
+core.blank? _yaml_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _yaml_loaded="true"
 
 yml.load_config() {
   load_yml etc/defaults.yml
   ! is_empty "$1" || return 0
-  load_yml "etc/$1"
+  load_yml etc/"$1"
 }
 
 yml.load_yml()      { eval "$(parse_yml "$@")"; }

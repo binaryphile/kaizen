@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
 
-dst.exit_if_package_is_installed() {
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+
+source "$_lib_dir"/../core.sh
+
+core.blank? _rhel_6_loaded || return 0
+# shellcheck disable=SC2034
+declare -r _rhel_6_loaded="true"
+
+dist.exit_if_package_is_installed() {
   ! package_is_installed "$1" || exit 0
 }
 
-dst.install_local_package() {
+dist.install_local_package() {
   sudo rpm -Uvh "$1"
 }
 
-dst.install_package() {
+dist.install_package() {
   local package
 
   package="$1"
@@ -16,11 +25,11 @@ dst.install_package() {
   sudo yum install "$1"
 }
 
-dst.package_is_installed() {
+dist.package_is_installed() {
   yum list installed "$1" >/dev/null
 }
 
-dst.reinstall_package() {
+dist.reinstall_package() {
   local package
 
   package="$1"
@@ -28,19 +37,19 @@ dst.reinstall_package() {
   install_package "$package"
 }
 
-dst.start_service() {
+dist.start_service() {
   sudo service "$1" start
 }
 
-dst.stop_service() {
+dist.stop_service() {
   sudo service "$1" stop
 }
 
-dst.reload_service() {
+dist.reload_service() {
   sudo service "$1" reload
 }
 
-dst.uninstall_package() {
+dist.uninstall_package() {
   local package
 
   package="$1"

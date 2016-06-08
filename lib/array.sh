@@ -7,7 +7,7 @@
 source "$_lib_dir"/core.sh
 source "$_lib_dir"/../../../fvue/BashByRef/upvar.sh
 
-cor.blank? _array_loaded || return 0
+core.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
 
@@ -51,6 +51,7 @@ ary.join() {
 }
 
 ary.new() {
+  core.deref "$2"
   local "$1" && upvar "$1" "$2"
 }
 

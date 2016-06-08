@@ -4,10 +4,18 @@
 [[ -z $_core_loaded ]] || return 0
 declare -r _core_loaded="true"
 
-cor.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
-cor.eql? ()    { eval "[[ \${$1:-} == $2 ]]" ;}
+core.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
 
-cor.strict_mode() {
+core.deref() {
+  local "_$1"
+
+  read "_$1" <<< "$(core.value "$(core.value "$1")")"
+  local "$1" && upvar "$1" "$(core.value "_$1")"
+}
+
+core.eql? ()    { eval "[[ \${$1:-} == $2 ]]" ;}
+
+core.strict_mode() {
   case "$1" in
     "on" )
       set -o errexit
@@ -22,7 +30,7 @@ cor.strict_mode() {
   esac
 }
 
-cor.trace() {
+core.trace() {
   case "$1" in
     "on" )
       set -o xtrace
@@ -32,3 +40,5 @@ cor.trace() {
       ;;
   esac
 }
+
+core.value() { eval printf "%s" "\$$1" ;}
