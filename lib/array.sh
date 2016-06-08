@@ -5,11 +5,12 @@
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
 source "$_lib_dir"/core.sh
-source "$_lib_dir"/upvar.sh
 
 core.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
+
+source "$_lib_dir"/upvar.sh
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 ary.include? () {

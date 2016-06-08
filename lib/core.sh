@@ -4,11 +4,13 @@
 [[ -z $_core_loaded ]] || return 0
 declare -r _core_loaded="true"
 
-core.alias_function() {
-  eval "${1}() { $2 \"\$@\" ;}"
-}
+# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-core.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
+source "$_lib_dir"/upvar.sh
+
+core.alias_function() { eval "${1}() { $2 \"\$@\" ;}" ;}
+core.blank? ()        { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
 
 core.deref() {
   local "_$1"
