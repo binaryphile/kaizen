@@ -4,9 +4,9 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
 
-source "$_lib_dir"/core.sh
+source "$_lib_dir"/_core.sh
 
-core.blank? _pathname_loaded || return 0
+_core.blank? _pathname_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _pathname_loaded="true"
 
@@ -26,7 +26,7 @@ path.realdirpath() {
   core
   eval "local path=\"\$$1\""
   cwd="$(pwd)"
-  while ! core.blank? path; do
+  while ! _core.blank? path; do
     cd "$(file.dirname path)"
     # shellcheck disable=SC2034
     name="$(path.basename path)"

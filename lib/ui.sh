@@ -4,9 +4,9 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
 
-source "$_lib_dir"/core.sh
+source "$_lib_dir"/_core.sh
 
-core.blank? _ui_loaded || return 0
+_core.blank? _ui_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _ui_loaded="true"
 
@@ -24,7 +24,7 @@ ui.choose() {
   default="$1"
   prompt="$2"
   read -ep "$prompt" answer
-  ! core.blank? answer || answer="$default"
+  ! _core.blank? answer || answer="$default"
 
   case "$answer" in
     [yY1] ) return 0
@@ -45,12 +45,12 @@ ui.default_flags() {
 }
 
 ui.exec_flags() {
-  core.eql? FLAGS_trace  "$FLAGS_FALSE" || core.trace on
-  core.eql? FLAGS_strict "$FLAGS_FALSE" || core.strict_mode on
+  _core.eql? FLAGS_trace  "$FLAGS_FALSE" || _core.trace on
+  _core.eql? FLAGS_strict "$FLAGS_FALSE" || _core.strict_mode on
 }
 
 ui.usage_and_exit_if_blank? () {
-  if core.blank? "1"; then
+  if _core.blank? "1"; then
     usage
     exit 1
   fi

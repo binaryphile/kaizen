@@ -4,14 +4,15 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "$_lib_dir"/core.sh
-source "$_lib_dir"/upvar.sh
+source "$_lib_dir"/_core.sh
 
-core.blank? _shell_loaded || return 0
+_core.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 
-sh.deref() { core.deref "$@" ;}
+source "$_lib_dir"/upvar.sh
+
+_core.alias_function sh.deref _core.deref
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
@@ -92,11 +93,11 @@ sh.shell_is_bash() { shell_is "/bin/bash";       }
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
 sh.script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
 
-sh.source_files_if_exist() {
+sh.source_files_if_exist? () {
   local filename
 
   for filename in "$@"; do
-    is_not_file "${filename}" || source "${filename}"
+    ! file.exist? filename || source "$filename"
   done
 }
 
@@ -114,6 +115,6 @@ sh.source_relaxed() {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-core.alias_function sh.strict_mode  core.strict_mode
-core.alias_function sh.trace        core.trace
-core.alias_function sh.value        core.value
+_core.alias_function sh.strict_mode  _core.strict_mode
+_core.alias_function sh.trace        _core.trace
+_core.alias_function sh.value        _core.value
