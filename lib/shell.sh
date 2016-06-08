@@ -14,6 +14,15 @@ source "$_lib_dir"/upvar.sh
 
 _core.alias_function sh.deref _core.deref
 
+sh.class() {
+  case "$(declare -p $1)" in
+    declare\ -a* )
+      printf "array"
+      return 0
+      ;;
+  esac
+}
+
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
 # which distro library to load

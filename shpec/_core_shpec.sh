@@ -53,6 +53,16 @@ describe "_core.deref"
     _core.deref indirect
     assert equal "$indirect" "text"
   end
+
+  it "dereferences an array variable"
+    # shellcheck disable=SC2034
+    sample=("testing" "one" "two")
+    # shellcheck disable=SC2034
+    indirect="sample"
+    _core.deref indirect
+    assert equal "${#indirect}" 3
+    assert equal "${indirect[*]}" "testing one two"
+  end
 end
 
 describe "_core.eql?"
