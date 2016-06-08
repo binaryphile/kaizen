@@ -4,11 +4,19 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "${_lib_dir}/core.sh"
+source "$_lib_dir"/core.sh
+source "$_lib_dir"/../../../fvue/BashByRef/upvar.sh
 
 cor.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
+
+sh.deref() {
+  local "_$1"
+
+  read "_$1" <<< "$(sh.value "$(sh.value "$1")")"
+  local "$1" && upvar "$1" "$(sh.value "_$1")"
+}
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
@@ -111,5 +119,6 @@ sh.source_relaxed() {
   ! is_empty "${nounset}" && set -o nounset
 }
 
-sh.strict_mode() { cor.strict_mode "$@" ;}
-sh.trace()       { cor.trace "$@"       ;}
+sh.strict_mode()  { cor.strict_mode "$@"    ;}
+sh.trace()        { cor.trace "$@"          ;}
+sh.value()        { eval printf "%s" "\$$1" ;}
