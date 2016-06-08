@@ -10,18 +10,8 @@ _core.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 
-source "$_lib_dir"/upvar.sh
-
 _core.alias_function sh.deref _core.deref
-
-sh.class() {
-  case "$(declare -p $1)" in
-    declare\ -a* )
-      printf "array"
-      return 0
-      ;;
-  esac
-}
+_core.alias_function sh.class _core.class
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell

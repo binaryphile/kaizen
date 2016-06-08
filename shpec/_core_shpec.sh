@@ -44,6 +44,14 @@ describe "_core.blank?"
   end
 end
 
+describe "_core.class"
+  it "reports if it is an array"
+    # shellcheck disable=SC2034
+    ary=( 1 2 3 )
+    assert equal "$(_core.class ary)" "array"
+  end
+end
+
 describe "_core.deref"
   it "dereferences a scalar variable"
     # shellcheck disable=SC2034

@@ -10,8 +10,6 @@ _core.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
 
-source "$_lib_dir"/upvar.sh
-
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 ary.include? () {
   local elem
@@ -53,7 +51,7 @@ ary.join() {
 
 ary.new() {
   _core.deref "$2"
-  local "$1" && upvar "$1" "$2"
+  local "$1" && _core.upvar "$1" "$2"
 }
 
 ary.remove() {

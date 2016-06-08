@@ -4,11 +4,3 @@
 [[ -d ${BASH_SOURCE%/*} ]] && _shpec_dir="${BASH_SOURCE%/*}" || _shpec_dir="${PWD}"
 
 source "${_shpec_dir}/../lib/shell.sh"
-
-describe "sh.class"
-  it "reports if it is an array"
-    # shellcheck disable=SC2034
-    ary=( 1 2 3 )
-    assert equal "$(sh.class ary)" "array"
-  end
-end
