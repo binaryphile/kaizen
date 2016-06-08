@@ -4,7 +4,8 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "${_lib_dir}/core.sh"
+source "$_lib_dir"/core.sh
+source "$_lib_dir"/../../../fvue/BashByRef/upvar.sh
 
 cor.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
@@ -14,7 +15,7 @@ declare -r _array_loaded="true"
 ary.include? () {
   local elem
   for elem in "${@:2}"; do
-    if [[ "${elem}" == "$1" ]]; then
+    if [[ $elem == "$1" ]]; then
       return 0
     fi
   done
@@ -30,8 +31,8 @@ ary.index() {
   shift
   array=( "$@" )
   for i in "${!array[@]}"; do
-    if [[ "${array[${i}]}" == "${item}" ]]; then
-      echo "${i}"
+    if [[ ${array[${i}]} == "$item" ]]; then
+      printf "%s" "$i"
       return 0
     fi
   done
@@ -46,7 +47,11 @@ ary.join() {
   shift
   echo -n "$1"
   shift
-  printf "%s" "${@/#/${delim}}"
+  printf "%s" "${@/#/$delim}"
+}
+
+ary.new() {
+  local "$1" && upvar "$1" "$2"
 }
 
 ary.remove() {
@@ -58,7 +63,7 @@ ary.remove() {
   shift
   result=( )
   for i in "$@"; do
-    [[ "${i}" == "${item}" ]] || result+=( "${i}" )
+    [[ $i == "$item" ]] || result+=( "$i" )
   done
   echo "${result[@]}"
 }
@@ -66,6 +71,8 @@ ary.remove() {
 ary.slice() {
   local first=$2
   local last=$3
+  local array
+
   eval "local array=(\"\${$1[@]}\")"
 
   cat <<< "${array[@]:${first}:$((last-first+1))}"
