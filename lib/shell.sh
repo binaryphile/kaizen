@@ -4,14 +4,26 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "$_lib_dir"/_core.sh
+source "$_lib_dir"/core.sh
 
-_core.blank? _shell_loaded || return 0
+_str.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 
-_core.alias_function sh.deref _core.deref
-_core.alias_function sh.class _core.class
+read -d "" -a _aliases <<EOS
+deref
+strict_mode
+trace
+value
+EOS
+
+_sh.alias_function sh.alias_function _sh.alias_function
+
+for _alias in "${_aliases[@]}"; do
+  sh.alias_function sh."$_alias" _sh."$_alias"
+done
+
+unset _alias _aliases
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
@@ -49,15 +61,15 @@ sh.detect_os() {
   echo "${os}-${version}"
 }
 
-sh.errexit_is_set()  {   [[ "$-" =~ e ]];            }
+sh.errexit_is_set()     {   [[ "$-" =~ e ]]             ;}
 sh.exit_if_is_on_path() { ! is_on_path "$1" || exit "${2:-0}" ;}
-sh.is_error()        { ! is_not_error "$1";          }
-sh.is_not_error()    {   is_match "$1" "0";          }
-sh.is_not_on_path()  { ! is_on_path "$1";            }
-sh.is_on_path()      {   which "$1" >/dev/null 2>&1; }
-sh.nounset_is_set()  { [[ "$-" =~ u ]];              }
-sh.pop_dir()         { popd >/dev/null;              } # Not a file command, just CWD and environment vars
-sh.push_dir()        { pushd "$1" >/dev/null;        }
+sh.is_error()           { ! is_not_error "$1"           ;}
+sh.is_not_error()       {   is_match "$1" "0"           ;}
+sh.is_not_on_path()     { ! is_on_path "$1"             ;}
+sh.is_on_path()         {   which "$1" >/dev/null 2>&1  ;}
+sh.nounset_is_set()     { [[ "$-" =~ u ]]               ;}
+sh.pop_dir()            { popd >/dev/null               ;}
+sh.push_dir()           { pushd "$1" >/dev/null         ;}
 
 sh.runas() {
   local user;
@@ -66,7 +78,7 @@ sh.runas() {
   sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "$@"
 }
 
-sh.set_default() { eval "export $1=\${$1:-$2}"; }
+sh.set_default() { eval "export $1=\${$1:-$2}"  ;}
 
 sh.set_editor() {
   if is_file "/usr/bin/vim"; then
@@ -86,11 +98,11 @@ sh.set_pager() {
   fi
 }
 
-sh.shell_is()      { [[ "${SHELL:-}" == "$1" ]]; }
-sh.shell_is_bash() { shell_is "/bin/bash";       }
+sh.shell_is()      { [[ "${SHELL:-}" == "$1" ]]   ;}
+sh.shell_is_bash() { shell_is "/bin/bash"         ;}
 
 # http://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced#answer-14706745
-sh.script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]]; }
+sh.script_is_sourced() { [[ ${FUNCNAME[ (( ${#FUNCNAME[@]:-} - 1 ))]:-} == "source" ]] ;}
 
 sh.source_files_if_exist? () {
   local filename
@@ -113,7 +125,3 @@ sh.source_relaxed() {
   ! is_empty "${errexit}" && set -o errexit
   ! is_empty "${nounset}" && set -o nounset
 }
-
-_core.alias_function sh.strict_mode  _core.strict_mode
-_core.alias_function sh.trace        _core.trace
-_core.alias_function sh.value        _core.value

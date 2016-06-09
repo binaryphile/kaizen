@@ -4,9 +4,9 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
 
-source "$_lib_dir"/_core.sh
+source "$_lib_dir"/core.sh
 
-_core.blank? _array_loaded || return 0
+_str.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
 
@@ -50,8 +50,8 @@ ary.join() {
 }
 
 ary.new() {
-  _core.deref "$2"
-  local "$1" && _core.upvar "$1" "$2"
+  _sh.deref "$2"
+  local "$1" && _sh.upvar "$1" "$2"
 }
 
 ary.remove() {

@@ -5,7 +5,7 @@
 
 source "$_lib_dir"/../core.sh
 
-core.blank? _rhel_6_loaded || return 0
+_str.blank? _rhel_6_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _rhel_6_loaded="true"
 
