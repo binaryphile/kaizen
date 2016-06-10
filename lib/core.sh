@@ -1,14 +1,37 @@
 #!/usr/bin/env bash
-# Functional programming style functions
+# Core functions used by other modules
 
 [[ -z $_core_loaded ]] || return 0
 declare -r _core_loaded="true"
+
+# https://stackoverflow.com/questions/10582763/how-to-return-an-array-in-bash-without-using-globals/15982208#15982208
+# Print array definition to use with assignments, for loops, etc.
+#   varname: the name of an array variable.
+_ary.use() {
+    local r
+
+    r=$( declare -p $1 )
+    r=${r#declare\ -a\ *=}
+    # Strip keys so printed definition will be a simple list (like when using
+    # "${array[@]}").  One side effect of having keys in the definition is
+    # that when appending arrays (i.e. `a1+=$( use_array a2 )`), values at
+    # matching indices merge instead of pushing all items onto array.
+    printf "%s" "${r//\[[0-9]\]=}"
+}
+
+# Same as ary.use() but preserves keys.
+_ary.asc_use() {
+    local r
+
+    r=$( declare -p $1 )
+    printf "%s" "${r#declare\ -a\ *=}"
+}
 
 _core.alias_core() {
   local alias
 
   for alias in $(_sh.value "$2"); do
-    _sh.alias_function "$1"."$alias" _"$1"."$alias"
+    _sh.alias_function "${1}.$alias" "_${1}.$alias"
   done
 }
 
@@ -18,11 +41,9 @@ _sh.class() {
   case "$(declare -p $1)" in
     declare\ -a* )
       printf "array"
-      return 0
       ;;
     * )
       printf "string"
-      return 0
       ;;
   esac
 }
@@ -30,8 +51,17 @@ _sh.class() {
 _sh.deref() {
   local "_$1"
 
-  read "_$1" <<< "$(_sh.value "$(_sh.value "$1")")"
-  local "$1" && _sh.upvar "$1" "$(_sh.value "_$1")"
+  case "$(_sh.class "$(_sh.value "$1")")" in
+    "array" )
+      eval "_${1}=( $(_sh.value "$(_sh.value "$1")") )"
+      # shellcheck disable=SC2046
+      local "$1" && _sh.upvar "$1" $(_sh.value "_$1")
+      ;;
+    "string" )
+      read "_$1" <<< "$(_sh.value "$(_sh.value "$1")")"
+      local "$1" && _sh.upvar "$1" "$(_sh.value "_$1")"
+      ;;
+  esac
 }
 
 _sh.strict_mode() {
@@ -138,7 +168,7 @@ There is NO WARRANTY, to the extent permitted by law."
 _sh.value()     {
   case "$(_sh.class "$1")" in
     "array" )
-      eval printf "%s" "\${${1}[@]}"
+      eval "printf \"%s \" \"\${${1}[@]}\""
       ;;
     * )
       eval printf "%s" "\$$1"

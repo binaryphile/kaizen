@@ -2,7 +2,7 @@
 # Functions for string testing and manipulation
 
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
 
 source "$_lib_dir"/core.sh
 
@@ -17,7 +17,6 @@ eql?
 EOS
 
 _core.alias_core str _aliases
-
 unset _aliases
 
 str.split() {

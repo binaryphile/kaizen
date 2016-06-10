@@ -87,7 +87,7 @@ describe "_sh.deref"
     # shellcheck disable=SC2034
     indirect_v="sample_a"
     _sh.deref indirect_v
-    assert equal "${#indirect_v}" 3
+    assert equal "$(_sh.class indirect_v)" "array"
     assert equal "${indirect_v[*]}" "${sample_a[*]}"
   end
 end
@@ -118,6 +118,6 @@ describe "_sh.value"
   it "returns an array value"
     # shellcheck disable=SC2034
     sample_a=( "one" "two" "three" )
-    assert equal "$(_sh.value sample_a)" "${sample_a[*]}"
+    assert equal "$(_sh.value sample_a)" "$(printf "%s " "${sample_a[@]}")"
   end
 end

@@ -2,7 +2,7 @@
 # Functions dealing with the shell or environment
 
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
 
 source "$_lib_dir"/core.sh
 
@@ -10,20 +10,18 @@ _str.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 
+# shellcheck disable=SC2034
 read -d "" -a _aliases <<EOS
+alias_function
+class
 deref
 strict_mode
 trace
 value
 EOS
 
-_sh.alias_function sh.alias_function _sh.alias_function
-
-for _alias in "${_aliases[@]}"; do
-  sh.alias_function sh."$_alias" _sh."$_alias"
-done
-
-unset _alias _aliases
+_core.alias_core sh _aliases
+unset _aliases
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell

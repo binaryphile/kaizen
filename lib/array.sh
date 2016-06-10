@@ -2,13 +2,22 @@
 # Functions for array manipulation
 
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="${PWD}"
+[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
 
 source "$_lib_dir"/core.sh
 
 _str.blank? _array_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _array_loaded="true"
+
+# shellcheck disable=SC2034
+read -d "" -a _aliases <<EOS
+use
+asc_use
+EOS
+
+_core.alias_core ary _aliases
+unset -v _aliases
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 ary.include? () {
