@@ -1,0 +1,23 @@
+{
+  "name": "bash-libs",
+  "homepage": "https://github.com/binaryphile/bash-libs",
+  "authors": [
+    "Ted Lilley <ted.lilley@gmail.com>"
+  ],
+  "description": "Utility libraries for bash scripts",
+  "main": "basics.sh",
+  "moduleType": [],
+  "keywords": [
+    "bash",
+    "scripts"
+  ],
+  "license": "Apache 2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
