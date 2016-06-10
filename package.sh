@@ -1,0 +1,1 @@
+DEPS=rylnd/shpec
