@@ -8,17 +8,17 @@ source "$_shpec_dir"/../lib/string.sh
 describe "str.split"
   it "splits on the specified delimiter"
     # shellcheck disable=SC2034
-    sample="a/b/c"
-    result=( $(str.split sample "/") )
-    assert equal "$(str.split sample "/")" "${result[*]}"
+    sample_s="a/b/c"
+    result_a=( $(str.split sample "/") )
+    assert equal "$(str.split sample_s "/")" "${result_a[*]}"
   end
 end
 
 describe "str.eql?"
   it "exists"
     # shellcheck disable=SC2034
-    mystr="abc"
-    str.eql? mystr "abc"
+    sample_s="abc"
+    str.eql? sample_s "abc"
     assert equal $? 0
   end
 end
@@ -26,8 +26,18 @@ end
 describe "str.blank?"
   it "exists"
     # shellcheck disable=SC2034
-    mystr=""
-    str.blank? mystr
+    blank_s=""
+    str.blank? blank_s
     assert equal $? 0
   end
 end
+
+# describe "String.new"
+#   it "adds a blank? method"
+#     # shellcheck disable=SC2034
+#     sample_s=""
+#     String.new sample_s
+#     sample_s.blank?
+#     assert equal $? 0
+#   end
+# end

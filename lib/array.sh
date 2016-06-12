@@ -60,7 +60,7 @@ ary.join() {
 
 ary.new() {
   _sh.deref "$2"
-  local "$1" && _sh.upvar "$1" "$2"
+  local "$1" && _sh.upvar "$1" $(_sh.value "$2")
 }
 
 ary.remove() {
