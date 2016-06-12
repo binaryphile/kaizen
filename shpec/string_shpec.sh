@@ -31,12 +31,12 @@ describe "str.blank?"
   end
 end
 
-# describe "String.new"
-#   it "adds a blank? method"
-#     # shellcheck disable=SC2034
-#     sample_s=""
-#     String.new sample_s
-#     sample_s.blank?
-#     assert equal $? 0
-#   end
-# end
+describe "String.new"
+  it "adds a blank? method"
+    # shellcheck disable=SC2034
+    sample_s=""
+    String.new sample_s
+    sample_s.blank?
+    assert equal $? 0
+  end
+end
