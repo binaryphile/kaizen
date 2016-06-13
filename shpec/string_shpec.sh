@@ -9,8 +9,7 @@ describe "str.split"
   it "splits on the specified delimiter"
     # shellcheck disable=SC2034
     sample_s="a/b/c"
-    result_a=( $(str.split sample "/") )
-    assert equal "$(str.split sample_s "/")" "${result_a[*]}"
+    assert equal "$(str.split sample_s "/")" "a b c"
   end
 end
 

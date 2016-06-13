@@ -35,7 +35,7 @@ _core.alias_core() {
   done
 }
 
-_sh.alias_function() { eval "${1}() { $2 \"\$@\" ;}" ;}
+_sh.alias_function() { eval "$1 () { $2 \"\$@\" ;}" ;}
 
 _sh.class() {
   case "$(declare -p $1)" in
