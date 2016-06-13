@@ -26,4 +26,4 @@ str.split() {
   cat <<< "${array[@]}"
 }
 
-str.exit_if_blank? ()  { ! str.blank? "1" || exit "${2:-0}" ;}
+str.exit_if_blank? ()  { ! str.blank? "$1" || exit "${2:-0}" ;}
