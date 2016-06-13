@@ -21,10 +21,8 @@ unset _aliases
 
 str.split() {
   local array
-  local separator="$2"
-  local string="$1"
 
-  IFS="$separator" read -ra array <<< "$(_sh.value "$string")"
+  IFS="$2" read -ra array <<< "$(_sh.value "$1")"
   cat <<< "${array[@]}"
 }
 
