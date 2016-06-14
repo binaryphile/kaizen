@@ -39,4 +39,12 @@ describe "String.new"
     sample_s.blank?
     assert equal $? 0
   end
+
+  it "adds a eql? method"
+    # shellcheck disable=SC2034
+    sample_s="a"
+    String.new sample_s
+    sample_s.eql? "a"
+    assert equal $? 0
+  end
 end
