@@ -29,5 +29,5 @@ str.split() {
 str.exit_if_blank? ()  { ! str.blank? "$1" || exit "${2:-0}" ;}
 
 String.new() {
-  echo hello
+  eval "$1.blank? () { return 0 ;}"
 }
