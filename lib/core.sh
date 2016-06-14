@@ -175,8 +175,8 @@ _sh.value()     {
   esac
 }
 
-_str.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
-_str.eql? ()    { eval "[[ \${$1:-} == \"$2\" ]]" ;}
+_String.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
+_String.eql? ()    { eval "[[ \${$1:-} == \"$2\" ]]" ;}
 
 require() {
   local path="$PATH"
