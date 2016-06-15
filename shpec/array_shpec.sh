@@ -54,13 +54,14 @@ describe "Array.remove"
     assert equal "${result_a[*]}" "${expected_a[*]}"
   end
 
-#   it "doesn't remove elements which aren't there"
-#     letters=( "a" "b" "c" )
-#     result=( $(Array.remove "d" "${letters[@]}") )
-#     target=( "a" "b" "c" )
-#     assert equal "${result[*]}" "${target[*]}"
-#   end
-# end
+  it "doesn't remove elements which aren't there"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" "c" )
+    result_a=( $(Array.remove sample_a "d") )
+    expected_a=( "a" "b" "c" )
+    assert equal "${result_a[*]}" "${expected_a[*]}"
+  end
+end
 #
 # describe "Array.slice"
 #   it "returns the middle slice"
@@ -69,4 +70,4 @@ describe "Array.remove"
 #     target=( "b" )
 #     assert equal "${result[*]}" "${target[*]}"
 #   end
-end
+# end
