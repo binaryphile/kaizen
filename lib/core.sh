@@ -178,3 +178,11 @@ _sh.value()     {
 
 _str.blank? ()  { eval "[[ -z \${$1:-} ]] || [[ \${$1:-} =~ ^[[:space:]]+$ ]]"  ;}
 _str.eql? ()    { eval "[[ \${$1:-} == \"$2\" ]]" ;}
+
+require() {
+  local path="$PATH"
+
+  export PATH="$BASH_PATH"
+  source "$1".sh
+  export PATH="$path"
+}

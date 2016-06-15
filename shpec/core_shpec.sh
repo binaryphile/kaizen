@@ -3,7 +3,9 @@
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 [[ -d ${BASH_SOURCE%/*} ]] && _shpec_dir="${BASH_SOURCE%/*}" || _shpec_dir="$PWD"
 
-source "${_shpec_dir}/../lib/core.sh"
+_lib_dir="$_shpec_dir/../lib"
+
+source "$_lib_dir"/core.sh
 
 sample_f() { echo "hello"; }
 
@@ -119,5 +121,14 @@ describe "_sh.value"
     # shellcheck disable=SC2034
     sample_a=( "one" "two" "three" )
     assert equal "$(_sh.value sample_a)" "$(printf "%s " "${sample_a[@]}")"
+  end
+end
+
+describe "require"
+  it "sources a file in bash path"
+    export BASH_PATH="$_lib_dir"
+    require string
+    str.blank? BASH_PATH
+    assert equal $? 1
   end
 end
