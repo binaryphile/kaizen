@@ -90,14 +90,13 @@ describe "Array.new"
     assert equal $? 0
   end
 
-  # it "adds a eql? method"
-  #   # shellcheck disable=SC2034
-  #   sample_s="a"
-  #   String.new sample_s
-  #   sample_s.eql? "a"
-  #   assert equal $? 0
-  # end
-  #
+  it "adds an index method"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" )
+    Array.new sample_a
+    assert equal "$(sample_a.index "b")" "1"
+  end
+
   # it "adds a eql? method which detects inequality"
   #   # shellcheck disable=SC2034
   #   sample_s="a"
