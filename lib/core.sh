@@ -49,19 +49,10 @@ _sh.class() {
 }
 
 _sh.deref() {
-  local "_$1"
+  set -- "$1" "$(_sh.value "$1")"
 
-  case "$(_sh.class "$(_sh.value "$1")")" in
-    "array" )
-      eval "_${1}=( $(_sh.value "$(_sh.value "$1")") )"
-      # shellcheck disable=SC2046
-      local "$1" && _sh.upvar "$1" $(_sh.value "_$1")
-      ;;
-    "string" )
-      read "_$1" <<< "$(_sh.value "$(_sh.value "$1")")"
-      local "$1" && _sh.upvar "$1" "$(_sh.value "_$1")"
-      ;;
-  esac
+  # shellcheck disable=SC2046
+  local "$1" && _sh.upvar "$1" $(_sh.value "$2")
 }
 
 _sh.strict_mode() {
