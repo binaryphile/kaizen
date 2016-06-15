@@ -97,21 +97,13 @@ describe "Array.new"
     assert equal "$(sample_a.index "b")" "1"
   end
 
-  # it "adds a eql? method which detects inequality"
-  #   # shellcheck disable=SC2034
-  #   sample_s="a"
-  #   String.new sample_s
-  #   sample_s.eql? "b"
-  #   assert equal $? 1
-  # end
-  #
-  # it "adds the rest of the String methods"
-  #   # shellcheck disable=SC2034
-  #   sample_s="a"
-  #   String.new sample_s
-  #   # shellcheck disable=SC2034
-  #   result="$(sample_s.split)"
-  #   sample_s.exit_if_blank?
-  #   assert equal $? 0
-  # end
+  it "adds the rest of the Array methods"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" )
+    Array.new sample_a
+    # shellcheck disable=SC2034
+    result_s="$(sample_a.join "a")"
+    result_a=( $(sample_a.remove "a") )
+    result_a=( $(sample_a.slice 1 1 ) )
+  end
 end
