@@ -10,13 +10,13 @@ source "$_lib_dir"/core.sh
 sample_f() { echo "hello"; }
 
 describe "_core.alias_core"
-  it "aliases str.blank? function to core"
+  it "aliases String.blank? function to core"
     # shellcheck disable=SC2034
     aliases_a=( "blank?" )
-    _core.alias_core str aliases_a
+    _core.alias_core String aliases_a
     # shellcheck disable=SC2034
     blank_s=""
-    str.blank? blank_s
+    String.blank? blank_s
     assert equal $? 0
   end
 end
@@ -28,33 +28,33 @@ describe "_sh.alias_function"
   end
 end
 
-describe "_str.blank?"
+describe "_String.blank?"
 # TODO: fail undefined test
   it "checks for empty string"
     # shellcheck disable=SC2034
     sample_s=""
-    _str.blank? sample_s
+    _String.blank? sample_s
     assert equal $? 0
   end
 
   it "checks for string with only spaces"
     # shellcheck disable=SC2034
     sample_s=" "
-    _str.blank? sample_s
+    _String.blank? sample_s
     assert equal $? 0
   end
 
   it "checks for string with only tabs"
     # shellcheck disable=SC2034
     sample_s=" 	"
-    _str.blank? sample_s
+    _String.blank? sample_s
     assert equal $? 0
   end
 
   it "doesn't match strings with characters"
     # shellcheck disable=SC2034
     sample_s="ab "
-    _str.blank? sample_s
+    _String.blank? sample_s
     assert equal $? 1
   end
 end
@@ -94,18 +94,18 @@ describe "_sh.deref"
   end
 end
 
-describe "_str.eql?"
+describe "_String.eql?"
   it "checks equality"
     # shellcheck disable=SC2034
     sample_s="abc"
-    _str.eql? sample_s "$sample_s"
+    _String.eql? sample_s "$sample_s"
     assert equal $? 0
   end
 
   it "fails inequality"
     # shellcheck disable=SC2034
     sample_s="abc"
-    _str.eql? sample_s ""
+    _String.eql? sample_s ""
     assert equal $? 1
   end
 end
@@ -128,7 +128,7 @@ describe "require"
   it "sources a file in bash path"
     export BASH_PATH="$_lib_dir"
     require string
-    str.blank? BASH_PATH
+    String.blank? BASH_PATH
     assert equal $? 1
   end
 end
