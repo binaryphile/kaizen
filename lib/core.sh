@@ -182,7 +182,7 @@ _str.eql? ()    { eval "[[ \${$1:-} == \"$2\" ]]" ;}
 require() {
   local path="$PATH"
 
-  export PATH="$BASH_PATH"
+  export PATH="$BASH_PATH":"$PATH"
   source "$1".sh
   export PATH="$path"
 }
