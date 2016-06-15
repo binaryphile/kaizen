@@ -6,7 +6,7 @@
 
 source "$_lib_dir"/core.sh
 
-_str.blank? _shell_loaded || return 0
+_String.blank? _shell_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _shell_loaded="true"
 

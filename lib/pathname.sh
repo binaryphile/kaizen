@@ -6,7 +6,7 @@
 
 source "$_lib_dir"/core.sh
 
-_str.blank? _pathname_loaded || return 0
+_String.blank? _pathname_loaded || return 0
 # shellcheck disable=SC2034
 declare -r _pathname_loaded="true"
 
@@ -25,7 +25,7 @@ path.realdirpath() {
 
   eval "local path=\"\$$1\""
   cwd="$(pwd)"
-  while ! _str.blank? path; do
+  while ! _String.blank? path; do
     cd "$(file.dirname path)"
     # shellcheck disable=SC2034
     name="$(path.basename path)"
