@@ -50,11 +50,11 @@ Array.index() {
 
 # https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
 Array.join() {
-  local delim
+  local delim="$2"
 
-  delim="$1"
-  shift
-  echo -n "$1"
+  # shellcheck disable=SC2046
+  set -- $(_sh.value "$1")
+  printf "%s" "$1"
   shift
   printf "%s" "${@/#/$delim}"
 }
