@@ -62,12 +62,13 @@ describe "Array.remove"
     assert equal "${result_a[*]}" "${expected_a[*]}"
   end
 end
-#
-# describe "Array.slice"
-#   it "returns the middle slice"
-#     letters=( "a" "b" "c" )
-#     result=( $(Array.slice letters 1 1) )
-#     target=( "b" )
-#     assert equal "${result[*]}" "${target[*]}"
-#   end
-# end
+
+describe "Array.slice"
+  it "returns the middle slice"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" "c" )
+    result_a=( $(Array.slice sample_a 1 1) )
+    expected_a=( "b" )
+    assert equal "${result_a[*]}" "${expected_a[*]}"
+  end
+end
