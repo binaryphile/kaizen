@@ -20,7 +20,7 @@ _core.alias_core ary _aliases
 unset -v _aliases
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
-ary.include? () {
+Array.include? () {
   local elem
   for elem in "${@:2}"; do
     if [[ $elem == "$1" ]]; then
@@ -30,7 +30,7 @@ ary.include? () {
   return 1
 }
 
-ary.index() {
+Array.index() {
   local i
   local item
   local array
@@ -48,7 +48,7 @@ ary.index() {
 }
 
 # https://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array#answer-17841619
-ary.join() {
+Array.join() {
   local delim
 
   delim="$1"
@@ -58,7 +58,7 @@ ary.join() {
   printf "%s" "${@/#/$delim}"
 }
 
-ary.remove() {
+Array.remove() {
   local i
   local item
   local result
@@ -72,7 +72,7 @@ ary.remove() {
   echo "${result[@]}"
 }
 
-ary.slice() {
+Array.slice() {
   local first=$2
   local last=$3
   local array
