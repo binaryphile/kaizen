@@ -6,9 +6,9 @@
 
 source "$_lib_dir"/core.sh
 
-_String.blank? _array_loaded || return 0
+_String.blank? _Array_loaded || return 0
 # shellcheck disable=SC2034
-declare -r _array_loaded="true"
+declare -r _Array_loaded="true"
 
 # shellcheck disable=SC2034
 read -d "" -a _aliases <<EOS
@@ -16,14 +16,17 @@ use
 asc_use
 EOS
 
-_core.alias_core ary _aliases
+_core.alias_core Array _aliases
 unset -v _aliases
 
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 Array.include? () {
   local elem
-  for elem in "${@:2}"; do
-    if [[ $elem == "$1" ]]; then
+  local array
+
+  array=( $(_sh.value "$1") )
+  for elem in "${array[@]}"; do
+    if [[ $elem == "$2" ]]; then
       return 0
     fi
   done

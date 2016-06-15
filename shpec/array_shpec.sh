@@ -11,7 +11,7 @@ require "array"
 describe "Array.include?"
   it "tests for element membership"
     letters=( a b c )
-    Array.include? "a" "${letters[@]}"
+    Array.include? letters "a"
     assert equal "$?" 0
   end
 end
