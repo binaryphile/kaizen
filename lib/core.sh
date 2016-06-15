@@ -7,7 +7,7 @@ declare -r _core_loaded="true"
 # https://stackoverflow.com/questions/10582763/how-to-return-an-array-in-bash-without-using-globals/15982208#15982208
 # Print array definition to use with assignments, for loops, etc.
 #   varname: the name of an array variable.
-_ary.use() {
+_Array.use() {
     local r
 
     r=$( declare -p $1 )
@@ -20,13 +20,6 @@ _ary.use() {
 }
 
 # Same as ary.use() but preserves keys.
-_ary.asc_use() {
-    local r
-
-    r=$( declare -p $1 )
-    printf "%s" "${r#declare\ -a\ *=}"
-}
-
 _core.alias_core() {
   local alias
 
@@ -37,6 +30,13 @@ _core.alias_core() {
 
 _core.alias_method() {
   eval "$1.$2 () { $3.$2 $1 \"\$@\" ;}"
+}
+
+_Hash.use() {
+    local r
+
+    r=$( declare -p $1 )
+    printf "%s" "${r#declare\ -a\ *=}"
 }
 
 _sh.alias_function() { eval "$1 () { $2 \"\$@\" ;}" ;}
