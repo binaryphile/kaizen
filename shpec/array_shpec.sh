@@ -74,22 +74,22 @@ describe "Array.slice"
 end
 
 describe "Array.new"
-  it "adds a include? method"
+  it "adds an include? method"
     # shellcheck disable=SC2034
-    sample_a=""
+    sample_a=( "" )
     Array.new sample_a
     sample_a.include? "a"
     assert equal $? 1
   end
 
-  # it "adds a blank? method which detects non-blanks"
-  #   # shellcheck disable=SC2034
-  #   sample_s="a"
-  #   String.new sample_s
-  #   sample_s.blank?
-  #   assert equal $? 1
-  # end
-  #
+  it "adds an include? method which detects included items"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" )
+    Array.new sample_a
+    sample_a.include? "b"
+    assert equal $? 0
+  end
+
   # it "adds a eql? method"
   #   # shellcheck disable=SC2034
   #   sample_s="a"
