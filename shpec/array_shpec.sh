@@ -37,16 +37,6 @@ describe "ary.join"
   end
 end
 
-describe "ary.new"
-  it "creates a new copy of an array"
-    local array=( "a" "b" "c" )
-    # shellcheck disable=SC2034
-    local copy
-    ary.new copy array
-    assert equal "${copy[*]}" "a b c"
-  end
-end
-
 describe "ary.remove"
   it "removes the last element of an array on exact match"
     letters=( "a" "b" "c" )
