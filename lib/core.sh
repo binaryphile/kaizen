@@ -167,10 +167,10 @@ There is NO WARRANTY, to the extent permitted by law."
 _sh.value()     {
   case "$(_sh.class "$1")" in
     "array" )
-      eval "printf \"%s \" \"\${${1}[@]}\""
+      eval printf \"%s \" \"\$\{"$1"[@]\}\"
       ;;
     * )
-      eval printf "%s" \"\$"$1"\"
+      eval printf \"%s\" \"\$"$1"\"
       ;;
   esac
 }
