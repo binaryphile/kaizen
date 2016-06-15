@@ -59,6 +59,24 @@ Array.join() {
   printf "%s" "${@/#/$delim}"
 }
 
+Array.new() {
+  local method
+  local methods
+
+  # shellcheck disable=SC2034
+  read -d "" -a methods <<EOS
+include?
+index
+join
+remove
+slice
+EOS
+
+  for method in "${methods[@]}"; do
+    _core.alias_method "$1" "$method" "Array"
+  done
+}
+
 Array.remove() {
   local i
   local item

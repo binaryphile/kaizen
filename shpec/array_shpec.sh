@@ -72,3 +72,47 @@ describe "Array.slice"
     assert equal "${result_a[*]}" "${expected_a[*]}"
   end
 end
+
+describe "Array.new"
+  it "adds a include? method"
+    # shellcheck disable=SC2034
+    sample_a=""
+    Array.new sample_a
+    sample_a.include? "a"
+    assert equal $? 1
+  end
+
+  # it "adds a blank? method which detects non-blanks"
+  #   # shellcheck disable=SC2034
+  #   sample_s="a"
+  #   String.new sample_s
+  #   sample_s.blank?
+  #   assert equal $? 1
+  # end
+  #
+  # it "adds a eql? method"
+  #   # shellcheck disable=SC2034
+  #   sample_s="a"
+  #   String.new sample_s
+  #   sample_s.eql? "a"
+  #   assert equal $? 0
+  # end
+  #
+  # it "adds a eql? method which detects inequality"
+  #   # shellcheck disable=SC2034
+  #   sample_s="a"
+  #   String.new sample_s
+  #   sample_s.eql? "b"
+  #   assert equal $? 1
+  # end
+  #
+  # it "adds the rest of the String methods"
+  #   # shellcheck disable=SC2034
+  #   sample_s="a"
+  #   String.new sample_s
+  #   # shellcheck disable=SC2034
+  #   result="$(sample_s.split)"
+  #   sample_s.exit_if_blank?
+  #   assert equal $? 0
+  # end
+end
