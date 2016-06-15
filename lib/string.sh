@@ -6,9 +6,9 @@
 
 source "$_lib_dir"/core.sh
 
-_String.blank? _string_loaded || return 0
+_String.blank? _String_loaded || return 0
 # shellcheck disable=SC2034
-declare -r _string_loaded="true"
+declare -r _String_loaded="true"
 
 # shellcheck disable=SC2034
 read -d "" -a _aliases <<EOS
@@ -29,6 +29,22 @@ String.split() {
 String.exit_if_blank? ()  { ! String.blank? "$1" || exit "${2:-0}" ;}
 
 String.new() {
-  eval "$1.blank? () { String.blank? \"$1\"      ;}"
-  eval "$1.eql?   () { String.eql? $1 \$1 ;}"
+  local method
+  local methods
+
+  # shellcheck disable=SC2034
+  read -d "" -a methods <<EOS
+blank?
+eql?
+split
+exit_if_blank?
+EOS
+
+  for method in "${methods[@]}"; do
+    alias_method "$1" "$method" "String"
+  done
+}
+
+alias_method() {
+  eval "$1.$2 () { $3.$2 $1 \"\$@\" ;}"
 }

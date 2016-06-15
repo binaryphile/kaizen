@@ -63,4 +63,14 @@ describe "String.new"
     sample_s.eql? "b"
     assert equal $? 1
   end
+
+  it "adds the rest of the String methods"
+    # shellcheck disable=SC2034
+    sample_s="a"
+    String.new sample_s
+    # shellcheck disable=SC2034
+    result="$(sample_s.split)"
+    sample_s.exit_if_blank?
+    assert equal $? 0
+  end
 end
