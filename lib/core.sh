@@ -35,6 +35,10 @@ _core.alias_core() {
   done
 }
 
+_core.alias_method() {
+  eval "$1.$2 () { $3.$2 $1 \"\$@\" ;}"
+}
+
 _sh.alias_function() { eval "$1 () { $2 \"\$@\" ;}" ;}
 
 _sh.class() {

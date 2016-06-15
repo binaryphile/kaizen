@@ -41,10 +41,6 @@ exit_if_blank?
 EOS
 
   for method in "${methods[@]}"; do
-    alias_method "$1" "$method" "String"
+    _core.alias_method "$1" "$method" "String"
   done
-}
-
-alias_method() {
-  eval "$1.$2 () { $3.$2 $1 \"\$@\" ;}"
 }
