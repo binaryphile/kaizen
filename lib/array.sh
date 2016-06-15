@@ -19,6 +19,21 @@ EOS
 _core.alias_core Array _aliases
 unset -v _aliases
 
+_sh.alias_function Array.== Array.eql?
+
+Array.eql? () {
+  local _array1="$1"
+  local _array2="$2"
+  local i
+
+  _sh.deref _array1
+  _sh.deref _array2
+  [[ ${#_array1[@]} -eq ${#_array2[@]} ]] || return 1
+  for i in "${!_array1[@]}"; do
+   [[ ${_array1["$i"]} == "${_array2["$i"]}" ]] || return 1
+  done
+}
+
 # https://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value#answer-8574392
 Array.include? () {
   local elem
@@ -65,6 +80,8 @@ Array.new() {
 
   # shellcheck disable=SC2034
   read -d "" -a methods <<EOS
+==
+eql?
 include?
 index
 join
