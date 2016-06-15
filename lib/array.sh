@@ -34,13 +34,11 @@ Array.include? () {
 }
 
 Array.index() {
-  local i
-  local item
   local array
+  local i
+  local item="$2"
 
-  item="$1"
-  shift
-  array=( "$@" )
+  array=( $( _sh.value "$1") )
   for i in "${!array[@]}"; do
     if [[ ${array[${i}]} == "$item" ]]; then
       printf "%s" "$i"

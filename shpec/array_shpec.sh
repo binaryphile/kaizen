@@ -19,12 +19,12 @@ end
 describe "Array.index"
   it "finds the index of the first element on exact match"
     letters=( a b c )
-    assert equal "$(Array.index "a" "${letters[@]}")" 0
+    assert equal "$(Array.index letters "a")" 0
   end
 
   it "finds the index of the second element on exact match"
     letters=( a b c )
-    assert equal "$(Array.index "b" "${letters[@]}")" 1
+    assert equal "$(Array.index letters "b")" 1
   end
 end
 
