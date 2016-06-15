@@ -11,8 +11,8 @@ require "array"
 describe "Array.include?"
   it "tests for element membership"
     # shellcheck disable=SC2034
-    letters=( a b c )
-    Array.include? letters "a"
+    sample_a=( a b c )
+    Array.include? sample_a "a"
     assert equal "$?" 0
   end
 end
@@ -20,40 +20,40 @@ end
 describe "Array.index"
   it "finds the index of the first element on exact match"
     # shellcheck disable=SC2034
-    letters=( a b c )
-    assert equal "$(Array.index letters "a")" 0
+    sample_a=( a b c )
+    assert equal "$(Array.index sample_a "a")" 0
   end
 
   it "finds the index of the second element on exact match"
     # shellcheck disable=SC2034
-    letters=( a b c )
-    assert equal "$(Array.index letters "b")" 1
+    sample_a=( a b c )
+    assert equal "$(Array.index sample_a "b")" 1
   end
 end
 
 describe "Array.join"
   it "joins array elements"
     # shellcheck disable=SC2034
-    array=( "a" "b" "c" )
-    assert equal "$(Array.join array "|")" "a|b|c"
+    sample_a=( "a" "b" "c" )
+    assert equal "$(Array.join sample_a "|")" "a|b|c"
   end
 
-  # it "allows a multicharacter delimiter"
-  # # shellcheck disable=SC2034
-  #   array=( "a" "b" "c" )
-  #   assert equal "$(Array.join " | " "${array[@]}")" "a | b | c"
-  # end
+  it "allows a multicharacter delimiter"
+  # shellcheck disable=SC2034
+    sample_a=( "a" "b" "c" )
+    assert equal "$(Array.join sample_a " | ")" "a | b | c"
+  end
 end
 
-# describe "Array.remove"
-#   it "removes the last element of an array on exact match"
-#     # shellcheck disable=SC2034
-#     letters=( "a" "b" "c" )
-#     result=( $(Array.remove "c" "${letters[@]}") )
-#     target=( "a" "b" )
-#     assert equal "${result[*]}" "${target[*]}"
-#   end
-#
+describe "Array.remove"
+  it "removes the last element of an array on exact match"
+    # shellcheck disable=SC2034
+    sample_a=( "a" "b" "c" )
+    result_a=( $(Array.remove sample_a "c") )
+    expected_a=( "a" "b" )
+    assert equal "${result_a[*]}" "${expected_a[*]}"
+  end
+
 #   it "doesn't remove elements which aren't there"
 #     letters=( "a" "b" "c" )
 #     result=( $(Array.remove "d" "${letters[@]}") )
@@ -69,4 +69,4 @@ end
 #     target=( "b" )
 #     assert equal "${result[*]}" "${target[*]}"
 #   end
-# end
+end

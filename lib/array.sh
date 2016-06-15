@@ -64,8 +64,9 @@ Array.remove() {
   local item
   local result
 
-  item="$1"
-  shift
+  item="$2"
+  # shellcheck disable=SC2046
+  set -- $(_sh.value "$1")
   result=( )
   for i in "$@"; do
     [[ $i == "$item" ]] || result+=( "$i" )
