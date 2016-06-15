@@ -76,11 +76,11 @@ end
 describe "_sh.deref"
   it "dereferences a scalar variable"
     # shellcheck disable=SC2034
-    sample_s="text"
+    sample_s="text sample"
     # shellcheck disable=SC2034
     indirect_v="sample_s"
     _sh.deref indirect_v
-    assert equal "$indirect_v" "text"
+    assert equal "$indirect_v" "text sample"
   end
 
   it "dereferences an array variable"
@@ -113,7 +113,7 @@ end
 describe "_sh.value"
   it "returns a scalar value"
     # shellcheck disable=SC2034
-    sample_s="value"
+    sample_s="value text"
     assert equal "$(_sh.value sample_s)" "$sample_s"
   end
 

@@ -51,8 +51,16 @@ _sh.class() {
 _sh.deref() {
   set -- "$1" "$(_sh.value "$1")"
 
-  # shellcheck disable=SC2046
-  local "$1" && _sh.upvar "$1" $(_sh.value "$2")
+  case "$(_sh.class "$2")" in
+    "string" )
+      # shellcheck disable=SC2046
+      local "$1" && _sh.upvar "$1" "$(_sh.value "$2")"
+      ;;
+    "array" )
+      # shellcheck disable=SC2046
+      local "$1" && _sh.upvar "$1" $(_sh.value "$2")
+      ;;
+  esac
 }
 
 _sh.strict_mode() {
@@ -162,7 +170,7 @@ _sh.value()     {
       eval "printf \"%s \" \"\${${1}[@]}\""
       ;;
     * )
-      eval printf "%s" "\$$1"
+      eval printf "%s" \"\$"$1"\"
       ;;
   esac
 }
