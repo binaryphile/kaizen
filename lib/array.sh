@@ -92,6 +92,10 @@ EOS
   for method in "${methods[@]}"; do
     _core.alias_method "$1" "$method" "Array"
   done
+
+  [[ ${#@} -gt 1 ]] || return 0
+
+  eval "$1=$2"
 }
 
 Array.remove() {

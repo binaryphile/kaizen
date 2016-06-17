@@ -100,15 +100,14 @@ describe "Array.new"
     assert equal $? 1
   end
 
-  # it "allows an initializer"
-  #   # shellcheck disable=SC2034
-  #   declare sample_a
-  #   Array.new sample_a '( "a" "b" "c" )'
-  #   expected_a=( "a" "b" "c" )
-  #   Array.new expected_a
-  #   expected_a.eql? sample_a
-  #   assert equal $? 0
-  # end
+  it "allows an initializer"
+    # shellcheck disable=SC2034
+    declare sample_a
+    Array.new sample_a '( "a" "b" "c" )'
+    expected_a=( "a" "b" "c" )
+    sample_a.eql? expected_a
+    assert equal $? 0
+  end
 
   it "adds an include? method which detects included items"
     # shellcheck disable=SC2034
