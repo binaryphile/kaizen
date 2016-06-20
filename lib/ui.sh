@@ -46,8 +46,8 @@ ui.default_flags() {
 }
 
 ui.exec_flags() {
-  _String.eql? FLAGS_trace  "$FLAGS_FALSE" || _String.trace on
-  _String.eql? FLAGS_strict "$FLAGS_FALSE" || _String.strict_mode on
+  _String.eql? FLAGS_trace  "$FLAGS_FALSE" || _sh.trace on
+  _String.eql? FLAGS_strict "$FLAGS_FALSE" || _sh.strict_mode on
 }
 
 ui.usage_and_exit_if_blank? () {
