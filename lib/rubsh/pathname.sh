@@ -1,0 +1,1 @@
+../../../../binaryphile/rubsh/lib/pathname.sh
