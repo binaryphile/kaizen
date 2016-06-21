@@ -2,26 +2,32 @@
 # Functions dealing with the shell or environment
 
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
+[[ -n $_bl_lib_dir ]] || {
+  if [[ -d ${BASH_SOURCE%/*} ]]; then
+    declare -r _bl_lib_dir="${BASH_SOURCE%/*}"
+  else
+    declare -r _bl_lib_dir="$PWD"
+  fi
+}
 
-source "$_lib_dir"/core.sh
+[[ -n $RUBSH_PATH ]] || export RUBSH_PATH="$_bl_lib_dir"
+source "$_bl_lib_dir"/rubsh/rubsh.sh
 
-_String.blank? _shell_loaded || return 0
+require "core"
+
+String.blank? _bl_shell_loaded || return 0
+# TODO: use sha1
 # shellcheck disable=SC2034
-declare -r _shell_loaded="true"
+declare -r _bl_shell_loaded="true"
 
 # shellcheck disable=SC2034
-read -d "" -a _aliases <<EOS
-alias_function
-class
-deref
+read -d "" -a _bl_aliases <<EOS
 strict_mode
 trace
-value
 EOS
 
-_core.alias_core sh _aliases
-unset _aliases
+_bl_core.alias_core sh _bl_aliases
+unset -v _bl_aliases
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
@@ -37,7 +43,7 @@ sh.detect_os() {
     fi
     if is_empty "${version:-}" && is_on_filesystem "/etc/lsb-release"; then
       source /etc/lsb-release
-      version="$(echo "${DISTRIB_RELEASE}" | cut -d. -f1)"
+      version="$(echo "$DISTRIB_RELEASE" | cut -d. -f1)"
     fi
   elif is_on_filesystem "/etc/fedora-release"; then
     os="fedora"
@@ -47,16 +53,16 @@ sh.detect_os() {
     version="$(cut -f5 --delimiter=' ' /etc/oracle-release)"
   elif is_on_filesystem "/etc/redhat-release"; then
     os="$(awk '{ print tolower($1) }' </etc/redhat-release | cut -d. -f1)"
-    if is_match "${os}" "centos"; then
+    if is_match "$os" "centos"; then
       version="$(awk '{ print $3 }' </etc/redhat-release | cut -d. -f1)"
-    elif is_match "${os}" "scientific"; then
+    elif is_match "$os" "scientific"; then
       version="$(awk '{ print $4 }' </etc/redhat-release | cut -d. -f1)"
     else
       version="$(awk '{ print tolower($7) }' </etc/redhat-release | cut -d. -f1)"
       os="rhel"
     fi
   fi
-  echo "${os}-${version}"
+  echo "$os-$version"
 }
 
 sh.errexit_is_set()     {   [[ "$-" =~ e ]]             ;}
@@ -73,7 +79,7 @@ sh.runas() {
   local user;
   user="$1";
   shift;
-  sudo -su "${user}" BASH_ENV="~${user}/.bashrc" "$@"
+  sudo -su "$user" BASH_ENV="~$user/.bashrc" "$@"
 }
 
 sh.set_default() { eval "export $1=\${$1:-$2}"  ;}
@@ -120,6 +126,6 @@ sh.source_relaxed() {
   set +o errexit
   set +o nounset
   source "$1"
-  ! is_empty "${errexit}" && set -o errexit
-  ! is_empty "${nounset}" && set -o nounset
+  ! is_empty "$errexit" && set -o errexit
+  ! is_empty "$nounset" && set -o nounset
 }

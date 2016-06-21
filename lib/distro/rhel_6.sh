@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 
 # https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
+[[ -n $_bl_lib_dir ]] || {
+  if [[ -d ${BASH_SOURCE%/*} ]]; then
+    _bl_lib_dir="${BASH_SOURCE%/*}/.."
+  else
+    _bl_lib_dir="$PWD/.."
+  fi
+}
 
-source "$_lib_dir"/../core.sh
+[[ -n $RUBSH_PATH ]] || export RUBSH_PATH="$_bl_lib_dir"
+source "$_bl_lib_dir"/rubsh/rubsh.sh
 
-_String.blank? _rhel_6_loaded || return 0
+require "core"
+
+String.blank? _bl_rhel_6_loaded || return 0
 # shellcheck disable=SC2034
-declare -r _rhel_6_loaded="true"
+declare -r _bl_rhel_6_loaded="true"
 
 dist.exit_if_package_is_installed() {
   ! package_is_installed "$1" || exit 0
