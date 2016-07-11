@@ -8,21 +8,6 @@ declare -r _bashlib_shell="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")
 
 source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
-_bashlib_init() {
-  local aliases
-
-  # shellcheck disable=SC2034
-  read -d "" -a aliases <<EOS
-strict_mode
-trace
-EOS
-
-  _rubsh.core.alias sh aliases
-}
-
-_bashlib_init
-unset -f _bashlib_init
-
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
 # which distro library to load
@@ -122,4 +107,30 @@ sh.source_relaxed() {
   source "$1"
   ! is_empty "$errexit" && set -o errexit
   ! is_empty "$nounset" && set -o nounset
+}
+
+sh.strict_mode() {
+  case "$1" in
+    on )
+      set -o errexit
+      set -o nounset
+      set -o pipefail
+      ;;
+    off )
+      set +o errexit
+      set +o nounset
+      set +o pipefail
+      ;;
+  esac
+}
+
+sh.trace() {
+  case "$1" in
+    "on" )
+      set -o xtrace
+      ;;
+    "off" )
+      set +o xtrace
+      ;;
+  esac
 }

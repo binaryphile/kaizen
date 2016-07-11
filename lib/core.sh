@@ -12,28 +12,3 @@ declare -r _bashlib_core="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
 # source "$_bashlib_lib"/rubsh/rubsh.sh
 
-_sh.strict_mode() {
-  case "$1" in
-    on )
-      set -o errexit
-      set -o nounset
-      set -o pipefail
-      ;;
-    off )
-      set +o errexit
-      set +o nounset
-      set +o pipefail
-      ;;
-  esac
-}
-
-_sh.trace() {
-  case "$1" in
-    "on" )
-      set -o xtrace
-      ;;
-    "off" )
-      set +o xtrace
-      ;;
-  esac
-}
