@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 # Functions for interacting with the user
 
-# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
+[[ -z $_bashlib_ui ]] || return 0
 
-source "$_lib_dir"/_core.sh
+# shellcheck disable=SC2046,SC2155
+declare -r _bashlib_ui="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
-_core.blank? _ui_loaded || return 0
-# shellcheck disable=SC2034
-declare -r _ui_loaded="true"
+source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
 # Let the user make a choice about something and execute code based on
 # the answer
@@ -22,7 +20,7 @@ ui.choose() {
   local prompt="$2"
 
   read -ep "$prompt" answer
-  ! _core.blank? answer || answer="$default"
+  ! _String.blank? answer || answer="$default"
 
   case "$answer" in
     [yY1] )
@@ -46,12 +44,12 @@ ui.default_flags() {
 }
 
 ui.exec_flags() {
-  _core.eql? FLAGS_trace  "$FLAGS_FALSE" || _core.trace on
-  _core.eql? FLAGS_strict "$FLAGS_FALSE" || _core.strict_mode on
+  _String.eql? FLAGS_trace  "$FLAGS_FALSE" || _sh.trace on
+  _String.eql? FLAGS_strict "$FLAGS_FALSE" || _sh.strict_mode on
 }
 
 ui.usage_and_exit_if_blank? () {
-  if _core.blank? "1"; then
+  if _String.blank? "1"; then
     usage
     exit 1
   fi

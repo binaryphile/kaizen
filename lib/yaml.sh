@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 # Functions for dealing with YAML files
 
-# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -d ${BASH_SOURCE%/*} ]] && _lib_dir="${BASH_SOURCE%/*}" || _lib_dir="$PWD"
+[[ -z $_bashlib_yaml ]] || return 0
 
-source "$_lib_dir"/_core.sh
+# shellcheck disable=SC2046,SC2155
+declare -r _bashlib_yaml="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
-_core.blank? _yaml_loaded || return 0
-# shellcheck disable=SC2034
-declare -r _yaml_loaded="true"
+source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
 yml.load_config() {
   load_yml etc/defaults.yml
