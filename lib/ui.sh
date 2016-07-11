@@ -1,25 +1,12 @@
 #!/usr/bin/env bash
 # Functions for interacting with the user
 
-# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -n $_bl_lib_dir ]] || {
-  if [[ -d ${BASH_SOURCE%/*} ]]; then
-    declare -r _bl_lib_dir="${BASH_SOURCE%/*}"
-  else
-    declare -r _bl_lib_dir="$PWD"
-  fi
-}
+[[ -z $_bashlib_ui ]] || return 0
 
-[[ -n $RUBSH_PATH ]] || export RUBSH_PATH="$_bl_lib_dir"
-source "$_bl_lib_dir"/rubsh/rubsh.sh
+# shellcheck disable=SC2046,SC2155
+declare -r _bashlib_ui="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
-require "core"
-
-String.blank? _bl_ui_loaded || return 0
-# TODO: use sha1
-# shellcheck disable=SC2034
-declare -r _bl_ui_loaded="true"
-
+source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
 # Let the user make a choice about something and execute code based on
 # the answer

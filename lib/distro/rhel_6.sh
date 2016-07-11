@@ -1,22 +1,12 @@
 #!/usr/bin/env bash
+# Functions for platform-specific features
 
-# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -n $_bl_lib_dir ]] || {
-  if [[ -d ${BASH_SOURCE%/*} ]]; then
-    _bl_lib_dir="${BASH_SOURCE%/*}/.."
-  else
-    _bl_lib_dir="$PWD/.."
-  fi
-}
+[[ -z $_bashlib_rhel_6 ]] || return 0
 
-[[ -n $RUBSH_PATH ]] || export RUBSH_PATH="$_bl_lib_dir"
-source "$_bl_lib_dir"/rubsh/rubsh.sh
+# shellcheck disable=SC2046,SC2155
+declare -r _bashlib_rhel_6="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
-require "core"
-
-String.blank? _bl_rhel_6_loaded || return 0
-# shellcheck disable=SC2034
-declare -r _bl_rhel_6_loaded="true"
+source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
 dist.exit_if_package_is_installed() {
   ! package_is_installed "$1" || exit 0
