@@ -1,1 +1,1 @@
-DEPS=rylnd/shpec
+DEPS=binaryphile/rubsh:rylnd/shpec
