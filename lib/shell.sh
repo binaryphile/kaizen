@@ -1,33 +1,27 @@
 #!/usr/bin/env bash
 # Functions dealing with the shell or environment
 
-# https://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
-[[ -n $_bl_lib_dir ]] || {
-  if [[ -d ${BASH_SOURCE%/*} ]]; then
-    declare -r _bl_lib_dir="${BASH_SOURCE%/*}"
-  else
-    declare -r _bl_lib_dir="$PWD"
-  fi
-}
+[[ -z $_bashlib_shell ]] || return 0
 
-[[ -n $RUBSH_PATH ]] || export RUBSH_PATH="$_bl_lib_dir"
-source "$_bl_lib_dir"/rubsh/rubsh.sh
+# shellcheck disable=SC2046,SC2155
+declare -r _bashlib_shell="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
-require "core"
+source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
-String.blank? _bl_shell_loaded || return 0
-# TODO: use sha1
-# shellcheck disable=SC2034
-declare -r _bl_shell_loaded="true"
+_bashlib_init() {
+  local aliases
 
-# shellcheck disable=SC2034
-read -d "" -a _bl_aliases <<EOS
+  # shellcheck disable=SC2034
+  read -d "" -a aliases <<EOS
 strict_mode
 trace
 EOS
 
-_bl_core.alias_core sh _bl_aliases
-unset -v _bl_aliases
+  _rubsh.core.alias sh aliases
+}
+
+_bashlib_init
+unset -f _bashlib_init
 
 # https://github.com/DinoTools/python-ssdeep/blob/master/ci/run.sh
 # Normally this would be in distro but its a prerequisite to tell
