@@ -1,1 +1,0 @@
-../../../../binaryphile/rubsh/lib/keyword.sh

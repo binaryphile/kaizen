@@ -4,7 +4,7 @@
 [[ -z $_bashlib_ui ]] || return 0
 
 # shellcheck disable=SC2046,SC2155
-declare -r _bashlib_ui="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
+readonly _bashlib_ui="$(set -- $(sha1sum "$BASH_SOURCE"); printf "%s" "$1")"
 
 source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 
