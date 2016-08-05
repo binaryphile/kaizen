@@ -108,29 +108,3 @@ sh.source_relaxed() {
   ! is_empty "$errexit" && set -o errexit
   ! is_empty "$nounset" && set -o nounset
 }
-
-sh.strict_mode() {
-  case "$1" in
-    on )
-      set -o errexit
-      set -o nounset
-      set -o pipefail
-      ;;
-    off )
-      set +o errexit
-      set +o nounset
-      set +o pipefail
-      ;;
-  esac
-}
-
-sh.trace() {
-  case "$1" in
-    "on" )
-      set -o xtrace
-      ;;
-    "off" )
-      set +o xtrace
-      ;;
-  esac
-}
