@@ -9,7 +9,6 @@ export _bashlib_options
 
 source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 # shellcheck disable=SC2154
-source "$_rubsh_lib"/string.sh
 
 declare -A options option_boolean_values option_descriptions
 export options option_boolean_values option_descriptions
@@ -34,7 +33,7 @@ option_boolean_values[true]=1
 options.define() {
   # shellcheck disable=SC2034
   local name=$1
-  local type=$2
+  local type
   # shellcheck disable=SC2034
   local default=$3
   # shellcheck disable=SC2034
@@ -42,6 +41,7 @@ options.define() {
   # shellcheck disable=SC2034
   local short_name=$5
 
+  type=$(Symbol.to_s "$2")
   # shellcheck disable=SC2015
   [[ $type != "boolean" ]] && options[:$name]="$default" || options[:$name]="${option_boolean_values[$default]}"
   option_descriptions[:$name]="$description"
