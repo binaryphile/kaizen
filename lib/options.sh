@@ -10,8 +10,49 @@ export _bashlib_options
 source "${BASH_SOURCE%/*}"/core.sh 2>/dev/null || source core.sh
 # shellcheck disable=SC2154
 
-declare -A options option_boolean_values option_descriptions
-export options option_boolean_values option_descriptions
+declare -A options options_boolean_values options_descriptions
+export options
+export options_boolean_values
+export options_descriptions
+export options_short_getopt=""
+export options_long_getopt=""
+
+options_boolean_values[:false]=0
+options_boolean_values[:0]=0
+options_boolean_values[:true]=1
+options_boolean_values[:1]=1
+
+_options.add_short_option() {
+  local aso_return_name=$1
+  local aso_getopt_options=$1
+  local aso_name=$2
+  local aso_type=$3
+
+  Shell.dereference :aso_getopt_options
+  Shell.dereference :aso_name
+  Shell.dereference :aso_type
+  aso_getopt_options+=$aso_name
+  [[ $aso_type == ":boolean" ]] || aso_getopt_options+=:
+  local "$(Symbol.to_s "$aso_return_name")"
+  Shell.passback_as "$aso_return_name" "$aso_getopt_options"
+}
+export -f _options.add_short_option
+
+_options.add_long_option() {
+  local alo_return_name=$1
+  local alo_getopt_options=$1
+  local alo_name=$2
+  local alo_type=$3
+
+  Shell.dereference :alo_getopt_options
+  Shell.dereference :alo_name
+  Shell.dereference :alo_type
+  alo_getopt_options+=${alo_getopt_options:+,}$alo_name
+  [[ $alo_type == ":boolean" ]] || alo_getopt_options+=:
+  local "$(Symbol.to_s "$alo_return_name")"
+  Shell.passback_as "$alo_return_name" "$alo_getopt_options"
+}
+export -f _options.add_long_option
 
 options.default_flags() {
   DEFINE_boolean 'trace'  false 'enable tracing'      't'
@@ -25,179 +66,60 @@ options.exec_flags() {
 }
 export -f options.exec_flags
 
-# shellcheck disable=SC2154
-option_boolean_values[false]=0
-# shellcheck disable=SC2154
-option_boolean_values[true]=1
-
 options.define() {
   # shellcheck disable=SC2034
-  local name=$1
-  local type
+  local def_name=$1
+  local def_type=$2
   # shellcheck disable=SC2034
-  local default=$3
+  local def_default=$3
   # shellcheck disable=SC2034
-  local description=$4
+  local def_description=$4
   # shellcheck disable=SC2034
-  local short_name=$5
+  local def_short_name=$5
+  # TODO: figure out why using the globals directly doesn't work
+  local def_options=""
 
-  type=$(Symbol.to_s "$2")
-  # shellcheck disable=SC2015
-  [[ $type != "boolean" ]] && options[:$name]="$default" || options[:$name]="${option_boolean_values[$default]}"
-  option_descriptions[:$name]="$description"
+  (( $# > 3 )) || return
+  # shellcheck disable=SC2015,SC2102
+  if [[ $def_type == ":boolean" ]]; then
+    # shellcheck disable=SC2086
+    options[:$def_name]=${options_boolean_values[:$def_default]}
+  else
+    # shellcheck disable=SC2086
+    options[:$def_name]=$def_default
+  fi
+  # shellcheck disable=SC2154,SC2102
+  options_descriptions[:$def_name]="$def_description"
+  _options.add_long_option :def_options :def_name :def_type
+  options_long_getopt=$def_options
+  (( $# > 4 )) || return 0
+  def_options=""
+  _options.add_short_option :def_options :def_short_name :def_type
+  options_short_getopt=$def_options
 }
 export -f options.define
 
+_options.get_getopt_options() {
+  local ggo_ref=$1
+  local ggo_getopt_params
+
+  ggo_getopt_params="--options=$options_short_getopt --long-options=$options_long_getopt"
+  local "$(Symbol.to_s "$ggo_ref")"
+  Shell.passback_as "$ggo_ref" "$ggo_getopt_params"
+}
+export -f _options.get_getopt_options
+
 options.parse() {
-  local _options_ref=$1
+  local options_par_ref=$1
+  # shellcheck disable=SC2034
+  local options_par_getopt
 
   (( $# )) || return 0
-  ! { (( $# == 1 )) && Shell.variable? "$_options_ref" ;} || {
-    Shell.dereference :_options_ref
-    set -- "${_options_ref[@]}"
+  { (( $# > 1 )) || ! Shell.variable? "$options_par_ref" ;} || {
+    Shell.dereference :options_par_ref
+    set -- "${options_par_ref[@]}"
   }
-  # shellcheck disable=SC1073
-  options[:flag]=$(( 1 - options[:flag] ))
+  _options.get_getopt_options :options_par_getopt
+  _options.parse_getopt_options :options_par_getopt "$@"
 }
 export -f options.parse
-
-# Dynamically parse a getopt result and set appropriate variables.
-#
-# This function does the actual conversion of getopt output and runs it through
-# the standard case structure for parsing. The case structure is actually quite
-# dynamic to support any number of flags.
-#
-# Args:
-#   argc: int: original command-line argument count
-#   @: varies: output from getopt parsing
-# Returns:
-#   integer: a FLAGS success condition
-_flags_parseGetopt() {
-  local argc=$1; shift
-  local opt
-  local arg
-  local name
-
-  # note the quotes around the `$@' -- they are essential!
-  eval set -- "$@"
-
-  # handle options. note options with values must do an additional shift
-  while true; do
-    opt=$1
-    arg=${2:-}
-
-    # determine long flag name
-    case $opt in
-      --) shift; break ;;  # discontinue option parsing
-
-      --*)  # long option
-        opt=$($FLAGS_EXPR_CMD -- "$opt" : '--\(.*\)')
-        _flags_len_=$__FLAGS_LEN_LONG
-        # shellcheck disable=SC2154,SC2086
-        if _flags_itemInList "$opt" $__flags_longNames; then
-          name=$opt
-        else
-          # check for negated long boolean version
-          if _flags_itemInList "$opt" $__flags_boolNames; then
-            name=$($FLAGS_EXPR_CMD -- "$opt" : 'no\(.*\)')
-            type=$_typeBOOLEAN
-            arg=$__FLAGS_NULL
-          fi
-        fi
-        ;;
-
-      -*)  # short option
-        opt=$(${FLAGS_EXPR_CMD} -- "${opt}" : '-\(.*\)')
-        _flags_len_=$__FLAGS_LEN_SHORT
-        # shellcheck disable=SC2154,SC2086
-        if _flags_itemInList "$opt" $__flags_shortNames; then
-          # yes. match short name to long name. note purposeful off-by-one
-          # (too high) with awk calculations.
-          _flags_pos_=$(echo "${__flags_shortNames}" \
-              |awk 'BEGIN{RS=" ";rn=0}$0==e{rn=NR}END{print rn}' \
-                  e=${opt})
-          name=$(echo "${__flags_longNames}" \
-            |awk 'BEGIN{RS=" "}rn==NR{print $0}' rn="${_flags_pos_}")
-        fi
-        ;;
-    esac
-
-    # die if the flag was unrecognized
-    if [[ -z $name ]]; then
-      flags_error="unrecognized option ($opt)"
-      flags_return=$FLAGS_ERROR
-      break
-    fi
-
-    # set new flag value
-    _flags_usName_=$( _flags_underscoreName $name )
-    [[ $type == "$_typeNONE" ]] && \
-        type=$(_flags_getFlagInfo \
-            "$_flags_usName_" $__FLAGS_INFO_TYPE)
-    case $type in
-      $_typeBOOLEAN)
-        if [[ $_flags_len_ == "$__FLAGS_LEN_LONG" ]]; then
-          if [[ $arg != "$__FLAGS_NULL" ]]; then
-            eval "FLAGS_${flags_usName_}=${FLAGS_TRUE}"
-          else
-            eval "FLAGS_${_flags_usName_}=${FLAGS_FALSE}"
-          fi
-        else
-          _flags_strToEval_="_flags_val_=\
-\${__flags_${_flags_usName_}_${__FLAGS_INFO_DEFAULT}}"
-          eval "${_flags_strToEval_}"
-          if [ ${_flags_val_} -eq ${FLAGS_FALSE} ]; then
-            eval "FLAGS_${_flags_usName_}=${FLAGS_TRUE}"
-          else
-            eval "FLAGS_${_flags_usName_}=${FLAGS_FALSE}"
-          fi
-        fi
-        ;;
-
-      ${_typeFLOAT})
-        if _flags_validFloat "${arg}"; then
-          eval "FLAGS_${_flags_usName_}='${arg}'"
-        else
-          flags_error="invalid float value (${arg})"
-          flags_return=${FLAGS_ERROR}
-          break
-        fi
-        ;;
-
-      ${_typeINTEGER})
-        if _flags_validInt "${arg}"; then
-          eval "FLAGS_${_flags_usName_}='${arg}'"
-        else
-          flags_error="invalid integer value (${arg})"
-          flags_return=${FLAGS_ERROR}
-          break
-        fi
-        ;;
-
-      ${_typeSTRING})
-        eval "FLAGS_${_flags_usName_}='${arg}'"
-        ;;
-    esac
-
-    # handle special case help flag
-    if [ "${_flags_usName_}" = 'help' ]; then
-      if [ ${FLAGS_help} -eq ${FLAGS_TRUE} ]; then
-        flags_help
-        flags_error='help requested'
-        flags_return=${FLAGS_TRUE}
-        break
-      fi
-    fi
-
-    # shift the option and non-boolean arguements out.
-    shift
-    [ ${type} != ${_typeBOOLEAN} ] && shift
-  done
-
-  # give user back non-flag arguments
-  FLAGS_ARGV=''
-  while [ $# -gt 0 ]; do
-    FLAGS_ARGV="${FLAGS_ARGV:+${FLAGS_ARGV} }'$1'"
-    shift
-  done
-}
