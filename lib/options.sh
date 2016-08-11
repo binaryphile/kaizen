@@ -90,11 +90,11 @@ options.define() {
   fi
   # shellcheck disable=SC2154,SC2102
   options_descriptions[:$def_name]="$def_description"
-  _options.add_long_option :def_options :def_name :def_type
+  new def_options = _options.add_long_option :def_name :def_type
   options_long_getopt=$def_options
   (( $# > 4 )) || return 0
   def_options=""
-  _options.add_short_option :def_options :def_short_name :def_type
+  new def_options = _options.add_short_option :def_short_name :def_type
   options_short_getopt=$def_options
 }
 export -f options.define
