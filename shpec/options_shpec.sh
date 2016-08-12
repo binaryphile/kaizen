@@ -147,21 +147,37 @@ describe "options.define"
   end
 end
 
-describe "_options.get_getopt_options"
+describe "options._get_getopt_options"
   it "returns an options string"
     (
     options.define "flag" :boolean 1 "a flag" "f"
     # shellcheck disable=SC2034
     getopt_options=""
-    _options.get_getopt_options :getopt_options
+    options._get_getopt_options :getopt_options
     assert equal $? 0
     assert equal "$getopt_options" "--options=f --long-options=flag"
     )
   end
 end
 
-describe "_options.parse_getopt_options"
-  it ""
+describe "options._parse_getopt_options"
+  it "feeds back a correct getopt result for a short-option boolean flag"
+    (
+    result=""
+    getopt_options="--options=f"
+    options._parse_getopt_options :result :getopt_options -- -f
+    assert equal $? 0
+    assert equal "$result" " -- '-f'"
+    )
+  end
+
+  it "feeds back a correct getopt result for a long-option string"
+    (
+    result=""
+    options._parse_getopt_options :result "--options= --longoptions=strval" -- --strval=example
+    assert equal $? 0
+    assert equal "$result" " -- '--strval=example'"
+    )
   end
 end
 

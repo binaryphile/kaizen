@@ -107,19 +107,33 @@ options._get_getopt_options() {
   local "$(Symbol.to_s "$ggo_ref")"
   Shell.passback_as "$ggo_ref" "$ggo_getopt_params"
 }
-export -f _options.get_getopt_options
+export -f options._get_getopt_options
 
 options.parse() {
   local options_par_ref=$1
   # shellcheck disable=SC2034
   local options_par_getopt
+  local options_par_result
 
   (( $# )) || return 0
   { (( $# > 1 )) || ! Shell.variable? "$options_par_ref" ;} || {
     Shell.dereference :options_par_ref
     set -- "${options_par_ref[@]}"
   }
-  _options.get_getopt_options :options_par_getopt
-  _options.parse_getopt_options :options_par_getopt "$@"
+  new options_par_getopt = options._get_getopt_options
+  new options_par_result = options._parse_getopt_options :options_par_getopt "$@"
 }
 export -f options.parse
+
+options._parse_getopt_options() {
+  local pgo_return_ref=$1; shift
+  local pgo_getopt_options=$1; shift
+  local pgo_result
+
+  ! Shell.variable? "$pgo_getopt_options" || Shell.dereference :pgo_getopt_options
+  # shellcheck disable=SC2086
+  pgo_result=$(getopt --name="$0" $pgo_getopt_options -- "$@")
+  local "$(Symbol.to_s "$pgo_return_ref")"
+  Shell.passback_as "$pgo_return_ref" "$pgo_result"
+}
+export -f options._parse_getopt_options
