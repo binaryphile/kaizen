@@ -3,13 +3,13 @@
 library=../lib/options.sh
 source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
 
-describe "_options.add_short_option"
+describe "options._add_short_option"
   it "adds a boolean option without a \":\""
     (
     opt=b
     type=:boolean
     short_getopt=""
-    _options.add_short_option :short_getopt :opt :type
+    options._add_short_option :short_getopt :opt :type
     # shellcheck disable=SC2154
     assert equal "$short_getopt" "b"
     )
@@ -20,7 +20,7 @@ describe "_options.add_short_option"
     opt=s
     type=:string
     short_getopt=""
-    _options.add_short_option :short_getopt :opt :type
+    options._add_short_option :short_getopt :opt :type
     assert equal "$short_getopt" "s:"
     )
   end
@@ -30,19 +30,19 @@ describe "_options.add_short_option"
     opt=b
     type=:boolean
     short_getopt=""
-    _options.add_short_option :short_getopt :opt :type
+    options._add_short_option :short_getopt :opt :type
     # shellcheck disable=SC2034
     opt=s
     # shellcheck disable=SC2034
     type=:string
-    _options.add_short_option :short_getopt :opt :type
+    options._add_short_option :short_getopt :opt :type
     # shellcheck disable=SC2154
     assert equal "$short_getopt" "bs:"
     )
   end
 end
 
-describe "_options.add_long_option"
+describe "options._add_long_option"
   it "adds a boolean option without a \":\""
     (
     # shellcheck disable=SC2034
@@ -50,7 +50,7 @@ describe "_options.add_long_option"
     # shellcheck disable=SC2034
     type=:boolean
     long_getopt=""
-    _options.add_long_option :long_getopt :opt :type
+    options._add_long_option :long_getopt :opt :type
     # shellcheck disable=SC2154
     assert equal "$long_getopt" "flag"
     )
@@ -63,7 +63,7 @@ describe "_options.add_long_option"
     # shellcheck disable=SC2034
     type=:string
     long_getopt=""
-    _options.add_long_option :long_getopt :opt :type
+    options._add_long_option :long_getopt :opt :type
     assert equal "$long_getopt" "strval:"
     )
   end
@@ -73,12 +73,12 @@ describe "_options.add_long_option"
     opt=flag
     type=:boolean
     long_getopt=""
-    _options.add_long_option :long_getopt :opt :type
+    options._add_long_option :long_getopt :opt :type
     # shellcheck disable=SC2034
     opt=strval
     # shellcheck disable=SC2034
     type=:string
-    _options.add_long_option :long_getopt :opt :type
+    options._add_long_option :long_getopt :opt :type
     # shellcheck disable=SC2154
     assert equal "$long_getopt" "flag,strval:"
     )

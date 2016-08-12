@@ -22,7 +22,7 @@ options_boolean_values[:0]=0
 options_boolean_values[:true]=1
 options_boolean_values[:1]=1
 
-_options.add_short_option() {
+options._add_short_option() {
   local aso_return_name=$1
   local aso_getopt_options=$1
   local aso_name=$2
@@ -36,9 +36,9 @@ _options.add_short_option() {
   local "$(Symbol.to_s "$aso_return_name")"
   Shell.passback_as "$aso_return_name" "$aso_getopt_options"
 }
-export -f _options.add_short_option
+export -f options._add_short_option
 
-_options.add_long_option() {
+options._add_long_option() {
   local alo_return_name=$1
   local alo_getopt_options=$1
   local alo_name=$2
@@ -52,7 +52,7 @@ _options.add_long_option() {
   local "$(Symbol.to_s "$alo_return_name")"
   Shell.passback_as "$alo_return_name" "$alo_getopt_options"
 }
-export -f _options.add_long_option
+export -f options._add_long_option
 
 options.default_flags() {
   DEFINE_boolean 'trace'  false 'enable tracing'      't'
@@ -90,16 +90,16 @@ options.define() {
   fi
   # shellcheck disable=SC2154,SC2102
   options_descriptions[:$def_name]="$def_description"
-  new def_options = _options.add_long_option :def_name :def_type
+  new def_options = options._add_long_option :def_name :def_type
   options_long_getopt=$def_options
   (( $# > 4 )) || return 0
   def_options=""
-  new def_options = _options.add_short_option :def_short_name :def_type
+  new def_options = options._add_short_option :def_short_name :def_type
   options_short_getopt=$def_options
 }
 export -f options.define
 
-_options.get_getopt_options() {
+options._get_getopt_options() {
   local ggo_ref=$1
   local ggo_getopt_params
 
