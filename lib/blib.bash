@@ -22,7 +22,6 @@ current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 define()              { read -rd "" "$1" ||:                ;}
 dirname()             { [[ $1 == */* ]] && echo "${1%/?*}"  || echo . ;}
-echo()                { printf "%s\n" "$*"                  ;}
 echoerr()             { cat <<<"$*" 1>&2                    ;}
 ends_with()           { [[ ${2:-} == *$1 ]]                 ;}
 extension()           { echo "${1#*.}"                      ;}
@@ -149,6 +148,7 @@ is_service()            { chkconfig "$@"                        ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
 mode()                  { find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
 owner()                 { ls -ld "$1" | awk '{print $3}'        ;}
+puts()                  { printf "%s\n" "$*"                    ;}
 
 quietly() {
   #shellcheck disable=SC2154

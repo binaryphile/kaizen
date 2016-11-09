@@ -1,7 +1,7 @@
 [[ -n $_shpec_helper ]] && return
 readonly _shpec_helper=loaded
 
-source "${BASH_SOURCE%/*}"/../lib/blib.bash 2>/dev/null || source ../lib/blib.bash
+source blib.bash
 initialize_blib
 
 cleanup() {
