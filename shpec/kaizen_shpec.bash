@@ -1,8 +1,11 @@
-source "${BASH_SOURCE%/*}"/shpec_helper.bash 2>/dev/null || source shpec_helper.bash
+declare library=../lib/shpec_helper.bash
+source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
+unset -v library
+
 initialize_shpec_helper
 
-shpec_source lib/blib.bash
-initialize_blib
+shpec_source lib/kaizen.bash
+initialize_kaizen
 
 
 describe "absolute_path"
@@ -368,11 +371,11 @@ describe "has_none"
 end
 
 
-describe "initialize_blib"
+describe "initialize_kaizen"
   it "calls sandbox_environment"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     stub_command sandbox_environment "echo sandbox_environment"
-    assert equal "$(initialize_blib)" "sandbox_environment"
+    assert equal "$(initialize_kaizen)" "sandbox_environment"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end

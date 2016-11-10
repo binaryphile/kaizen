@@ -1,8 +1,8 @@
 [[ -n $_shpec_helper ]] && return
 readonly _shpec_helper=loaded
 
-source blib.bash
-initialize_blib
+source kaizen.bash
+initialize_kaizen
 
 cleanup() {
   validate_dirname "$1" || return

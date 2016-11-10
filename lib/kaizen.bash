@@ -1,5 +1,5 @@
-[[ -n ${_blib:-} ]] && return
-readonly _blib=loaded
+[[ -n ${_kaizen:-} ]] && return
+readonly _kaizen=loaded
 
 absolute_path() {
   local target=$1
@@ -33,7 +33,7 @@ has_more_than()       { (( ($# - 1) > $1 ))                 ;}
 has_none()            { ! (( $# ))                          ;}
 id()                  { command -p id "$@"                  ;}
 
-initialize_blib() {
+initialize_kaizen() {
   # shellcheck disable=SC2034
   printf -v done_message "\nDone.\n"
 
