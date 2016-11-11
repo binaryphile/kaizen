@@ -1,4 +1,7 @@
-source "${BASH_SOURCE%/*}"/../lib/shpec_helper.bash 2>/dev/null || source ../lib/shpec_helper.bash
+source kzn.bash
+initialize_kzn
+
+source shpec_helper.bash
 initialize_shpec_helper
 
 

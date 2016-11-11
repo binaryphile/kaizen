@@ -1,11 +1,11 @@
+source kzn.bash
+initialize_kzn
+
 declare library=../lib/shpec_helper.bash
 source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
 unset -v library
 
 initialize_shpec_helper
-
-shpec_source lib/kzn.bash
-initialize_kzn
 
 
 describe "absolute_path"
@@ -541,7 +541,8 @@ describe "is_directory"
 
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
-    resolve_ln -sfT . "$temp"/dirlink
+    # shellcheck disable=SC2154
+    $ln . "$temp"/dirlink
     is_directory "$temp"/dirlink
     assert equal $? 0
     cleanup "$temp"
@@ -554,7 +555,8 @@ describe "is_directory"
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
     touch "$temp"/file
-    resolve_ln -sfT file "$temp"/filelink
+    # shellcheck disable=SC2154
+    $ln file "$temp"/filelink
     is_directory "$temp"/filelink
     assert equal $? 1
     cleanup "$temp"
@@ -634,7 +636,8 @@ describe "is_executable"
     validate_dirname "$temp" || return
     touch "$temp"/file
     chmod 755 "$temp"/file
-    resolve_ln -sf file "$temp"/link
+    # shellcheck disable=SC2154
+    $ln file "$temp"/link
     is_executable "$temp"/link
     assert equal $? 0
     cleanup "$temp"
@@ -648,7 +651,8 @@ describe "is_executable"
     validate_dirname "$temp" || return
     mkdir "$temp"/dir
     chmod 755 "$temp"/dir
-    resolve_ln -sfT dir "$temp"/link
+    # shellcheck disable=SC2154
+    $ln dir "$temp"/link
     is_executable "$temp"/link
     assert equal $? 0
     cleanup "$temp"
@@ -661,7 +665,8 @@ describe "is_executable"
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
     touch "$temp"/file
-    resolve_ln -sf file "$temp"/link
+    # shellcheck disable=SC2154
+    $ln file "$temp"/link
     is_executable "$temp"/link
     assert equal $? 1
     cleanup "$temp"
@@ -675,7 +680,8 @@ describe "is_executable"
     validate_dirname "$temp" || return
     mkdir "$temp"/dir
     chmod 664 "$temp"/dir
-    resolve_ln -sfT dir "$temp"/link
+    # shellcheck disable=SC2154
+    $ln dir "$temp"/link
     is_executable "$temp"/link
     assert equal $? 1
     cleanup "$temp"
@@ -703,7 +709,8 @@ describe "is_file"
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
     touch "$temp"/file
-    resolve_ln -sfT file "$temp"/filelink
+    # shellcheck disable=SC2154
+    $ln file "$temp"/filelink
     is_file "$temp"/filelink
     assert equal $? 0
     cleanup "$temp"
@@ -715,7 +722,8 @@ describe "is_file"
 
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
-    resolve_ln -sfT . "$temp"/dirlink
+    # shellcheck disable=SC2154
+    $ln . "$temp"/dirlink
     is_file "$temp"/dirlink
     assert equal $? 1
     cleanup "$temp"
@@ -903,7 +911,8 @@ describe "is_symlink"
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
     touch "$temp"/file
-    resolve_ln -sfT file "$temp"/filelink
+    # shellcheck disable=SC2154
+    $ln file "$temp"/filelink
     is_symlink "$temp"/filelink
     assert equal $? 0
     cleanup "$temp"
@@ -915,7 +924,8 @@ describe "is_symlink"
 
     temp=$(make_temp_dir)
     validate_dirname "$temp" || return
-    resolve_ln -sfT . "$temp"/dirlink
+    # shellcheck disable=SC2154
+    $ln . "$temp"/dirlink
     is_symlink "$temp"/dirlink
     assert equal $? 0
     cleanup "$temp"
