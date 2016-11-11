@@ -145,6 +145,7 @@ is_on_redhat()          { is_file "/etc/redhat-release" || is_file "/etc/centos-
 is_owned_by()           { [[ $(owner "$2") == "$1" ]]           ;}
 is_same_as()            { [[ $1 == "$2" ]]                      ;}
 is_service()            { chkconfig "$@"                        ;}
+is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
 mode()                  { find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
 owner()                 { ls -ld "$1" | awk '{print $3}'        ;}

@@ -885,6 +885,57 @@ describe "is_mounted"
 end
 
 
+describe "is_symlink"
+  it "doesn't identify a file"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    temp=$(make_temp_dir)
+    validate_dirname "$temp" || return
+    touch "$temp"/file
+    is_symlink "$temp"/file
+    assert equal $? 1
+    cleanup "$temp"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "identifies a symlink to a file"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    temp=$(make_temp_dir)
+    validate_dirname "$temp" || return
+    touch "$temp"/file
+    resolve_ln -sfT file "$temp"/filelink
+    is_symlink "$temp"/filelink
+    assert equal $? 0
+    cleanup "$temp"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "identifies a symlink to a directory"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    temp=$(make_temp_dir)
+    validate_dirname "$temp" || return
+    resolve_ln -sfT . "$temp"/dirlink
+    is_symlink "$temp"/dirlink
+    assert equal $? 0
+    cleanup "$temp"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "doesn't identify a directory"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    temp=$(make_temp_dir)
+    validate_dirname "$temp" || return
+    is_symlink "$temp"
+    assert equal $? 1
+    cleanup "$temp"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
 describe "is_user"
   it "should identify a user account which exists"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
