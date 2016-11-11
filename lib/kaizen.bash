@@ -1,5 +1,5 @@
-[[ -n ${_kaizen:-} ]] && return
-readonly _kaizen=loaded
+[[ -n ${_kzn:-} ]] && return
+readonly _kzn=loaded
 
 absolute_path() {
   local target=$1
@@ -13,7 +13,7 @@ absolute_path() {
   }
   is_directory "$target" || return 1
   result=$( ( cd "$target"; pwd ) ) || return
-  echo "$result${filename:+/}$filename"
+  puts "$result${filename:+/}$filename"
 }
 
 chkconfig()           { command -p chkconfig "$@"           ;}
@@ -21,10 +21,11 @@ contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 define()              { read -rd "" "$1" ||:                ;}
-dirname()             { [[ $1 == */* ]] && echo "${1%/?*}"  || echo . ;}
-echoerr()             { cat <<<"$*" 1>&2                    ;}
+# shellcheck disable=SC2015
+dirname()             { [[ $1 == */* ]] && puts "${1%/?*}"  || puts . ;}
 ends_with()           { [[ ${2:-} == *$1 ]]                 ;}
-extension()           { echo "${1#*.}"                      ;}
+errexit()             { putserr "$1"; exit "${2:-1}"        ;}
+extension()           { puts "${1#*.}"                      ;}
 files_match()         { cmp -s "$1" "$2"                    ;}
 groupdel()            { command -p groupdel "$@"            ;}
 has_any()             { (( $# ))                            ;}
@@ -39,94 +40,99 @@ initialize_kaizen() {
 
   cp="cp -r --"                 # shellcheck disable=SC2034
   install="install -bm 664 --"  # shellcheck disable=SC2034
-  ln="resolve_ln -sfT --"       # shellcheck disable=SC2034
   mkdir="mkdir -p --"           # shellcheck disable=SC2034
   mv="mv --"                    # shellcheck disable=SC2034
-  nix_install="nix-env -ibA"    # shellcheck disable=SC2034
   rm="rm -rf --"                # shellcheck disable=SC2034
+  is_on_darwin && {
+    ln=gln                      # shellcheck disable=SC2034
+  }
+  is_on_linux && {
+    ln=ln
+  }
+  ln="$ln -sfT --"              # shellcheck disable=SC2034
 
   sandbox_environment
 }
 
 instantiate() {
-  local _blib_par_num_params=$1; shift
-  local -A _blib_par_kw_hash
-  local -A _blib_par_result
-  local -a _blib_par_args
-  local -a _blib_par_declaration=( local )
-  local -a _blib_par_params
-  local _blib_par_arg
-  local _blib_par_found=false
-  local _blib_par_hashes
-  local _blib_par_i
-  local _blib_par_item
-  local _blib_par_key
-  local _blib_par_kwargs
-  local _blib_par_name
-  local _blib_par_param
-  local _blib_par_value
+  local _kzn_num_params=$1; shift
+  local -A _kzn_kw_hash
+  local -A _kzn_result
+  local -a _kzn_args
+  local -a _kzn_declaration=( local )
+  local -a _kzn_params
+  local _kzn_arg
+  local _kzn_found=false
+  local _kzn_hashes
+  local _kzn_i
+  local _kzn_item
+  local _kzn_key
+  local _kzn_kwargs
+  local _kzn_name
+  local _kzn_param
+  local _kzn_value
 
-  _blib_par_params=( "${@:1:$_blib_par_num_params}" )
-  shift "$_blib_par_num_params"
-  for _blib_par_param in "${_blib_par_params[@]}"; do
-    _blib_par_result[$_blib_par_param]=""
+  _kzn_params=( "${@:1:$_kzn_num_params}" )
+  shift "$_kzn_num_params"
+  for _kzn_param in "${_kzn_params[@]}"; do
+    _kzn_result[$_kzn_param]=""
   done
-  _blib_par_args=( "$@" )
-  for _blib_par_i in "${!_blib_par_args[@]}"; do
-    _blib_par_arg=${_blib_par_args[$_blib_par_i]}
-    { starts_with : "$_blib_par_arg" && { contains "=" "$_blib_par_arg" || is_hash "${_blib_par_arg:1}" ;} ;} && {
-      _blib_par_found=true
+  _kzn_args=( "$@" )
+  for _kzn_i in "${!_kzn_args[@]}"; do
+    _kzn_arg=${_kzn_args[$_kzn_i]}
+    { starts_with : "$_kzn_arg" && { contains "=" "$_kzn_arg" || is_hash "${_kzn_arg:1}" ;} ;} && {
+      _kzn_found=true
       break
     }
   done
-  is_same_as true "$_blib_par_found" && {
-    _blib_par_kwargs=( "${_blib_par_args[@]:$_blib_par_i}" )
-    _blib_par_args=( "${_blib_par_args[@]:0:$_blib_par_i}" )
+  is_same_as true "$_kzn_found" && {
+    _kzn_kwargs=( "${_kzn_args[@]:$_kzn_i}" )
+    _kzn_args=( "${_kzn_args[@]:0:$_kzn_i}" )
   }
-  _blib_par_found=false
-  for _blib_par_i in "${!_blib_par_kwargs[@]}"; do
-    _blib_par_arg="${_blib_par_kwargs[$_blib_par_i]:-}"
-    ! is_given "$_blib_par_arg" && continue
-    is_hash "${_blib_par_arg:1}" && {
-      _blib_par_found=true
+  _kzn_found=false
+  for _kzn_i in "${!_kzn_kwargs[@]}"; do
+    _kzn_arg="${_kzn_kwargs[$_kzn_i]:-}"
+    ! is_given "$_kzn_arg" && continue
+    is_hash "${_kzn_arg:1}" && {
+      _kzn_found=true
       break
     }
   done
-  is_same_as true "$_blib_par_found" && {
-    _blib_par_hashes=( "${_blib_par_kwargs[@]:$_blib_par_i}" )
-    _blib_par_kwargs=( "${_blib_par_kwargs[@]:0:$_blib_par_i}" )
+  is_same_as true "$_kzn_found" && {
+    _kzn_hashes=( "${_kzn_kwargs[@]:$_kzn_i}" )
+    _kzn_kwargs=( "${_kzn_kwargs[@]:0:$_kzn_i}" )
   }
-  set -- "${_blib_par_params[@]}"
-  for _blib_par_item in "${_blib_par_args[@]:-}"; do
-    ! is_given "$_blib_par_item" && continue
-    _blib_par_result[$1]=$_blib_par_item
+  set -- "${_kzn_params[@]}"
+  for _kzn_item in "${_kzn_args[@]:-}"; do
+    ! is_given "$_kzn_item" && continue
+    _kzn_result[$1]=$_kzn_item
     shift
   done
-  for _blib_par_item in "${_blib_par_kwargs[@]:-}"; do
-    ! is_given "$_blib_par_item" && continue
-    _blib_par_name=${_blib_par_item:1}
-    _blib_par_name=${_blib_par_name%=*}
-    _blib_par_value=${_blib_par_item##*=}
-    _blib_par_kw_hash[$_blib_par_name]=$_blib_par_value
+  for _kzn_item in "${_kzn_kwargs[@]:-}"; do
+    ! is_given "$_kzn_item" && continue
+    _kzn_name=${_kzn_item:1}
+    _kzn_name=${_kzn_name%=*}
+    _kzn_value=${_kzn_item##*=}
+    _kzn_kw_hash[$_kzn_name]=$_kzn_value
   done
-  for _blib_par_key in "$@"; do
-    is_given "${_blib_par_kw_hash[$_blib_par_key]:-}" && {
-      _blib_par_result[$_blib_par_key]=${_blib_par_kw_hash[$_blib_par_key]}
+  for _kzn_key in "$@"; do
+    is_given "${_kzn_kw_hash[$_kzn_key]:-}" && {
+      _kzn_result[$_kzn_key]=${_kzn_kw_hash[$_kzn_key]}
       continue
     }
-    for _blib_par_name in "${_blib_par_hashes[@]:-}"; do
-      ! is_given "$_blib_par_name" && continue
-      local -n _blib_par_hash=${_blib_par_name:1}
-      is_given "${_blib_par_hash[$_blib_par_key]}" && {
-        _blib_par_result[$_blib_par_key]=${_blib_par_hash[$_blib_par_key]}
+    for _kzn_name in "${_kzn_hashes[@]:-}"; do
+      ! is_given "$_kzn_name" && continue
+      local -n _kzn_hash=${_kzn_name:1}
+      is_given "${_kzn_hash[$_kzn_key]}" && {
+        _kzn_result[$_kzn_key]=${_kzn_hash[$_kzn_key]}
         break
       }
     done
   done
-  for _blib_par_key in "${!_blib_par_result[@]}"; do
-    _blib_par_declaration+=( "$(printf "%q=%q" "$_blib_par_key" "${_blib_par_result[$_blib_par_key]}")" )
+  for _kzn_key in "${!_kzn_result[@]}"; do
+    _kzn_declaration+=( "$(printf "%q=%q" "$_kzn_key" "${_kzn_result[$_kzn_key]}")" )
   done
-  echo "${_blib_par_declaration[*]}"
+  puts "${_kzn_declaration[*]}"
 }
 
 is_directory()          { [[ -d "$1" ]]                         ;}
@@ -141,15 +147,16 @@ is_mounted()            { is_on_darwin && { diskutil info "$1" >/dev/null; retur
 is_nonexecutable_file() { is_file "$1" && ! is_executable "$1"  ;}
 is_on_darwin()          { [[ $OSTYPE == darwin* ]]              ;}
 is_on_linux()           { [[ $OSTYPE == linux* ]]               ;}
-is_on_redhat()          { is_file "/etc/redhat-release" || is_file "/etc/centos-release" ;}
+is_on_redhat()          { is_file /etc/redhat-release || is_file /etc/centos-release ;}
 is_owned_by()           { [[ $(owner "$2") == "$1" ]]           ;}
 is_same_as()            { [[ $1 == "$2" ]]                      ;}
 is_service()            { chkconfig "$@"                        ;}
 is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
 mode()                  { find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
-owner()                 { ls -ld "$1" | awk '{print $3}'        ;}
+owner()                 { is_on_darwin && { stat -f '%Su' "$1"; return ;}; stat -c '%U' "$1" ;}
 puts()                  { printf "%s\n" "$*"                    ;}
+putserr()               { cat <<<"$*" 1>&2                      ;}
 
 quietly() {
   #shellcheck disable=SC2154
@@ -157,6 +164,8 @@ quietly() {
   ! is_given "${silent:-}" && printf .
   "$@" >/dev/null 2>&1
 }
+
+readlink() { is_on_darwin && { greadlink "$@"; return ;}; command readlink "$@" ;}
 
 remotely() {
   local command=${*:-$(</dev/stdin)}
@@ -168,8 +177,6 @@ remotely() {
   # shellcheck disable=SC2154,SC2029
   ssh -Aqt "$target" "$command"
 }
-
-resolve_ln() { $(type -p gln ln | head -1) "$@" ;}
 
 runas() {
   local user=$1; shift
@@ -214,9 +221,9 @@ strict_mode() {
   esac
 }
 
-succeed()   { "$@" ||:                  ;}
-sudo()      { command -p sudo "$@"      ;}
-timestamp() { date +%s                  ;}
+succeed()   { "$@" ||:              ;}
+sudo()      { command -p sudo "$@"  ;}
+timestamp() { date +%s              ;}
 
 user_agrees() {
   local answer
