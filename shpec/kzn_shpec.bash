@@ -4,8 +4,8 @@ unset -v library
 
 initialize_shpec_helper
 
-shpec_source lib/kaizen.bash
-initialize_kaizen
+shpec_source lib/kzn.bash
+initialize_kzn
 
 
 describe "absolute_path"
@@ -371,11 +371,11 @@ describe "has_none"
 end
 
 
-describe "initialize_kaizen"
+describe "initialize_kzn"
   it "calls sandbox_environment"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     stub_command sandbox_environment "echo sandbox_environment"
-    assert equal "$(initialize_kaizen)" "sandbox_environment"
+    assert equal "$(initialize_kzn)" "sandbox_environment"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end

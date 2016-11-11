@@ -34,7 +34,7 @@ has_more_than()       { (( ($# - 1) > $1 ))                 ;}
 has_none()            { ! (( $# ))                          ;}
 id()                  { command -p id "$@"                  ;}
 
-initialize_kaizen() {
+initialize_kzn() {
   # shellcheck disable=SC2034
   printf -v done_message "\nDone.\n"
 
