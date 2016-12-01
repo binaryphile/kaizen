@@ -13,9 +13,10 @@ absolute_path() {
   }
   is_directory "$target" || return 1
   result=$( ( cd "$target"; pwd ) ) || return
-  puts "$result${filename:+/}$filename"
+  puts "$result${filename:+/}${filename:-}"
 }
 
+basename()            { puts "${1##*/}"                     ;}
 chkconfig()           { command -p chkconfig "$@"           ;}
 contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
@@ -224,6 +225,7 @@ strict_mode() {
 succeed()   { "$@" ||:              ;}
 sudo()      { command -p sudo "$@"  ;}
 timestamp() { date +%s              ;}
+to_lower()  { puts "${1,,}"         ;}
 
 user_agrees() {
   local answer

@@ -144,6 +144,16 @@ describe "absolute_path"
 end
 
 
+describe "basename"
+  it "returns everything past the last slash"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    assert equal name "$(basename /my/name)"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
 describe "contains"
   it "identifies a character in a string"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
@@ -1177,6 +1187,16 @@ describe "succeed"
 
     succeed true
     assert equal $? 0
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
+describe "to_lower"
+  it "should lower-case a string"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    assert equal upper "$(to_lower UPPER)"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
