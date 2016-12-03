@@ -1,7 +1,7 @@
 source kzn.bash
 initialize_kzn
 
-declare library=../lib/shpec_helper.bash
+library=../lib/shpec_helper.bash
 source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
 unset -v library
 
@@ -754,6 +754,36 @@ describe "is_mounted"
       assert equal $? 1
       unstub_command mount
     fi
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
+describe "is_set"
+  it "returns true if a variable is set"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    sample=true
+    is_set sample
+    assert equal 0 $?
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "returns true if a variable is set to empty"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    sample=""
+    is_set sample
+    assert equal 0 $?
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "returns false if a variable is not set"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    unset -v sample
+    is_set sample
+    assert unequal 0 $?
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end

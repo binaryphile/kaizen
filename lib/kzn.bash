@@ -60,7 +60,7 @@ instantiate() {
   local -A _kzn_kw_hash
   local -A _kzn_result
   local -a _kzn_args
-  local -a _kzn_declaration=( local )
+  local -a _kzn_declaration=( declare )
   local -a _kzn_params
   local _kzn_arg
   local _kzn_found=false
@@ -152,6 +152,7 @@ is_on_redhat()          { is_file /etc/redhat-release || is_file /etc/centos-rel
 is_owned_by()           { [[ $(owner "$2") == "$1" ]]           ;}
 is_same_as()            { [[ $1 == "$2" ]]                      ;}
 is_service()            { chkconfig "$@"                        ;}
+is_set()                { declare -p "$1" >/dev/null 2>&1       ;}
 is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
 mode()                  { find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
