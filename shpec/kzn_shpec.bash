@@ -790,6 +790,24 @@ describe "is_set"
 end
 
 
+describe "is_symbol"
+  it "identifies a symbol"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    is_symbol :symbol
+    assert equal 0 $?
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "doesn't identify a non-symbol"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    is_symbol non-symbol
+    assert equal 1 $?
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
 describe "is_symlink"
   it "doesn't identify a file"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
