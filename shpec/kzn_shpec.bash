@@ -682,10 +682,10 @@ end
 
 
 describe "is_hash"
-  it "identifies an associative array"; ( _shpec_failures=0   # shellcheck disable=SC2030
+  it "identifies an associative array by name"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     declare -A sample=( [one]=1 [two]=2 )
-    is_hash sample
+    is_hash :sample
     assert equal $? 0
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
@@ -697,7 +697,7 @@ describe "is_hash"
     declare -A sample1=( [one]=1 [two]=2 )
     # shellcheck disable=SC2034
     declare -n sample2=sample1
-    is_hash sample2
+    is_hash :sample2
     assert equal $? 0
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
@@ -706,7 +706,7 @@ describe "is_hash"
   it "doesn't identify not an associative array"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     sample=( one two )
-    is_hash sample
+    is_hash :sample
     assert unequal $? 0
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
@@ -715,7 +715,7 @@ describe "is_hash"
   it "doesn't identify an undefined variable name"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     unset -v sample
-    is_hash sample
+    is_hash :sample
     assert unequal $? 0
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:

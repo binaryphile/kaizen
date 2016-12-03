@@ -143,7 +143,7 @@ is_file()               { [[ -f "$1" ]]                         ;}
 is_function()           { [[ $(type -t "$1") == "function" ]]   ;}
 is_given()              { [[ -n "${1:-}" ]]                     ;}
 is_group()              { grep -q "$1" /etc/group 2>/dev/null   ;}
-is_hash ()              { [[ $(declare -p "$1" 2>/dev/null) == "declare -"[An]* ]] ;}
+is_hash ()              { is_symbol "$1" && [[ $(declare -p "${1:1}" 2>/dev/null) == "declare -"[An]* ]] ;}
 is_mounted()            { is_on_darwin && { diskutil info "$1" >/dev/null; return ;};  mount | grep -q "$1" ;}
 is_nonexecutable_file() { is_file "$1" && ! is_executable "$1"  ;}
 is_on_darwin()          { [[ $OSTYPE == darwin* ]]              ;}
