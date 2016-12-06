@@ -57,7 +57,7 @@ describe "instantiate"
 
     local params=( one )
     # shellcheck disable=SC2034
-    set --
+    set -- ""
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
     assert equal "declare one=''" "$result"
 
@@ -70,6 +70,18 @@ describe "instantiate"
     set -- :one=1
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
     assert equal "declare one=1" "$result"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "works for a hash"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    local params=( :hash )
+    local -A args=( [one]=1 )
+    set -- args
+    result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
+    expected=$(printf 'declare -A hash=%s([one]="1" )%s' \' \')
+    assert equal "$expected" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end

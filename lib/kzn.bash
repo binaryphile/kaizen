@@ -59,8 +59,10 @@ instantiate() {
   local _kzn_num_params=$1; shift
   local -A _kzn_kw_hash
   local -A _kzn_result
+  local -A _kzn_result_hashes
   local -a _kzn_args
-  local -a _kzn_declaration=( declare )
+  local -a _kzn_declaration
+  local -a _kzn_output
   local -a _kzn_params
   local _kzn_arg
   local _kzn_found=false
@@ -70,14 +72,11 @@ instantiate() {
   local _kzn_key
   local _kzn_kwargs
   local _kzn_name
-  local _kzn_param
   local _kzn_value
+  local IFS
 
   _kzn_params=( "${@:1:$_kzn_num_params}" )
   shift "$_kzn_num_params"
-  for _kzn_param in "${_kzn_params[@]}"; do
-    _kzn_result[$_kzn_param]=""
-  done
   _kzn_args=( "$@" )
   for _kzn_i in "${!_kzn_args[@]}"; do
     _kzn_arg=${_kzn_args[$_kzn_i]}
@@ -105,7 +104,12 @@ instantiate() {
   }
   set -- "${_kzn_params[@]}"
   for _kzn_item in "${_kzn_args[@]:-}"; do
-    ! is_given "$_kzn_item" && continue
+    [[ -z $_kzn_item && -z ${_kzn_item+x} ]] && continue
+    { starts_with : "$1" && is_hash "$_kzn_item" ;} && {
+      _kzn_i=$(declare -p "${_kzn_item}")
+      _kzn_result_hashes[${1:1}]=${_kzn_i#declare -A*=}
+      continue
+    }
     _kzn_result[$1]=$_kzn_item
     shift
   done
@@ -131,9 +135,19 @@ instantiate() {
     done
   done
   for _kzn_key in "${!_kzn_result[@]}"; do
+    ! is_given "$_kzn_key" && break
     _kzn_declaration+=( "$(printf "%q=%q" "$_kzn_key" "${_kzn_result[$_kzn_key]}")" )
   done
-  puts "${_kzn_declaration[*]}"
+  has_any "${_kzn_declaration[@]}" && {
+    _kzn_declaration=( declare "${_kzn_declaration[@]}" )
+    _kzn_output=( "${_kzn_declaration[*]}" )
+  }
+  for _kzn_key in "${!_kzn_result_hashes[@]}"; do
+    ! is_given "$_kzn_key" && break
+    _kzn_output+=( "$(printf 'declare -A %s=%s' "$_kzn_key" "${_kzn_result_hashes[$_kzn_key]}")" )
+  done
+  IFS=';'
+  puts "${_kzn_output[*]}"
 }
 
 is_directory()          { [[ -d "$1" ]]                         ;}
