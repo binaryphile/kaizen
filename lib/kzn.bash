@@ -81,7 +81,7 @@ instantiate() {
   _kzn_args=( "$@" )
   for _kzn_i in "${!_kzn_args[@]}"; do
     _kzn_arg=${_kzn_args[$_kzn_i]}
-    { starts_with : "$_kzn_arg" && { contains "=" "$_kzn_arg" || is_hash "${_kzn_arg:1}" ;} ;} && {
+    { starts_with : "$_kzn_arg" && { contains "=" "$_kzn_arg" || is_hash "$_kzn_arg" ;} ;} && {
       _kzn_found=true
       break
     }
@@ -94,7 +94,7 @@ instantiate() {
   for _kzn_i in "${!_kzn_kwargs[@]}"; do
     _kzn_arg="${_kzn_kwargs[$_kzn_i]:-}"
     ! is_given "$_kzn_arg" && continue
-    is_hash "${_kzn_arg:1}" && {
+    is_hash "$_kzn_arg" && {
       _kzn_found=true
       break
     }
@@ -143,7 +143,7 @@ is_file()               { [[ -f "$1" ]]                         ;}
 is_function()           { [[ $(type -t "$1") == "function" ]]   ;}
 is_given()              { [[ -n "${1:-}" ]]                     ;}
 is_group()              { grep -q "$1" /etc/group 2>/dev/null   ;}
-is_hash ()              { is_symbol "$1" && [[ $(declare -p "${1:1}" 2>/dev/null) == "declare -"[An]* ]] ;}
+is_hash ()              { is_symbol "$1" && [[ $(declare -p "${1:1}" 2>/dev/null) == 'declare -'[An]* ]] ;}
 is_mounted()            { is_on_darwin && { diskutil info "$1" >/dev/null; return ;};  mount | grep -q "$1" ;}
 is_nonexecutable_file() { is_file "$1" && ! is_executable "$1"  ;}
 is_on_darwin()          { [[ $OSTYPE == darwin* ]]              ;}

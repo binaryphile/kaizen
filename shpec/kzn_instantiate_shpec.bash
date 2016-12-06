@@ -14,7 +14,7 @@ describe "instantiate"
     local params=( one )
     set -- 1
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -24,7 +24,7 @@ describe "instantiate"
     local params=( one two )
     set -- 1 2
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1 two=2" "$result"
+    assert equal "declare one=1 two=2" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -36,7 +36,7 @@ describe "instantiate"
     declare -A args=( [one]=1 )
     set -- :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -48,7 +48,7 @@ describe "instantiate"
     declare -A args=( [two]=2 )
     set -- 1 :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1 two=2" "$result"
+    assert equal "declare one=1 two=2" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -59,7 +59,7 @@ describe "instantiate"
     # shellcheck disable=SC2034
     set --
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=''" "$result"
+    assert equal "declare one=''" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -69,7 +69,7 @@ describe "instantiate"
     local params=( one )
     set -- :one=1
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -80,7 +80,7 @@ describe "instantiate"
     # shellcheck disable=SC2034
     set -- 1 :one=override
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -92,7 +92,7 @@ describe "instantiate"
     declare -A args=( [one]=override )
     set -- 1 :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -104,7 +104,7 @@ describe "instantiate"
     declare -A args=( [one]=override )
     set -- :one=1 :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -116,7 +116,7 @@ describe "instantiate"
     declare -A args=( [three]=3 )
     set -- 1 :two=2 :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1 two=2 three=3" "$result"
+    assert equal "declare one=1 two=2 three=3" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -129,7 +129,7 @@ describe "instantiate"
     # shellcheck disable=SC2034
     set -- :two=2 :args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1 two=2" "$result"
+    assert equal "declare one=1 two=2" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -144,7 +144,7 @@ describe "instantiate"
     # shellcheck disable=SC2034
     set -- :args1 :args2
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "local one=1" "$result"
+    assert equal "declare one=1" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
