@@ -80,7 +80,7 @@ describe "instantiate"
     local -A args=( [one]=1 )
     set -- args
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    expected=$(printf 'declare -A hash=%s([one]="1" )%s' \' \')
+    expected=$(printf 'declare -A hash=%s([one]="1" )%s' "'" "'")
     assert equal "$expected" "$result"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:

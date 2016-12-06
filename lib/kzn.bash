@@ -1,6 +1,8 @@
 [[ -n ${_kzn:-} ]] && return
 readonly _kzn=loaded
 
+_is_keyword_arg() { starts_with : "$1" and contains '=' "$1" ;}
+
 absolute_path() {
   local target=$1
   local filename
@@ -80,7 +82,7 @@ instantiate() {
   _kzn_args=( "$@" )
   for _kzn_i in "${!_kzn_args[@]}"; do
     _kzn_arg=${_kzn_args[$_kzn_i]}
-    { starts_with : "$_kzn_arg" && { contains "=" "$_kzn_arg" || is_hash "$_kzn_arg" ;} ;} && {
+    { _is_keyword_arg "$_kzn_arg" || is_hash "$_kzn_arg" ;} && {
       _kzn_found=true
       break
     }
@@ -91,9 +93,8 @@ instantiate() {
   }
   _kzn_found=false
   for _kzn_i in "${!_kzn_kwargs[@]}"; do
-    _kzn_arg="${_kzn_kwargs[$_kzn_i]:-}"
-    ! is_given "$_kzn_arg" && continue
-    is_hash "$_kzn_arg" && {
+    ! is_given "$_kzn_i" && break
+    is_hash "${_kzn_kwargs[$_kzn_i]}" && {
       _kzn_found=true
       break
     }
@@ -103,18 +104,18 @@ instantiate() {
     _kzn_kwargs=( "${_kzn_kwargs[@]:0:$_kzn_i}" )
   }
   set -- "${_kzn_params[@]}"
-  for _kzn_item in "${_kzn_args[@]:-}"; do
-    [[ -z $_kzn_item && -z ${_kzn_item+x} ]] && continue
-    { starts_with : "$1" && is_hash "$_kzn_item" ;} && {
-      _kzn_i=$(declare -p "${_kzn_item}")
+  for _kzn_item in "${_kzn_args[@]}"; do
+    ! is_set :_kzn_item && break
+    is_symbol "$1" && {
+      _kzn_i=$(declare -p "$_kzn_item")
       _kzn_result_hashes[${1:1}]=${_kzn_i#declare -A*=}
       continue
     }
     _kzn_result[$1]=$_kzn_item
     shift
   done
-  for _kzn_item in "${_kzn_kwargs[@]:-}"; do
-    ! is_given "$_kzn_item" && continue
+  for _kzn_item in "${_kzn_kwargs[@]}"; do
+    ! is_given "$_kzn_item" && break
     _kzn_name=${_kzn_item:1}
     _kzn_name=${_kzn_name%=*}
     _kzn_value=${_kzn_item##*=}
