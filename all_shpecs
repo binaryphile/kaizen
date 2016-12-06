@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+find_command=( find . -name '*_shpec.*' )
+shpec_files=( $("${find_command[@]}") )
+
+printf "shpec %s\n" "${shpec_files[*]}"
+
+"${find_command[@]}" -exec shpec '{}' \;
