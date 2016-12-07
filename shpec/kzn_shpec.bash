@@ -181,6 +181,23 @@ describe "contains"
 end
 
 
+describe "copya"
+  it "copies an array"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    # shellcheck disable=SC2030
+    sample=( one two three )
+    declare -a result
+    copya sample result
+    expected='declare -a result=%s([0]="one" [1]="two" [2]="three")%s'
+    # shellcheck disable=SC2059
+    printf -v expected "$expected" "'" "'"
+    assert equal "$expected" "$(declare -p result)"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
 describe "def_ary"
   it "assigns each line of a heredoc to an element of an array"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
@@ -198,11 +215,48 @@ EOS
 end
 
 
+describe "defa"
+  it "strips each line of a heredoc and assigns each to an element of an array"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    # shellcheck disable=SC1041,SC1042,SC1073
+    defa result <<'    EOS'
+      one
+      two
+      three
+    EOS
+    expected='declare -a result=%s([0]="one" [1]="two" [2]="three")%s'
+    printf -v expected "$expected" "'" "'"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
 describe "define"
   it "assigns a heredoc to a variable"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     define sample <<<"testing one two three"
     assert equal "$sample" "testing one two three"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
+describe "defs"
+  it "strips each line of a heredoc and assigns to a string"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    defs result <<'    EOS'
+      one
+      two
+      three
+    EOS
+    expected='declare -- result="one\ntwo\nthree"'
+    printf -v expected "$expected"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -299,6 +353,25 @@ describe "files_match"
     assert equal $? 0
 
     cleanup "$temp"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
+describe "geta"
+  it "assigns each line of an input to an element of an array"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    # shellcheck disable=SC1041,SC1042,SC1073
+    geta result <<'    EOS'
+      one
+      two
+      three
+    EOS
+    expected='declare -a result=%s([0]="      one" [1]="      two" [2]="      three")%s'
+    printf -v expected "$expected" "'" "'"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
@@ -1073,6 +1146,21 @@ describe "starts_with"
 
     starts_with / test
     assert equal $? 1
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+
+describe "stripa"
+  it "strips each element of an array"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    result=("    one" "    two" "    three")
+    stripa result
+    expected='declare -a result=%s([0]="one" [1]="two" [2]="three")%s'
+    printf -v expected "$expected" "'" "'"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
 
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end

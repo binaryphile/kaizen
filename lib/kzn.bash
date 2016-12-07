@@ -19,17 +19,55 @@ absolute_path() {
 }
 
 basename()            { puts "${1##*/}"                     ;}
+
+copya() {
+  local -n _kzn_ref1=$1
+  # shellcheck disable=SC2034
+  local -n _kzn_ref2=$2
+  local _i
+
+  for _i in "${!_kzn_ref1[@]}"; do
+    printf -v _kzn_ref2[$_i] '%s' "${_kzn_ref1[$_i]}"
+  done
+}
+
 chkconfig()           { command -p chkconfig "$@"           ;}
 contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { IFS=$'\n' read -rd "" -a "$1" ||:   ;}
+
+defa() {
+  local _kzn_aref=$1
+
+  geta   "$_kzn_aref"
+  stripa "$_kzn_aref"
+}
+
 define()              { read -rd "" "$1" ||:                ;}
+
+defs() {
+  local _kzn_sref=$1
+  local -a _kzn_result
+  local IFS
+
+  defa _kzn_result
+  IFS=$'\n'
+  printf -v "$_kzn_sref" '%s' "${_kzn_result[*]}"
+}
+
 # shellcheck disable=SC2015
 dirname()             { [[ $1 == */* ]] && puts "${1%/?*}"  || puts . ;}
 ends_with()           { [[ ${2:-} == *$1 ]]                 ;}
 errexit()             { putserr "$1"; exit "${2:-1}"        ;}
 extension()           { puts "${1#*.}"                      ;}
 files_match()         { cmp -s "$1" "$2"                    ;}
+
+geta() {
+  local _kzn_ref=$1
+
+  IFS=$'\n' read -rd '' -a "$_kzn_ref" ||:
+}
+
 groupdel()            { command -p groupdel "$@"            ;}
 has_any()             { (( $# ))                            ;}
 has_fewer_than()      { (( ($# - 1) < $1 ))                 ;}
@@ -237,6 +275,19 @@ strict_mode() {
       set +o nounset
       ;;
   esac
+}
+
+stripa() {
+  local -n _kzn_ref=$1
+  local _kzn_i
+  local _kzn_leading_whitespace
+  local _kzn_len
+
+  _kzn_leading_whitespace=${_kzn_ref[0]%%[^[:space:]]*}
+  _kzn_len=${#_kzn_leading_whitespace}
+  for _kzn_i in "${!_kzn_ref[@]}"; do
+    printf -v _kzn_ref[$_kzn_i] '%s' "${_kzn_ref[$_kzn_i]:$_kzn_len}"
+  done
 }
 
 succeed()   { "$@" ||:              ;}
