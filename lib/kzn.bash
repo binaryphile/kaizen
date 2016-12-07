@@ -34,7 +34,7 @@ copya() {
 chkconfig()           { command -p chkconfig "$@"           ;}
 contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
-def_ary()             { IFS=$'\n' read -rd "" -a "$1" ||:   ;}
+def_ary()             { putserr "def_ary is deprecated, please use geta instead."; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 
 defa() {
   local _kzn_aref=$1
@@ -61,13 +61,7 @@ ends_with()           { [[ ${2:-} == *$1 ]]                 ;}
 errexit()             { putserr "$1"; exit "${2:-1}"        ;}
 extension()           { puts "${1#*.}"                      ;}
 files_match()         { cmp -s "$1" "$2"                    ;}
-
-geta() {
-  local _kzn_ref=$1
-
-  IFS=$'\n' read -rd '' -a "$_kzn_ref" ||:
-}
-
+geta()                { IFS=$'\n' read -rd '' -a "$1" ||:   ;}
 groupdel()            { command -p groupdel "$@"            ;}
 has_any()             { (( $# ))                            ;}
 has_fewer_than()      { (( ($# - 1) < $1 ))                 ;}
