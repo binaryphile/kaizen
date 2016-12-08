@@ -36,23 +36,17 @@ contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { putserr "def_ary is deprecated, please use geta instead."; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 
-defa() {
-  local _kzn_aref=$1
-
-  geta   "$_kzn_aref"
-  stripa "$_kzn_aref"
-}
+defa() { geta "$1"; stripa "$1" ;}
 
 define()              { read -rd "" "$1" ||:                ;}
 
 defs() {
-  local _kzn_sref=$1
   local -a _kzn_result
   local IFS
 
   defa _kzn_result
   IFS=$'\n'
-  printf -v "$_kzn_sref" '%s' "${_kzn_result[*]}"
+  printf -v "$1" '%s' "${_kzn_result[*]}"
 }
 
 # shellcheck disable=SC2015
