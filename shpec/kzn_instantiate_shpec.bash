@@ -86,6 +86,31 @@ describe "instantiate"
     return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
   end
 
+  it "works for two hashes"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    local params=( :hash1 :hash2 )
+    local -A args1=( [one]=1 )
+    local -A args2=( [two]=2 )
+    set -- args1 args2
+    result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
+    expected=$(printf 'declare -A hash1=%s([one]="1")%s;declare -A hash2=%s([two]="2" )%s' "'" "'" "'" "'")
+    assert equal "$expected" "$result"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "works for an argument and a hash"; ( _shpec_failures=0   # shellcheck disable=SC2030
+
+    local params=( one :hash )
+    local -A args=( [two]=2 )
+    set -- 1 args
+    result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
+    expected=$(printf 'declare one=1;declare -A hash=%s([two]="2" )%s' "'" "'")
+    assert equal "$expected" "$result"
+
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
   it "resolves in favor of positional arguments vs named keywords"; ( _shpec_failures=0   # shellcheck disable=SC2030
 
     local params=( one )
