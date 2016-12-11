@@ -141,7 +141,7 @@ instantiate() {
     _kzn_result[$1]=$_kzn_item
     shift
   done
-  for _kzn_item in "${_kzn_kwargs[@]}"; do
+  for _kzn_item in "${_kzn_kwargs[@]:-}"; do
     ! is_given "$_kzn_item" && break
     _kzn_name=${_kzn_item:1}
     _kzn_name=${_kzn_name%=*}
@@ -156,7 +156,7 @@ instantiate() {
     for _kzn_name in "${_kzn_hashes[@]:-}"; do
       ! is_given "$_kzn_name" && continue
       local -n _kzn_hash=${_kzn_name:1}
-      is_given "${_kzn_hash[$_kzn_key]}" && {
+      is_given "${_kzn_hash[$_kzn_key]:-}" && {
         _kzn_result[$_kzn_key]=${_kzn_hash[$_kzn_key]}
         break
       }
