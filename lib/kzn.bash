@@ -135,6 +135,7 @@ instantiate() {
     is_symbol "$1" && {
       _kzn_i=$(declare -p "$_kzn_item")
       _kzn_result_hashes[${1:1}]=${_kzn_i#declare -A*=}
+      shift
       continue
     }
     _kzn_result[$1]=$_kzn_item
