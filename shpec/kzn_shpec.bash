@@ -18,6 +18,7 @@ describe "absolute_path"
     # shellcheck disable=SC2154
     $rm "$dir"
 
+    # shellcheck disable=SC2154
     return "$_shpec_failures" )
   end
 
@@ -186,7 +187,7 @@ one
 two
 three
 EOS
-    # shellcheck disable=SC2154
+    # shellcheck disable=SC2031,SC2154
     assert equal ${#sample} 3
     assert equal "${sample[*]}" "one two three"
 
@@ -197,12 +198,13 @@ end
 describe "defa"
   it "strips each line of a heredoc and assigns each to an element of an array"; (
     # shellcheck disable=SC1041,SC1042,SC1073
-    defa result <<'    EOS'
+    defa result <<'EOS'
       one
       two
       three
-    EOS
+EOS
     expected='declare -a result=%s([0]="one" [1]="two" [2]="three")%s'
+    # shellcheck disable=SC2059
     printf -v expected "$expected" "'" "'"
     # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"
@@ -222,12 +224,29 @@ end
 
 describe "defs"
   it "strips each line of a heredoc and assigns to a string"; (
-    defs result <<'    EOS'
+    defs result <<'EOS'
       one
       two
       three
-    EOS
+EOS
     expected='declare -- result="one\ntwo\nthree"'
+    # shellcheck disable=SC2059
+    printf -v expected "$expected"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
+
+    return "$_shpec_failures" )
+  end
+
+  it "leaves a blank line intact"; (
+    defs result <<'EOS'
+      one
+      two
+
+      four
+EOS
+    expected='declare -- result="one\ntwo\n\nfour"'
+    # shellcheck disable=SC2059
     printf -v expected "$expected"
     # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"
@@ -322,12 +341,30 @@ end
 describe "geta"
   it "assigns each line of an input to an element of an array"; (
     # shellcheck disable=SC1041,SC1042,SC1073
-    geta result <<'    EOS'
+    geta result <<'EOS'
+      zero
       one
       two
+EOS
+    expected='declare -a result=%s([0]="      zero" [1]="      one" [2]="      two")%s'
+    # shellcheck disable=SC2059
+    printf -v expected "$expected" "'" "'"
+    # shellcheck disable=SC2154
+    assert equal "$expected" "$(declare -p result)"
+
+    return "$_shpec_failures" )
+  end
+
+  it "preserves a blank line"; (
+    # shellcheck disable=SC1041,SC1042,SC1073
+    geta result <<'EOS'
+      zero
+      one
+
       three
-    EOS
-    expected='declare -a result=%s([0]="      one" [1]="      two" [2]="      three")%s'
+EOS
+    expected='declare -a result=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
+    # shellcheck disable=SC2059
     printf -v expected "$expected" "'" "'"
     # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"
@@ -1026,6 +1063,7 @@ describe "stripa"
     result=("    zero" "    one" "    two")
     stripa result
     expected='declare -a result=%s([0]="zero" [1]="one" [2]="two")%s'
+    # shellcheck disable=SC2059
     printf -v expected "$expected" "'" "'"
     # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"
@@ -1037,6 +1075,7 @@ describe "stripa"
     result=("    zero" "    one"  "" "    three")
     stripa result
     expected='declare -a result=%s([0]="zero" [1]="one" [2]="" [3]="three")%s'
+    # shellcheck disable=SC2059
     printf -v expected "$expected" "'" "'"
     # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"

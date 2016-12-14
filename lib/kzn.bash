@@ -55,7 +55,13 @@ ends_with()           { [[ ${2:-} == *$1 ]]                 ;}
 errexit()             { putserr "$1"; exit "${2:-1}"        ;}
 extension()           { puts "${1#*.}"                      ;}
 files_match()         { cmp -s "$1" "$2"                    ;}
-geta()                { IFS=$'\n' read -rd '' -a "$1" ||:   ;}
+
+geta() {
+  while IFS= read -r; do
+    eval "$1"'+=( '\""$REPLY"\"' )'
+  done
+}
+
 groupdel()            { command -p groupdel "$@"            ;}
 has_any()             { (( $# ))                            ;}
 has_fewer_than()      { (( ($# - 1) < $1 ))                 ;}
