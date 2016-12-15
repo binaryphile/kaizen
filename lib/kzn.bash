@@ -31,7 +31,7 @@ copya() {
   done
 }
 
-chkconfig()           { command -p chkconfig "$@"           ;}
+chkconfig()           { command chkconfig "$@"              ;}
 contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { putserr "def_ary is deprecated, please use geta instead."; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
