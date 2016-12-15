@@ -58,7 +58,7 @@ files_match()         { cmp -s "$1" "$2"                    ;}
 
 geta() {
   while IFS= read -r; do
-    eval "$1"'+=( '\""$REPLY"\"' )'
+    eval "$(printf '%s+=( "%s" )' "$1" "$REPLY")"
   done
 }
 
