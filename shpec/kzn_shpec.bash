@@ -7,8 +7,8 @@ unset -v library
 
 initialize_shpec_helper
 
-describe "absolute_path"
-  it "determines the path of a directory from the parent"; (
+describe 'absolute_path'
+  it 'determines the path of a directory from the parent'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -17,12 +17,11 @@ describe "absolute_path"
     assert equal "$(absolute_path mydir)" "$dir"/mydir
     # shellcheck disable=SC2154
     $rm "$dir"
-
     # shellcheck disable=SC2154
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a file from the parent"; (
+  it 'determines the path of a file from the parent'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -32,11 +31,10 @@ describe "absolute_path"
     assert equal "$(absolute_path mydir/myfile)" "$dir"/mydir/myfile
     # shellcheck disable=SC2154
     $rm "$dir"
-
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a directory from itself"; (
+  it 'determines the path of a directory from itself'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -44,11 +42,10 @@ describe "absolute_path"
     assert equal "$(absolute_path .)" "$dir"
     # shellcheck disable=SC2154
     $rm "$dir"
-
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a file from the itself"; (
+  it 'determines the path of a file from the itself'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -61,7 +58,7 @@ describe "absolute_path"
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a directory from a sibling"; (
+  it 'determines the path of a directory from a sibling'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -76,7 +73,7 @@ describe "absolute_path"
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a file from a sibling"; (
+  it 'determines the path of a file from a sibling'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -92,7 +89,7 @@ describe "absolute_path"
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a directory from a child"; (
+  it 'determines the path of a directory from a child'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -106,7 +103,7 @@ describe "absolute_path"
     return "$_shpec_failures" )
   end
 
-  it "determines the path of a file from a child"; (
+  it 'determines the path of a file from a child'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -121,7 +118,7 @@ describe "absolute_path"
     return "$_shpec_failures" )
   end
 
-  it "fails on a nonexistent path"; (
+  it 'fails on a nonexistent path'; (
     # shellcheck disable=SC2154
     dir=$($mktempd) || return 1
     # shellcheck disable=SC2154
@@ -134,16 +131,16 @@ describe "absolute_path"
   end
 end
 
-describe "basename"
-  it "returns everything past the last slash"; (
+describe 'basename'
+  it 'returns everything past the last slash'; (
     assert equal name "$(basename /my/name)"
 
     return "$_shpec_failures" )
   end
 end
 
-describe "contains"
-  it "identifies a character in a string"; (
+describe 'contains'
+  it 'identifies a character in a string'; (
     contains / one/two
     assert equal $? 0
 
@@ -158,7 +155,7 @@ describe "contains"
   end
 
   it "doesn't identify a character in an empty string"; (
-    contains / ""
+    contains / ''
     assert equal $? 1
 
     return "$_shpec_failures" )
@@ -180,22 +177,32 @@ describe "copya"
   end
 end
 
-describe "def_ary"
-  it "assigns each line of a heredoc to an element of an array"; (
-    def_ary sample <<'EOS'
+describe 'def_ary'
+  it 'assigns each line of a heredoc to an element of an array'; (
+    def_ary sample <<'EOS' 2>/dev/null
+zero
 one
 two
-three
 EOS
-    # shellcheck disable=SC2031,SC2154
-    assert equal ${#sample} 3
-    assert equal "${sample[*]}" "one two three"
+    printf -v expected 'declare -a sample=%s([0]="zero" [1]="one" [2]="two")%s' \' \'
+    # shellcheck disable=SC2030
+    assert equal "$expected" "$(declare -p sample)"
+    return "$_shpec_failures" )
+  end
 
+  it 'is deprecated'; (
+    result=$(def_ary sample <<'EOS' 2>&1
+zero
+one
+two
+EOS
+    )
+    assert equal "def_ary is deprecated, please use geta instead." "$result"
     return "$_shpec_failures" )
   end
 end
 
-describe "defa"
+describe 'defa'
   it "strips each line of a heredoc and assigns each to an element of an array"; (
     # shellcheck disable=SC1041,SC1042,SC1073
     defa result <<'EOS'
@@ -213,11 +220,17 @@ EOS
   end
 end
 
-describe "define"
-  it "assigns a heredoc to a variable"; (
-    define sample <<<"testing one two three"
-    assert equal "$sample" "testing one two three"
+describe 'define'
+  it 'assigns a heredoc to a variable'; (
+    define sample <<<'testing one two three'
+    assert equal "$sample" 'testing one two three'
 
+    return "$_shpec_failures" )
+  end
+
+  it 'is deprecated'; (
+    result=$(define sample <<<'testing one two three' 2>&1)
+    assert equal "define is deprecated, please use gets instead." "$result"
     return "$_shpec_failures" )
   end
 end

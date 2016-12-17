@@ -7,50 +7,70 @@ unset -v library
 
 initialize_shpec_helper
 
-describe "instantiate"
-  it "works for one argument"; (
+describe 'instantiate'
+  it 'works for one argument'; (
     set -- 1
     params=( one )
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "declare one=1" "$result"
+    assert equal 'declare one=1' "$result"
     # shellcheck disable=SC2154
     return "$_shpec_failures" )
   end
 
-  it "works for two arguments"; (
+  it 'works for two arguments'; (
     set -- 1 2
     params=( one two )
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "declare one=1 two=2" "$result"
+    assert equal 'declare one=1 two=2' "$result"
     return "$_shpec_failures" )
   end
 
-  it "works with one argument from a hash"; (
+  it 'works with one argument from a hash'; (
     # shellcheck disable=SC2034
     declare -A args=( [one]=1 )
     set -- :args
     params=( one )
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "declare one=1" "$result"
+    assert equal 'declare one=1' "$result"
     return "$_shpec_failures" )
   end
 
-  it "works with one positional argument and one from a hash"; (
+  it 'works with one positional argument and one from a hash'; (
     # shellcheck disable=SC2034
     declare -A args=( [two]=2 )
     set -- 1 :args
     params=( one two )
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
-    assert equal "declare one=1 two=2" "$result"
+    assert equal 'declare one=1 two=2' "$result"
     return "$_shpec_failures" )
   end
 
-  it "instantiates empty variables"; (
+  it 'instantiates empty variables'; (
     # shellcheck disable=SC2034
     set -- ''
     params=( one )
     result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
     assert equal "declare one=''" "$result"
+    return "$_shpec_failures" )
+  end
+
+  it 'instantiates empty variables with a hash after'; (
+    # shellcheck disable=SC2034
+    declare -A args=( [two]=2 )
+    set -- '' :args
+    params=( one two )
+    result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
+    assert equal "declare one='' two=2" "$result"
+    return "$_shpec_failures" )
+  end
+
+  it 'instantiates empty variables from a hash'; (
+    # shellcheck disable=SC2034
+    declare -A args=( [one]="" [two]=2 )
+    set -- :args
+    params=( one two )
+    result=$(instantiate "${#params[@]}" "${params[@]}" "$@")
+    assert equal "declare one='' two=2" "$result"
     return "$_shpec_failures" )
   end
 

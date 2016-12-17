@@ -34,11 +34,11 @@ copya() {
 chkconfig()           { command chkconfig "$@"              ;}
 contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
-def_ary()             { putserr "def_ary is deprecated, please use geta instead."; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
+def_ary()             { putserr 'def_ary is deprecated, please use geta instead.'; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 
 defa() { geta "$1"; stripa "$1" ;}
 
-define()              { read -rd "" "$1" ||:                ;}
+define()              { putserr 'define is deprecated, please use gets instead.'; read -rd '' "$1" ||:                ;}
 
 defs() {
   local -a _kzn_result
@@ -58,16 +58,27 @@ files_match()         { cmp -s "$1" "$2"                    ;}
 
 geta() {
   while IFS= read -r; do
-    eval "$(printf '%s+=( "%s" )' "$1" "$REPLY")"
+    eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
   done
 }
 
+gets()                { read -rd '' "$1" ||:                ;}
 groupdel()            { command -p groupdel "$@"            ;}
 has_any()             { (( $# ))                            ;}
 has_fewer_than()      { (( ($# - 1) < $1 ))                 ;}
 has_more_than()       { (( ($# - 1) > $1 ))                 ;}
 has_none()            { ! (( $# ))                          ;}
 id()                  { command -p id "$@"                  ;}
+
+includes()            {
+  local term=$1; shift
+  local item
+
+  for item in "$@"; do
+    [[ $term == "$item" ]] && return
+  done
+  return 1
+}
 
 initialize_kzn() {
   # shellcheck disable=SC2034
@@ -126,7 +137,6 @@ instantiate() {
   _kzn_found=false
   is_set :_kzn_kwargs && {
     for _kzn_i in "${!_kzn_kwargs[@]}"; do
-      ! is_given "$_kzn_i" && break
       is_hash "${_kzn_kwargs[$_kzn_i]}" && {
         _kzn_found=true
         break
@@ -138,7 +148,7 @@ instantiate() {
     _kzn_kwargs=( "${_kzn_kwargs[@]:0:$_kzn_i}" )
   }
   set -- "${_kzn_params[@]}"
-  is_given "${!_kzn_args[@]}" && {
+  is_given "${!_kzn_args[*]}" && {
     for _kzn_item in "${_kzn_args[@]}"; do
       is_symbol "$1" && {
         _kzn_i=$(declare -p "$_kzn_item")
@@ -150,7 +160,7 @@ instantiate() {
       shift
     done
   }
-  is_given "${!_kzn_kwargs[@]}" && {
+  is_given "${!_kzn_kwargs[*]}" && {
     for _kzn_item in "${_kzn_kwargs[@]}"; do
       _kzn_name=${_kzn_item:1}
       _kzn_name=${_kzn_name%=*}
@@ -159,30 +169,30 @@ instantiate() {
     done
   }
   for _kzn_key in "$@"; do
-    is_given "${_kzn_kw_hash[$_kzn_key]:-}" && {
+    includes "$_kzn_key" "${!_kzn_kw_hash[@]}" && {
       _kzn_result[$_kzn_key]=${_kzn_kw_hash[$_kzn_key]}
       continue
     }
-    is_given "${!_kzn_hashes[@]}" && {
+    is_given "${!_kzn_hashes[*]}" && {
       for _kzn_name in "${_kzn_hashes[@]}"; do
         local -n _kzn_hash=${_kzn_name:1}
-        is_given "${_kzn_hash[$_kzn_key]:-}" && {
+        includes "$_kzn_key" "${!_kzn_hash[@]}" && {
           _kzn_result[$_kzn_key]=${_kzn_hash[$_kzn_key]}
           break
         }
       done
     }
   done
-  is_given "${!_kzn_result[@]}" && {
+  is_given "${!_kzn_result[*]}" && {
     for _kzn_key in "${!_kzn_result[@]}"; do
       _kzn_declaration+=( "$(printf "%q=%q" "$_kzn_key" "${_kzn_result[$_kzn_key]}")" )
     done
   }
-  is_given "${!_kzn_declaration[@]}" && {
+  is_given "${!_kzn_declaration[*]}" && {
     _kzn_declaration=( declare "${_kzn_declaration[@]}" )
     _kzn_output=( "${_kzn_declaration[*]}" )
   }
-  is_given "${!_kzn_result_hashes[@]}" && {
+  is_given "${!_kzn_result_hashes[*]}" && {
     for _kzn_key in "${!_kzn_result_hashes[@]}"; do
       _kzn_output+=( "$(printf 'declare -A %s=%s' "$_kzn_key" "${_kzn_result_hashes[$_kzn_key]}")" )
     done
