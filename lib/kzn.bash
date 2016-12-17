@@ -38,7 +38,7 @@ def_ary()             { putserr 'def_ary is deprecated, please use geta instead.
 
 defa() { geta "$1"; stripa "$1" ;}
 
-define()              { putserr 'define is deprecated, please use gets instead.'; read -rd '' "$1" ||:                ;}
+define()              { putserr 'define is deprecated, please use defs or gets instead.'; read -rd '' "$1" ||:                ;}
 
 defs() {
   local -a _kzn_result
