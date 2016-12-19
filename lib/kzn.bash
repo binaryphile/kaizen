@@ -36,9 +36,8 @@ contains()            { [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { groups | awk '{print $1}'           ;}
 def_ary()             { putserr 'def_ary is deprecated, please use geta instead.'; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 
-defa() { geta "$1"; stripa "$1" ;}
-
-define()              { putserr 'define is deprecated, please use defs or gets instead.'; read -rd '' "$1" ||:                ;}
+defa()    { geta "$1"; stripa "$1" ;}
+define()  { putserr 'define is deprecated, please use defs or gets instead.'; read -rd '' "$1" ||: ;}
 
 defs() {
   local -a _kzn_result
@@ -201,7 +200,6 @@ instantiate() {
   puts "${_kzn_output[*]}"
 }
 
-is_array()              { is_symbol "$1" && [[ $(declare -p "${1:1}" 2>/dev/null) == 'declare -a'* ]] ;}
 is_directory()          { [[ -d "$1" ]]                         ;}
 is_executable()         { [[ -x "$1" ]]                         ;}
 is_executable_file()    { is_file "$1" && is_executable "$1"    ;}
@@ -224,8 +222,55 @@ is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
 mode()                  { find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
 owner()                 { is_on_darwin && { stat -f '%Su' "$1"; return ;}; stat -c '%U' "$1" ;}
-puts()                  { printf "%s\n" "$*"                    ;}
-putserr()               { cat <<<"$*" 1>&2                      ;}
+
+passed() {
+  local -n _parameters=$1; shift
+  local -a _arguments=( "$@" )
+  local -a _result
+  local IFS
+  local _argument
+  local _declaration
+  local _i
+  local _parameter
+  local _type
+
+  _options() {
+    case $1 in
+      @)
+        puts a
+        ;;
+      %)
+        puts A
+        ;;
+    esac
+  }
+
+  for _i in "${!_parameters[@]}"; do
+    _argument=${_arguments[$_i]}
+    _parameter=${_parameters[$_i]}
+    _type=${_parameter:0:1}
+    case $_type in
+      '@' | '%' | ':' )
+        _parameter=${_parameter:1}
+        if starts_with [ "$_argument"; then
+          _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
+        else
+          _declaration=$(declare -p "$_argument")
+          _declaration=${_declaration/$_argument/$_parameter}
+        fi
+        _result+=( "$_declaration" )
+        ;;
+      * )
+        _result+=( "$(printf 'declare %s=%s' "$_parameter" "$_argument")" )
+        ;;
+    esac
+  done
+  IFS=';'
+  puts "${_result[*]}"
+}
+
+puts()                  { printf "%s\n" "$*"  ;}
+putserr()               { puts "$*" >&2       ;}
 
 quietly() {
   #shellcheck disable=SC2154
