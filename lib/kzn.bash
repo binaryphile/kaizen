@@ -21,13 +21,13 @@ absolute_path() {
 basename()            { puts "${1##*/}"                     ;}
 
 copya() {
-  local -n _kzn_ref1=$1
+  local -n _ref1=$1
   # shellcheck disable=SC2034
-  local -n _kzn_ref2=$2
+  local -n _ref2=$2
   local _i
 
-  for _i in "${!_kzn_ref1[@]}"; do
-    printf -v _kzn_ref2[$_i] '%s' "${_kzn_ref1[$_i]}"
+  for _i in "${!_ref1[@]}"; do
+    printf -v _ref2[$_i] '%s' "${_ref1[$_i]}"
   done
 }
 
@@ -134,7 +134,7 @@ instantiate() {
     _kzn_args=( "${_kzn_args[@]:0:$_kzn_i}" )
   }
   _kzn_found=false
-  is_set :_kzn_kwargs && {
+  is_set _kzn_kwargs && {
     for _kzn_i in "${!_kzn_kwargs[@]}"; do
       is_hash "${_kzn_kwargs[$_kzn_i]}" && {
         _kzn_found=true
@@ -216,7 +216,7 @@ is_on_redhat()          { is_file /etc/redhat-release || is_file /etc/centos-rel
 is_owned_by()           { [[ $(owner "$2") == "$1" ]]           ;}
 is_same_as()            { [[ $1 == "$2" ]]                      ;}
 is_service()            { chkconfig "$@"                        ;}
-is_set()                { is_symbol "$1" && declare -p "${1:1}" >/dev/null 2>&1 ;}
+is_set()                { declare -p "$1" >/dev/null 2>&1       ;}
 is_symbol()             { starts_with : "$1"                    ;}
 is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { id "$1" >/dev/null 2>&1               ;}
@@ -250,7 +250,7 @@ passed() {
     _parameter=${_parameters[$_i]}
     _type=${_parameter:0:1}
     case $_type in
-      '@' | '%' | ':' )
+      '@' | '%' )
         _parameter=${_parameter:1}
         if starts_with [ "$_argument"; then
           _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
@@ -261,7 +261,13 @@ passed() {
         _result+=( "$_declaration" )
         ;;
       * )
-        _result+=( "$(printf 'declare %s=%s' "$_parameter" "$_argument")" )
+        if is_set "$_argument"; then
+          _declaration=$(declare -p "$_argument")
+          _declaration=${_declaration/$_argument/$_parameter}
+          _result+=( "$_declaration" )
+        else
+          _result+=( "$(printf 'declare -- %s="%s"' "$_parameter" "$_argument")" )
+        fi
         ;;
     esac
   done

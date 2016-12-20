@@ -661,19 +661,19 @@ end
 describe 'is_set'
   it 'returns true if a variable is set'
     sample=true
-    is_set :sample
+    is_set sample
     assert equal 0 $?
   end
 
   it 'returns true if a variable is set to empty'
     sample=''
-    is_set :sample
+    is_set sample
     assert equal 0 $?
   end
 
   it 'returns false if a variable is not set'
     unset -v sample
-    is_set :sample
+    is_set sample
     assert unequal 0 $?
   end
 end

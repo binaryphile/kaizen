@@ -11,13 +11,23 @@ describe 'passed'
   it 'creates a scalar declaration from an array naming a single parameter with the value passed after'
     set -- 0
     params=( zero ) # shellcheck disable=SC2034
-    assert equal 'declare zero=0' "$(passed params "$@")"
+    assert equal 'declare -- zero="0"' "$(passed params "$@")"
+  end
+
+  it 'creates a scalar declaration from a scalar reference'; (
+    # shellcheck disable=SC2034
+    var=0
+    set -- var
+    params=( zero ) # shellcheck disable=SC2034
+    assert equal 'declare -- zero="0"' "$(passed params "$@")"
+    # shellcheck disable=SC2154
+    return "$_shpec_failures" )
   end
 
   it 'works for two arguments'
     set -- 0 1
     params=( zero one ) # shellcheck disable=SC2034
-    assert equal 'declare zero=0;declare one=1' "$(passed params "$@")"
+    assert equal 'declare -- zero="0";declare -- one="1"' "$(passed params "$@")"
   end
 
   it 'creates an array declaration from a special syntax'
