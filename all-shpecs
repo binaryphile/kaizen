@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+find_expression=( find . -name '*_shpec.*' )
+shpec_files=( $("${find_expression[@]}" -print) )
+
+printf 'shpec %s\n' "${shpec_files[*]}"
+
+"${find_expression[@]}" -exec shpec '{}' \;
