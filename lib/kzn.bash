@@ -11,7 +11,6 @@ absolute_path() {
 
   unset -v CDPATH
 
-  deprecate
   is_file "$target" && {
     filename=$(basename "$target")
     target=$(dirname "$target")
@@ -21,7 +20,7 @@ absolute_path() {
   puts "$result${filename:+/}${filename:-}"
 }
 
-basename() { deprecate; puts "${1##*/}" ;}
+basename() { puts "${1##*/}" ;}
 
 copya() {
   deprecate
@@ -40,11 +39,10 @@ contains()            { deprecate; [[ ${2:-} == *${1:-}* ]]            ;}
 current_user_group()  { deprecate; groups | awk '{print $1}'           ;}
 def_ary()             { putserr 'def_ary is deprecated, please use geta instead.'; IFS=$'\n' read -rd "" -a "$1" ||:   ;}
 
-defa()    { deprecate; geta "$1"; stripa "$1" ;}
+defa()    { geta "$1"; stripa "$1" ;}
 define()  { putserr 'define is deprecated, please use defs or gets instead.'; read -rd '' "$1" ||: ;}
 
 defs() {
-  deprecate
   local -a _kzn_result
   local IFS
 
@@ -54,14 +52,13 @@ defs() {
 }
 
 # shellcheck disable=SC2015
-dirname()             { deprecate; [[ $1 == */* ]] && puts "${1%/?*}"  || puts . ;}
+dirname()             { [[ $1 == */* ]] && puts "${1%/?*}"  || puts . ;}
 ends_with()           { deprecate; [[ ${2:-} == *$1 ]]                 ;}
-errexit()             { deprecate; putserr "$1"; exit "${2:-1}"        ;}
+errexit()             { putserr "$1"; exit "${2:-1}"        ;}
 extension()           { deprecate; puts "${1#*.}"                      ;}
 files_match()         { deprecate; cmp -s "$1" "$2"                    ;}
 
 geta() {
-  deprecate
   while IFS= read -r; do
     eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
   done
@@ -87,7 +84,6 @@ includes()            {
 }
 
 initialize_kzn() {
-  deprecate
   # shellcheck disable=SC2034
   printf -v done_message "\nDone.\n"
 
@@ -209,12 +205,12 @@ instantiate() {
   puts "${_kzn_output[*]}"
 }
 
-is_directory()          { deprecate; [[ -d "$1" ]]                         ;}
+is_directory()          { [[ -d "$1" ]]                         ;}
 is_executable()         { deprecate; [[ -x "$1" ]]                         ;}
 is_executable_file()    { deprecate; is_file "$1" && is_executable "$1"    ;}
-is_file()               { deprecate; [[ -f "$1" ]]                         ;}
+is_file()               { [[ -f "$1" ]]                         ;}
 is_function()           { deprecate; [[ $(type -t "$1") == "function" ]]   ;}
-is_given()              { deprecate; [[ -n "${1:-}" ]]                     ;}
+is_given()              { [[ -n "${1:-}" ]]                     ;}
 is_group()              { deprecate; grep -q "$1" /etc/group 2>/dev/null   ;}
 is_hash ()              { deprecate; is_symbol "$1" && [[ $(declare -p "${1:1}" 2>/dev/null) == 'declare -'[An]* ]] ;}
 is_mounted()            { deprecate; is_on_darwin && { diskutil info "$1" >/dev/null; return ;};  mount | grep -q "$1" ;}
@@ -223,17 +219,16 @@ is_on_darwin()          { deprecate; [[ $OSTYPE == darwin* ]]              ;}
 is_on_linux()           { deprecate; [[ $OSTYPE == linux* ]]               ;}
 is_on_redhat()          { deprecate; is_file /etc/redhat-release || is_file /etc/centos-release ;}
 is_owned_by()           { deprecate; [[ $(owner "$2") == "$1" ]]           ;}
-is_same_as()            { deprecate; [[ $1 == "$2" ]]                      ;}
+is_same_as()            { [[ $1 == "$2" ]]                      ;}
 is_service()            { deprecate; chkconfig "$@"                        ;}
-is_set()                { deprecate; declare -p "$1" >/dev/null 2>&1       ;}
+is_set()                { declare -p "$1" >/dev/null 2>&1       ;}
 is_symbol()             { deprecate; starts_with : "$1"                    ;}
-is_symlink()            { deprecate; [[ -h "$1" ]]                         ;}
+is_symlink()            { [[ -h "$1" ]]                         ;}
 is_user()               { deprecate; id "$1" >/dev/null 2>&1               ;}
 mode()                  { deprecate; find "$1" -prune -printf "%m\n" 2>/dev/null   ;}
 owner()                 { deprecate; is_on_darwin && { stat -f '%Su' "$1"; return ;}; stat -c '%U' "$1" ;}
 
 passed() {
-  deprecate
   local -n _parameters=$1; shift
   local -a _arguments=( "$@" )
   local -a _result
@@ -319,7 +314,6 @@ runas() {
 }
 
 sandbox_environment() {
-  deprecate
   umask 002
 }
 
@@ -340,7 +334,7 @@ split_str() {
   IFS="$_blib_spl_delimiter" read -ra _blib_spl_ref <<<"$_blib_spl_string" ||:
 }
 
-starts_with() { deprecate; [[ ${2:-} == "$1"* ]] ;}
+starts_with() { [[ ${2:-} == "$1"* ]] ;}
 
 strict_mode() {
   case $1 in
@@ -358,7 +352,6 @@ strict_mode() {
 }
 
 stripa() {
-  deprecate
   local -n _kzn_ref=$1
   local _kzn_i
   local _kzn_leading_whitespace
