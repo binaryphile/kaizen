@@ -63,13 +63,13 @@ describe 'passed'
     assert equal 'declare -A hash='\''([zero]="0" [one]="1")'\' "$(passed params "$@")"
   end
 
-  # it "doesn't leave the options function defined"
-  #   set -- 0
-  #   params=( zero ) # shellcheck disable=SC2034
-  #   passed params "$@" >/dev/null
-  #   type options >/dev/null 2>&1
-  #   assert unequal 0 $?
-  # end
+  it "doesn't leave the options function defined"
+    set -- 0
+    params=( zero ) # shellcheck disable=SC2034
+    passed params "$@" >/dev/null
+    type options >/dev/null 2>&1
+    assert unequal 0 $?
+  end
 end
 
 describe 'assign'

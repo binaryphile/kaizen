@@ -112,6 +112,7 @@ passed() {
   done
   IFS=';'
   puts "${_result[*]}"
+  unset -f options
 }
 
 puts()        { printf "%s\n" "$*"    ;}
