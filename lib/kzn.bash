@@ -50,7 +50,12 @@ geta() {
 
 is_directory()          { [[ -d "$1" ]]                   ;}
 is_file()               { [[ -f "$1" ]]                   ;}
-is_given()              { [[ -n "${1:-}" ]]               ;}
+
+is_given() {
+  local params=( value )
+  eval "$(passed params "$@")"
+  [[ -n "${value:-}" ]]
+}
 
 is_same_as() {
   local params=( string1 string2 )
