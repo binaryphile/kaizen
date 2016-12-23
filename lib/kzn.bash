@@ -58,11 +58,14 @@ passed() {
 
   options() {
     case $1 in
-      @)
+      '@')
         puts a
         ;;
-      %)
+      '%')
         puts A
+        ;;
+      '^')
+        puts n
         ;;
     esac
   }
@@ -74,7 +77,7 @@ passed() {
     case $_type in
       '@' | '%' )
         _parameter=${_parameter:1}
-        if starts_with [ "$_argument"; then
+        if [[ $_argument == '['* ]]; then
           _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(options "$_type")" "$_parameter" \' "$_argument" \')
         else
           _declaration=$(declare -p "$_argument")
@@ -82,8 +85,12 @@ passed() {
         fi
         _result+=( "$_declaration" )
         ;;
+      '^' )
+        _parameter=${_parameter:1}
+        _result+=( "$(printf 'declare -%s %s="%s"' "$(options "$_type")" "$_parameter" "$_argument")" )
+        ;;
       * )
-        if is_set "$_argument"; then
+        if declare -p "$_argument" >/dev/null 2>&1; then
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}
           _result+=( "$_declaration" )
@@ -117,11 +124,15 @@ strict_mode() {
 }
 
 stripa() {
-  local -n _ref=$1
+  # shellcheck disable=SC2034
+  local _params=( ^_ref )
+  eval "$(passed _params "$@")"
+
   local _i
   local _leading_whitespace
   local _len
 
+  # shellcheck disable=SC2154
   _leading_whitespace=${_ref[0]%%[^[:space:]]*}
   _len=${#_leading_whitespace}
   for _i in "${!_ref[@]}"; do
