@@ -48,13 +48,24 @@ geta() {
   done
 }
 
-is_directory()          { [[ -d "$1" ]]                   ;}
-is_file()               { [[ -f "$1" ]]                   ;}
+is_directory() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  [[ -d $path ]]
+}
+
+is_file() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  [[ -f $path ]]
+}
 
 is_given() {
   local params=( value )
   eval "$(passed params "$@")"
-  [[ -n "${value:-}" ]]
+  [[ -n ${value:-} ]]
 }
 
 is_same_as() {
