@@ -312,6 +312,18 @@ describe 'is_given'
   end
 end
 
+describe 'is_same_as'
+  it 'detects equivalent strings'
+    is_same_as one one
+    assert equal 0 $?
+  end
+
+  it 'detects non-equivalent strings'
+    is_same_as one two
+    assert unequal 0 $?
+  end
+end
+
 describe 'is_set'
   it 'returns true if a variable is set'
     sample=true
@@ -370,18 +382,6 @@ describe 'is_symlink'
     is_symlink "$temp"
     assert unequal 0 $?
     cleanup "$temp"
-  end
-end
-
-describe 'is_same_as'
-  it 'detects equivalent strings'
-    is_same_as one one
-    assert equal 0 $?
-  end
-
-  it 'detects non-equivalent strings'
-    is_same_as one two
-    assert unequal 0 $?
   end
 end
 
