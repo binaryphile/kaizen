@@ -120,11 +120,11 @@ putserr()     { puts "$@" >&2         ;}
 
 starts_with() {
   # shellcheck disable=SC2034
-  local params=( character string )
+  local params=( prefix string )
   eval "$(passed params "$@")"
 
   # shellcheck disable=SC2154
-  [[ ${string:-} == "$character"* ]]
+  [[ ${string:-} == "$prefix"* ]]
 }
 
 strict_mode() {
