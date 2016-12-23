@@ -106,10 +106,23 @@ passed() {
 
 puts()        { printf "%s\n" "$*"    ;}
 putserr()     { puts "$@" >&2         ;}
-starts_with() { [[ ${2:-} == "$1"* ]] ;}
+
+starts_with() {
+  # shellcheck disable=SC2034
+  local params=( character string )
+  eval "$(passed params "$@")"
+
+  # shellcheck disable=SC2154
+  [[ ${string:-} == "$character"* ]]
+}
 
 strict_mode() {
-  case $1 in
+  # shellcheck disable=SC2034
+  local params=( status )
+  eval "$(passed params "$@")"
+
+  # shellcheck disable=SC2154
+  case $status in
     on )
       set -o errexit
       set -o nounset
