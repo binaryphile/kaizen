@@ -19,14 +19,19 @@ absolute_path() {
 assign() {
   local params=( _ref _value )
   eval "$(passed params "$@")"
-
   # shellcheck disable=SC2154
   _name=${_value%%=*}
   _name=${_name##* }
   printf '%s' "${_value/$_name/$_ref}"
 }
 
-basename()  { puts "${1##*/}"         ;}
+basename() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  puts "${path##*/}"
+}
+
 defa()      { geta "$1"; stripa "$1"  ;}
 
 defs() {
@@ -43,11 +48,8 @@ dirname() { [[ $1 == */* ]] && puts "${1%/?*}" || puts . ;}
 errexit() { putserr "$1"; exit "${2:-1}" ;}
 
 geta() {
-  local _params=( _ref )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
   while IFS= read -r; do
-    eval "$(printf '%s+=( %q )' "$_ref" "$REPLY")"
+    eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
   done
 }
 
