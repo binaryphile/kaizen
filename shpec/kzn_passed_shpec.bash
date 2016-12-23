@@ -62,4 +62,28 @@ describe 'passed'
     params=( %hash ) # shellcheck disable=SC2034
     assert equal 'declare -A hash='\''([zero]="0" [one]="1")'\' "$(passed params "$@")"
   end
+
+  # it "doesn't leave the options function defined"
+  #   set -- 0
+  #   params=( zero ) # shellcheck disable=SC2034
+  #   passed params "$@" >/dev/null
+  #   type options >/dev/null 2>&1
+  #   assert unequal 0 $?
+  # end
+end
+
+describe 'assign'
+  it 'assigns an array result'
+    unset -v resulta
+    eval "$(assign resulta "$(printf 'declare -a sample=%s([0]="zero" [1]="one")%s' \' \')")"
+    # shellcheck disable=SC2034
+    assert equal "$(printf 'declare -a resulta=%s([0]="zero" [1]="one")%s' \' \')" "$(declare -p resulta)"
+  end
+
+  it 'assigns a hash result'
+    unset -v resulth
+    eval "$(assign resulth "$(printf 'declare -A sample=%s([one]="1" [zero]="0" )%s' \' \')")"
+    # shellcheck disable=SC2034
+    assert equal "$(printf 'declare -A resulth=%s([one]="1" [zero]="0" )%s' \' \')" "$(declare -p resulth)"
+  end
 end

@@ -16,6 +16,16 @@ absolute_path() {
   puts "$result${filename:+/}${filename:-}"
 }
 
+assign() {
+  local params=( _ref _value )
+  eval "$(passed params "$@")"
+
+  # shellcheck disable=SC2154
+  _name=${_value%%=*}
+  _name=${_name##* }
+  printf '%s' "${_value/$_name/$_ref}"
+}
+
 basename()  { puts "${1##*/}"         ;}
 defa()      { geta "$1"; stripa "$1"  ;}
 
