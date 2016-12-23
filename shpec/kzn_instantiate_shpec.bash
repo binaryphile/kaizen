@@ -1,5 +1,4 @@
 source kzn.bash
-initialize_kzn
 
 library=../lib/shpec_helper.bash
 source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
