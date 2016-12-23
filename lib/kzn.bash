@@ -125,7 +125,7 @@ strict_mode() {
 
 stripa() {
   # shellcheck disable=SC2034
-  local _params=( ^_ref )
+  local _params=( '&_ref' )
   eval "$(passed _params "$@")"
 
   local _i
