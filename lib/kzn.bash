@@ -43,8 +43,11 @@ dirname() { [[ $1 == */* ]] && puts "${1%/?*}" || puts . ;}
 errexit() { putserr "$1"; exit "${2:-1}" ;}
 
 geta() {
+  local _params=( _ref )
+  eval "$(passed _params "$@")"
+  # shellcheck disable=SC2154
   while IFS= read -r; do
-    eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
+    eval "$(printf '%s+=( %q )' "$_ref" "$REPLY")"
   done
 }
 
