@@ -2,17 +2,18 @@
 readonly _kzn=loaded
 
 absolute_path() {
-  local target=$1
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
   local filename
 
   unset -v CDPATH
-
-  is_file "$target" && {
-    filename=$(basename "$target")
-    target=$(dirname "$target")
+  is_file path && {
+    filename=$(basename path)
+    path=$(dirname path)
   }
-  is_directory "$target" || return 1
-  result=$( ( cd "$target"; pwd ) ) || return
+  is_directory path || return 1
+  result=$( ( cd "$path"; pwd ) ) || return
   puts "$result${filename:+/}${filename:-}"
 }
 
@@ -44,8 +45,23 @@ defs() {
 }
 
 # shellcheck disable=SC2015
-dirname() { [[ $1 == */* ]] && puts "${1%/?*}" || puts . ;}
-errexit() { putserr "$1"; exit "${2:-1}" ;}
+dirname() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  if [[ $path == */* ]]; then
+    puts "${path%/?*}"
+  else
+    puts .
+  fi
+}
+
+errexit() {
+  local params=( message return_code )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  putserr "$message"; exit "${return_code:-1}"
+}
 
 geta() {
   while IFS= read -r; do
