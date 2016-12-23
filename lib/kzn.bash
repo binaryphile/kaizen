@@ -53,7 +53,13 @@ is_file()               { [[ -f "$1" ]]                   ;}
 is_given()              { [[ -n "${1:-}" ]]               ;}
 is_same_as()            { [[ $1 == "$2" ]]                ;}
 is_set()                { declare -p "$1" >/dev/null 2>&1 ;}
-is_symlink()            { [[ -h "$1" ]]                   ;}
+is_symlink() {
+  local params=( path )
+  eval "$(passed params "$@")"
+
+  # shellcheck disable=SC2154
+  [[ -h $path ]]
+}
 
 passed() {
   local -n _parameters=$1; shift
