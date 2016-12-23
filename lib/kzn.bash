@@ -64,7 +64,7 @@ passed() {
       '%')
         puts A
         ;;
-      '^')
+      '&')
         puts n
         ;;
     esac
@@ -85,7 +85,7 @@ passed() {
         fi
         _result+=( "$_declaration" )
         ;;
-      '^' )
+      '&' )
         _parameter=${_parameter:1}
         _result+=( "$(printf 'declare -%s %s="%s"' "$(options "$_type")" "$_parameter" "$_argument")" )
         ;;

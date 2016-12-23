@@ -44,6 +44,13 @@ describe 'passed'
     assert equal 'declare -A hash='\''([one]="1" [zero]="0" )'\' "$(passed params "$@")"
   end
 
+  it 'creates a reference declaration from a special syntax'
+    # shellcheck disable=SC2034
+    set -- var
+    params=( '&ref' ) # shellcheck disable=SC2034
+    assert equal 'declare -n ref="var"' "$(passed params "$@")"
+  end
+
   it 'accepts an array literal'
     set -- '[0]="zero" [1]="one"'
     params=( @array ) # shellcheck disable=SC2034
