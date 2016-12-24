@@ -211,81 +211,169 @@ end
 
 describe 'is_directory'
   it 'identifies a directory'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    is_directory "$temp"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    is_directory "$dir"
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it 'identifies a symlink to a directory'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
     # shellcheck disable=SC2154
-    $ln . "$temp"/dirlink
-    is_directory "$temp"/dirlink
+    $ln . "$dir"/dirlink
+    is_directory "$dir"/dirlink
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it "doesn't identify a symlink to a file"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
     # shellcheck disable=SC2154
-    $ln file "$temp"/filelink
-    is_directory "$temp"/filelink
+    $ln file "$dir"/filelink
+    is_directory "$dir"/filelink
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it "doesn't identify a file"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
-    is_directory "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    is_directory "$dir"/file
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
+  end
+end
+
+describe 'is_executable'
+  it 'identifies an executable file'
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    is_executable "$dir"/file
+    assert equal 0 $?
+    cleanup "$dir"
+  end
+
+  it 'identifies an executable directory'
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    is_executable "$dir"/dir
+    assert equal 0 $?
+    cleanup "$dir"
+  end
+
+  it "doesn't identify an non-executable file"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    is_executable "$dir"/file
+    assert unequal 0 $?
+    cleanup "$dir"
+  end
+
+  it "doesn't identify a non-executable directory"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    is_executable "$dir"/dir
+    assert unequal 0 $?
+    cleanup "$dir"
+  end
+
+  it 'identifies a link to an executable file'
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    # shellcheck disable=SC2154
+    $ln file "$dir"/link
+    is_executable "$dir"/link
+    assert equal 0 $?
+    cleanup "$dir"
+  end
+
+  it 'identifies a link to an executable directory'
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    # shellcheck disable=SC2154
+    $ln dir "$dir"/link
+    is_executable "$dir"/link
+    assert equal 0 $?
+    cleanup "$dir"
+  end
+
+  it "doesn't identify a link to a non-executable file"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    # shellcheck disable=SC2154
+    $ln file "$dir"/link
+    is_executable "$dir"/link
+    assert unequal 0 $?
+    cleanup "$dir"
+  end
+
+  it "doesn't identify a link to a non-executable directory"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    # shellcheck disable=SC2154
+    $ln dir "$dir"/link
+    is_executable "$dir"/link
+    assert unequal 0 $?
+    cleanup "$dir"
   end
 end
 
 describe 'is_file'
   it 'identifies a file'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
-    is_file "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    is_file "$dir"/file
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it 'identifies a symlink to a file'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
     # shellcheck disable=SC2154
-    $ln file "$temp"/filelink
-    is_file "$temp"/filelink
+    $ln file "$dir"/filelink
+    is_file "$dir"/filelink
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it "doesn't identify a symlink to a directory"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
     # shellcheck disable=SC2154
-    $ln . "$temp"/dirlink
-    is_file "$temp"/dirlink
+    $ln . "$dir"/dirlink
+    is_file "$dir"/dirlink
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it "doesn't identify a directory"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    is_file "$temp"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    is_file "$dir"
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 end
 
@@ -347,41 +435,41 @@ end
 
 describe 'is_symlink'
   it "doesn't identify a file"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
-    is_symlink "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    is_symlink "$dir"/file
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it 'identifies a symlink to a file'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    touch "$temp"/file
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
     # shellcheck disable=SC2154
-    $ln file "$temp"/filelink
-    is_symlink "$temp"/filelink
+    $ln file "$dir"/filelink
+    is_symlink "$dir"/filelink
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it 'identifies a symlink to a directory'
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
     # shellcheck disable=SC2154
-    $ln . "$temp"/dirlink
-    is_symlink "$temp"/dirlink
+    $ln . "$dir"/dirlink
+    is_symlink "$dir"/dirlink
     assert equal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 
   it "doesn't identify a directory"
-    temp=$($mktempd)
-    validate_dirname "$temp" || return
-    is_symlink "$temp"
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    is_symlink "$dir"
     assert unequal 0 $?
-    cleanup "$temp"
+    cleanup "$dir"
   end
 end
 
