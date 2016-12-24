@@ -115,6 +115,7 @@ passed() {
   local _i
   local _parameter
   local _type
+  local _value
 
   options() {
     case $1 in
@@ -124,15 +125,18 @@ passed() {
       '%')
         puts A
         ;;
-      '&')
-        puts n
-        ;;
     esac
   }
 
   for _i in "${!_parameters[@]}"; do
-    _argument=${_arguments[$_i]}
     _parameter=${_parameters[$_i]}
+    if [[ $_parameter == *'='* ]]; then
+      local '_value='"${_parameter#*=}"
+      _parameter=${_parameter%%=*}
+      _argument=${_arguments[$_i]:-$_value}
+    else
+      _argument=${_arguments[$_i]}
+    fi
     _type=${_parameter:0:1}
     case $_type in
       '@' | '%' )
@@ -147,16 +151,18 @@ passed() {
         ;;
       '&' )
         _parameter=${_parameter:1}
-        _result+=( "$(printf 'declare -%s %s="%s"' "$(options "$_type")" "$_parameter" "$_argument")" )
+        _result+=( "$(printf 'declare -n %s="%s"' "$_parameter" "$_argument")" )
         ;;
       * )
         if declare -p "$_argument" >/dev/null 2>&1; then
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}
-          _result+=( "$_declaration" )
         else
-          _result+=( "$(printf 'declare -- %s="%s"' "$_parameter" "$_argument")" )
+          # shellcheck disable=SC2030
+          _declaration=$(declare -p _argument)
+          _declaration=${_declaration/_argument/$_parameter}
         fi
+        _result+=( "$_declaration" )
         ;;
     esac
   done
@@ -165,8 +171,8 @@ passed() {
   unset -f options
 }
 
-puts()        { printf "%s\n" "$*"    ;}
-putserr()     { puts "$@" >&2         ;}
+puts()        { printf "%s\n" "$*"  ;}
+putserr()     { puts "$@" >&2       ;}
 
 starts_with() {
   # shellcheck disable=SC2034
