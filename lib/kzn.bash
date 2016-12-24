@@ -57,10 +57,12 @@ dirname() {
 }
 
 errexit() {
-  local params=( message return_code )
+  local params=( message return_code=1 )
   eval "$(passed params "$@")"
   # shellcheck disable=SC2154
-  putserr "$message"; exit "${return_code:-1}"
+  putserr "$message"
+  # shellcheck disable=SC2154
+  exit "$return_code"
 }
 
 geta() {
