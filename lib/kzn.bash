@@ -76,6 +76,20 @@ is_directory() {
   [[ -d $path ]]
 }
 
+is_executable() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  [[ -x $path ]]
+}
+
+is_executable_file() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  is_file "$path" && is_executable "$path"
+}
+
 is_file() {
   local params=( path )
   eval "$(passed params "$@")"
@@ -87,6 +101,13 @@ is_given() {
   local params=( value )
   eval "$(passed params "$@")"
   [[ -n ${value:-} ]]
+}
+
+is_nonexecutable_file() {
+  local params=( path )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  is_file "$path" && ! is_executable "$path"
 }
 
 is_same_as() {
