@@ -44,7 +44,7 @@ basename() {
   puts "${path##*/}"
 }
 
-defa()      { geta "$1"; stripa "$1"  ;}
+defa() { geta "$1"; stripa "$1" ;}
 
 defs() {
   local -a _result
