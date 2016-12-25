@@ -140,6 +140,8 @@ is_symlink() {
   [[ -h $path ]]
 }
 
+pass() { declare -p "$1" ;}
+
 passed() {
   local -n _parameters=$1; shift
   local -a _arguments=( "$@" )

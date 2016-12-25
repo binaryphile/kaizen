@@ -6,6 +6,24 @@ unset -v library
 
 initialize_shpec_helper
 
+describe 'assign'
+  it 'assigns an array result'
+    unset -v resulta
+    eval "$(assign resulta "$(printf 'declare -a sample=%s([0]="zero" [1]="one")%s' \' \')")"
+    expected=$(printf 'declare -a resulta=%s([0]="zero" [1]="one")%s' \' \')
+    # shellcheck disable=SC2034
+    assert equal "$expected" "$(declare -p resulta)"
+  end
+
+  it 'assigns a hash result'
+    unset -v resulth
+    eval "$(assign resulth "$(printf 'declare -A sample=%s([one]="1" [zero]="0" )%s' \' \')")"
+    expected=$(printf 'declare -A resulth=%s([one]="1" [zero]="0" )%s' \' \')
+    # shellcheck disable=SC2034
+    assert equal "$expected" "$(declare -p resulth)"
+  end
+end
+
 describe 'passed'
   it 'creates a scalar declaration from an array naming a single parameter with the value passed after'
     set -- 0
@@ -102,20 +120,10 @@ describe 'passed'
   end
 end
 
-describe 'assign'
-  it 'assigns an array result'
-    unset -v resulta
-    eval "$(assign resulta "$(printf 'declare -a sample=%s([0]="zero" [1]="one")%s' \' \')")"
-    expected=$(printf 'declare -a resulta=%s([0]="zero" [1]="one")%s' \' \')
+describe 'pass'
+  it 'declares a variable'
     # shellcheck disable=SC2034
-    assert equal "$expected" "$(declare -p resulta)"
-  end
-
-  it 'assigns a hash result'
-    unset -v resulth
-    eval "$(assign resulth "$(printf 'declare -A sample=%s([one]="1" [zero]="0" )%s' \' \')")"
-    expected=$(printf 'declare -A resulth=%s([one]="1" [zero]="0" )%s' \' \')
-    # shellcheck disable=SC2034
-    assert equal "$expected" "$(declare -p resulth)"
+    sample=var
+    assert equal 'declare -- sample="var"' "$(pass sample)"
   end
 end
