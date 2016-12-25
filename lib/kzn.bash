@@ -71,7 +71,7 @@ errexit() {
   local params=( message return_code=1 )
   eval "$(passed params "$@")"
   # shellcheck disable=SC2154
-  putserr "$message"
+  putserr message
   # shellcheck disable=SC2154
   exit "$return_code"
 }
@@ -100,7 +100,7 @@ is_executable_file() {
   local params=( path )
   eval "$(passed params "$@")"
   # shellcheck disable=SC2154
-  is_file "$path" && is_executable "$path"
+  is_file path && is_executable path
 }
 
 is_file() {
@@ -113,14 +113,15 @@ is_file() {
 is_given() {
   local params=( value )
   eval "$(passed params "$@")"
-  [[ -n ${value:-} ]]
+  # shellcheck disable=SC2154
+  [[ -n $value ]]
 }
 
 is_nonexecutable_file() {
   local params=( path )
   eval "$(passed params "$@")"
   # shellcheck disable=SC2154
-  is_file "$path" && ! is_executable "$path"
+  is_file path && ! is_executable path
 }
 
 is_same_as() {
@@ -213,7 +214,7 @@ starts_with() {
   eval "$(passed params "$@")"
 
   # shellcheck disable=SC2154
-  [[ ${string:-} == "$prefix"* ]]
+  [[ $string == "$prefix"* ]]
 }
 
 strict_mode() {
