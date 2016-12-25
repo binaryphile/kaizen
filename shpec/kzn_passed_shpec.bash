@@ -100,14 +100,6 @@ describe 'passed'
     expected=$(printf 'declare -A hash=%s([zero]="0" [one]="1")%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
   end
-
-  it "doesn't leave the options function defined"
-    set -- 0
-    params=( zero ) # shellcheck disable=SC2034
-    passed params "$@" >/dev/null
-    type options >/dev/null 2>&1
-    assert unequal 0 $?
-  end
 end
 
 describe 'assign'

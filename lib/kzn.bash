@@ -1,6 +1,17 @@
 [[ -n ${_kzn:-} ]] && return
 readonly _kzn=loaded
 
+_options() {
+  case $1 in
+    '@')
+      printf 'a'
+      ;;
+    '%')
+      printf 'A'
+      ;;
+  esac
+}
+
 absolute_path() {
   local params=( path )
   eval "$(passed params "$@")"
@@ -140,17 +151,6 @@ passed() {
   local _type
   local _value
 
-  options() {
-    case $1 in
-      '@')
-        puts a
-        ;;
-      '%')
-        puts A
-        ;;
-    esac
-  }
-
   for _i in "${!_parameters[@]}"; do
     _parameter=${_parameters[$_i]}
     if [[ $_parameter == *'='* ]]; then
@@ -165,7 +165,7 @@ passed() {
       '@' | '%' )
         _parameter=${_parameter:1}
         if [[ $_argument == '['* ]]; then
-          _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(options "$_type")" "$_parameter" \' "$_argument" \')
+          _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
         else
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}
@@ -190,12 +190,22 @@ passed() {
     esac
   done
   IFS=';'
-  puts "${_result[*]}"
-  unset -f options
+  printf '%s\n' "${_result[*]}"
 }
 
-puts()        { printf "%s\n" "$*"  ;}
-putserr()     { puts "$@" >&2       ;}
+puts() {
+  local params=( message )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  printf '%s\n' "$message"
+}
+
+putserr() {
+  local params=( message )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  puts message >&2
+}
 
 starts_with() {
   # shellcheck disable=SC2034
