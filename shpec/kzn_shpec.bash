@@ -525,3 +525,9 @@ describe 'to_lower'
     assert equal upper "$(to_lower UPPER)"
   end
 end
+
+describe 'to_upper'
+  it 'should upper-case a string'
+    assert equal LOWER "$(to_upper lower)"
+  end
+end

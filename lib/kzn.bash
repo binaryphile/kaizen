@@ -263,3 +263,11 @@ to_lower() {
 
   puts "${string,,}"
 }
+
+to_upper() {
+  # shellcheck disable=SC2034
+  local _params=( string )
+  eval "$(passed _params "$@")"
+
+  puts "${string^^}"
+}
