@@ -1,1 +1,0 @@
-source gnu-macros.bash
