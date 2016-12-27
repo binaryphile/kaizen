@@ -1,6 +1,6 @@
 source kzn.bash
 
-library=../lib/shpec_helper.bash
+library=../lib/shpec-helper.bash
 source "${BASH_SOURCE%/*}/$library" 2>/dev/null || source "$library"
 unset -v library
 

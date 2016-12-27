@@ -1,4 +1,4 @@
-[[ -n $_shpec_helper ]] && return
+[[ -n ${_shpec_helper:-} ]] && return
 readonly _shpec_helper=loaded
 
 source kzn.bash
