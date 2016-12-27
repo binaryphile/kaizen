@@ -255,3 +255,11 @@ stripa() {
     printf -v _ref[$_i] '%s' "${_ref[$_i]:$_len}"
   done
 }
+
+to_lower() {
+  # shellcheck disable=SC2034
+  local _params=( string )
+  eval "$(passed _params "$@")"
+
+  puts "${string,,}"
+}

@@ -519,3 +519,9 @@ describe 'stripa'
     assert equal "$expected" "$(declare -p resulta)"
   end
 end
+
+describe 'to_lower'
+  it 'should lower-case a string'
+    assert equal upper "$(to_lower UPPER)"
+  end
+end
