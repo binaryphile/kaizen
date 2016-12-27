@@ -24,6 +24,14 @@ describe 'assign'
   end
 end
 
+describe 'pass'
+  it 'declares a variable'
+    # shellcheck disable=SC2034
+    sample=var
+    assert equal 'declare -- sample="var"' "$(pass sample)"
+  end
+end
+
 describe 'passed'
   it 'creates a scalar declaration from an array naming a single parameter with the value passed after'
     set -- 0
@@ -117,13 +125,5 @@ describe 'passed'
     params=( %hash='[zero]="0" [one]="1"' ) # shellcheck disable=SC2034
     expected=$(printf 'declare -A hash=%s([zero]="0" [one]="1")%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
-  end
-end
-
-describe 'pass'
-  it 'declares a variable'
-    # shellcheck disable=SC2034
-    sample=var
-    assert equal 'declare -- sample="var"' "$(pass sample)"
   end
 end
