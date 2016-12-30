@@ -124,3 +124,12 @@ describe 'passed'
     assert equal "$expected" "$(passed params "$@")"
   end
 end
+
+describe 'with'
+  it 'should import hash keys into the current scope with a prefix'
+    unset -v zero
+    # shellcheck disable=SC2034
+    declare -A sampleh=( [zero]=0 )
+    assert equal 'declare -- sampleh_zero="0"' "$(with sampleh)"
+  end
+end

@@ -316,7 +316,7 @@ with() {
   # shellcheck disable=SC2034
   for item in $result; do
     eval "$(assign items "$(splits '=' item)")"
-    declarations+=( "$(printf 'declare -- %s=%s' "${items[0]:1:-1}" "${items[1]}")" )
+    declarations+=( "$(printf 'declare -- %s_%s=%s' "$1" "${items[0]:1:-1}" "${items[1]}")" )
   done
   eval "$(assign result "$(joina ';' declarations)")"
   puts result

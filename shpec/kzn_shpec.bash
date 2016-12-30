@@ -554,12 +554,3 @@ describe 'to_upper'
     assert equal LOWER "$(to_upper lower)"
   end
 end
-
-describe 'with'
-  it 'should import hash keys into the current scope'
-    unset -v zero
-    # shellcheck disable=SC2034
-    declare -A sampleh=( [zero]=0 )
-    assert equal 'declare -- zero="0"' "$(with sampleh)"
-  end
-end
