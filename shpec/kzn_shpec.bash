@@ -118,18 +118,18 @@ end
 
 describe 'defa'
   it 'strips each line of a heredoc and assigns each to an element of an array'
-    unset -v resulta
+    unset -v results
     # shellcheck disable=SC1041,SC1042,SC1073
-    defa resulta <<'EOS'
+    defa results <<'EOS'
       one
       two
       three
 EOS
-    expected='declare -a resulta=%s([0]="one" [1]="two" [2]="three")%s'
+    expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
     # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
     # shellcheck disable=SC2154
-    assert equal "$expected" "$(declare -p resulta)"
+    assert equal "$expected" "$(declare -p results)"
   end
 end
 
@@ -178,34 +178,34 @@ end
 
 describe 'geta'
   it 'assigns each line of an input to an element of an array'
-    unset -v resulta
+    unset -v results
     # shellcheck disable=SC1041,SC1042,SC1073
-    geta resulta <<'EOS'
+    geta results <<'EOS'
       zero
       one
       two
 EOS
-    expected='declare -a resulta=%s([0]="      zero" [1]="      one" [2]="      two")%s'
+    expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="      two")%s'
     # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
     # shellcheck disable=SC2154
-    assert equal "$expected" "$(declare -p resulta)"
+    assert equal "$expected" "$(declare -p results)"
   end
 
   it 'preserves a blank line'
-    unset -v resulta
+    unset -v results
     # shellcheck disable=SC1041,SC1042,SC1073
-    geta resulta <<'EOS'
+    geta results <<'EOS'
       zero
       one
 
       three
 EOS
-    expected='declare -a resulta=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
+    expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
     # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
     # shellcheck disable=SC2154
-    assert equal "$expected" "$(declare -p resulta)"
+    assert equal "$expected" "$(declare -p results)"
   end
 end
 
@@ -485,6 +485,15 @@ describe 'putserr'
   end
 end
 
+describe 'splits'
+  it 'splits a string into an array on a partition character'
+    # shellcheck disable=SC2034
+    sample='a=b'
+    printf -v expected 'declare -a results=%s([0]="a" [1]="b")%s' \' \'
+    assert equal "$expected" "$(splits '=' sample)"
+  end
+end
+
 describe 'starts_with'
   it 'detects if a string starts with a specified character'
     starts_with / /test
@@ -500,23 +509,23 @@ end
 describe 'stripa'
   it 'strips each element of an array'
     # shellcheck disable=SC2034
-    resulta=("    zero" "    one" "    two")
-    stripa resulta
-    expected='declare -a resulta=%s([0]="zero" [1]="one" [2]="two")%s'
+    results=("    zero" "    one" "    two")
+    stripa results
+    expected='declare -a results=%s([0]="zero" [1]="one" [2]="two")%s'
     # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
     # shellcheck disable=SC2154,SC2034
-    assert equal "$expected" "$(declare -p resulta)"
+    assert equal "$expected" "$(declare -p results)"
   end
 
   it 'leaves a blank element intact'
-    resulta=("    zero" "    one"  "" "    three")
-    stripa resulta
-    expected='declare -a resulta=%s([0]="zero" [1]="one" [2]="" [3]="three")%s'
+    results=("    zero" "    one"  "" "    three")
+    stripa results
+    expected='declare -a results=%s([0]="zero" [1]="one" [2]="" [3]="three")%s'
     # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
     # shellcheck disable=SC2154,SC2034
-    assert equal "$expected" "$(declare -p resulta)"
+    assert equal "$expected" "$(declare -p results)"
   end
 end
 

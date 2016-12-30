@@ -47,12 +47,12 @@ basename() {
 defa() { geta "$1"; stripa "$1" ;}
 
 defs() {
-  local -a _result
+  local -a _results
   local IFS
 
-  defa _result
+  defa _results
   IFS=$'\n'
-  printf -v "$1" '%s' "${_result[*]}"
+  printf -v "$1" '%s' "${_results[*]}"
 }
 
 # shellcheck disable=SC2015
@@ -145,7 +145,7 @@ pass() { declare -p "$1" ;}
 passed() {
   local -n _parameters=$1; shift
   local -a _arguments=( "$@" )
-  local -a _result
+  local -a _results
   local IFS
   local _argument
   local _declaration
@@ -173,11 +173,11 @@ passed() {
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}
         fi
-        _result+=( "$_declaration" )
+        _results+=( "$_declaration" )
         ;;
       '&' )
         _parameter=${_parameter:1}
-        _result+=( "$(printf 'declare -n %s="%s"' "$_parameter" "$_argument")" )
+        _results+=( "$(printf 'declare -n %s="%s"' "$_parameter" "$_argument")" )
         ;;
       * )
         if declare -p "$_argument" >/dev/null 2>&1; then
@@ -188,12 +188,12 @@ passed() {
           _declaration=$(declare -p _argument)
           _declaration=${_declaration/_argument/$_parameter}
         fi
-        _result+=( "$_declaration" )
+        _results+=( "$_declaration" )
         ;;
     esac
   done
   IFS=';'
-  printf '%s\n' "${_result[*]}"
+  printf '%s\n' "${_results[*]}"
 }
 
 puts() {
@@ -210,11 +210,25 @@ putserr() {
   puts message >&2
 }
 
+splits() {
+  local params=( delimiter string )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  local -a results
+  local IFS
+
+  # shellcheck disable=SC2154
+  IFS="$delimiter"
+  # shellcheck disable=SC2086,SC2154
+  set -- $string
+  results=( "$@" )
+  declare -p results
+}
+
 starts_with() {
   # shellcheck disable=SC2034
   local params=( prefix string )
   eval "$(passed params "$@")"
-
   # shellcheck disable=SC2154
   [[ $string == "$prefix"* ]]
 }
@@ -223,7 +237,6 @@ strict_mode() {
   # shellcheck disable=SC2034
   local params=( status )
   eval "$(passed params "$@")"
-
   # shellcheck disable=SC2154
   case $status in
     on )
