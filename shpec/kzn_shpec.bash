@@ -473,6 +473,14 @@ describe 'is_symlink'
   end
 end
 
+describe 'joina'
+  it 'joins an array with a delimiter'
+    # shellcheck disable=SC2034
+    declare -a samples=([0]=zero [1]=one)
+    assert equal 'declare -- result="zero;one"' "$(joina ';' samples)"
+  end
+end
+
 describe 'puts'
   it 'outputs a string on stdout'
     assert equal sample "$(puts 'sample')"

@@ -140,6 +140,19 @@ is_symlink() {
   [[ -h $path ]]
 }
 
+joina() {
+  local params=( delimiter array )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+  local result
+
+  # shellcheck disable=SC2154
+  set -- "${array[@]}"
+  # shellcheck disable=SC2154
+  IFS="$delimiter" result=${array[*]}
+  pass result
+}
+
 pass() { declare -p "$1" ;}
 
 passed() {
@@ -222,7 +235,7 @@ splits() {
   # shellcheck disable=SC2086,SC2154
   set -- $string
   results=( "$@" )
-  declare -p results
+  pass results
 }
 
 starts_with() {
