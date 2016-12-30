@@ -8,19 +8,16 @@ initialize_shpec_helper
 
 describe 'assign'
   it 'assigns an array result'
-    unset -v resulta
-    eval "$(assign resulta "$(printf 'declare -a sample=%s([0]="zero" [1]="one")%s' \' \')")"
-    expected=$(printf 'declare -a resulta=%s([0]="zero" [1]="one")%s' \' \')
-    # shellcheck disable=SC2034
-    assert equal "$expected" "$(declare -p resulta)"
+    printf -v sample    'declare -a sample=%s([0]="zero" [1]="one")%s' \' \'
+    printf -v expected  'declare -a otherv=%s([0]="zero" [1]="one")%s' \' \'
+    assert equal "$expected" "$(assign otherv "$sample")"
   end
 
   it 'assigns a hash result'
-    unset -v resulth
-    eval "$(assign resulth "$(printf 'declare -A sample=%s([one]="1" [zero]="0" )%s' \' \')")"
-    expected=$(printf 'declare -A resulth=%s([one]="1" [zero]="0" )%s' \' \')
+    printf -v sample    'declare -A sample=%s([one]="1" [zero]="0" )%s' \' \'
+    printf -v expected  'declare -A otherv=%s([one]="1" [zero]="0" )%s' \' \'
     # shellcheck disable=SC2034
-    assert equal "$expected" "$(declare -p resulth)"
+    assert equal "$expected" "$(assign otherv "$sample")"
   end
 end
 

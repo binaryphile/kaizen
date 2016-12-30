@@ -29,9 +29,10 @@ absolute_path() {
 }
 
 assign() {
-  local params=( _ref _value )
-  eval "$(passed params "$@")"
-  # shellcheck disable=SC2154
+  local _ref=$1
+  local _value=$2
+  local _name
+
   _name=${_value%%=*}
   _name=${_name##* }
   printf '%s' "${_value/$_name/$_ref}"
