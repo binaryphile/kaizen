@@ -142,7 +142,7 @@ is_symlink() {
 }
 
 joina() {
-  local params=( delimiter array )
+  local params=( delimiter @array )
   eval "$(passed params "$@")"
   # shellcheck disable=SC2154
   local result
