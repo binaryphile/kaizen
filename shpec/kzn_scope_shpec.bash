@@ -126,10 +126,17 @@ describe 'passed'
 end
 
 describe 'with'
-  it 'should import hash keys into the current scope with a prefix'
+  it 'should import a hash key into the current scope with a prefix'
     unset -v zero
     # shellcheck disable=SC2034
     declare -A sampleh=( [zero]=0 )
     assert equal 'declare -- sampleh_zero="0"' "$(with sampleh)"
+  end
+
+  it 'should import a keys with a space in its value'
+    unset -v zero
+    # shellcheck disable=SC2034
+    declare -A sampleh=( [zero]="0 1" )
+    assert equal 'declare -- sampleh_zero="0 1"' "$(with sampleh)"
   end
 end

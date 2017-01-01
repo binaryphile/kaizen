@@ -235,6 +235,7 @@ splits() {
   IFS="$delimiter"
   # shellcheck disable=SC2086,SC2154
   set -- $string
+  # shellcheck disable=SC2034
   results=( "$@" )
   pass results
 }
@@ -304,19 +305,16 @@ with() {
   local params=( %hash )
   eval "$(passed params "$@")"
 
-  local -a items
   local -a declarations
   local item
-  local result
+  local key
 
-  # shellcheck disable=SC2034
-  result=$(declare -p hash)
-  result=${result#*=}
-  result=${result:2:-3}
-  # shellcheck disable=SC2034
-  for item in $result; do
-    eval "$(assign items "$(splits '=' item)")"
-    declarations+=( "$(printf 'declare -- %s_%s=%s' "$1" "${items[0]:1:-1}" "${items[1]}")" )
+  # shellcheck disable=SC2154
+  for key in "${!hash[@]}"; do
+    item=${hash[$key]}
+    item=$(declare -p item)
+    item=${item#*=}
+    declarations+=( "$(printf 'declare -- %s_%s=%s' "$1" "$key" "$item")" )
   done
   eval "$(assign result "$(joina ';' declarations)")"
   puts result
