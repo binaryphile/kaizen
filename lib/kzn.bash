@@ -171,19 +171,15 @@ passed() {
 
   for _i in "${!_parameters[@]}"; do
     _parameter=${_parameters[$_i]}
-    if [[ $_parameter == *'='* ]]; then
-      local '_value='"${_parameter#*=}"
-      _parameter=${_parameter%%=*}
-      _argument=${_arguments[$_i]:-$_value}
-    else
-      _argument=${_arguments[$_i]}
-    fi
+    _value=${_parameter#*=}
+    _parameter=${_parameter%%=*}
+    _argument=${_arguments[$_i]:-$_value}
     _type=${_parameter:0:1}
     case $_type in
       '@' | '%' )
         _parameter=${_parameter:1}
-        if [[ $_argument == '['* ]]; then
-          _declaration=$(printf 'declare -%s %s=%s(%s)%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
+        if [[ $_argument == '('* ]]; then
+          _declaration=$(printf 'declare -%s %s=%s%s%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
         else
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}

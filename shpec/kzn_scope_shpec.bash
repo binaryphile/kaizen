@@ -97,7 +97,7 @@ describe 'passed'
   end
 
   it 'accepts an array literal'
-    set -- '[0]="zero" [1]="one"'
+    set -- '([0]="zero" [1]="one")'
     params=( @array ) # shellcheck disable=SC2034
     expected=$(printf 'declare -a array=%s([0]="zero" [1]="one")%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
@@ -105,13 +105,13 @@ describe 'passed'
 
   it 'allows array default values'
     set --
-    params=( @array='[0]="zero" [1]="one"' ) # shellcheck disable=SC2034
+    params=( @array='([0]="zero" [1]="one")' ) # shellcheck disable=SC2034
     expected=$(printf 'declare -a array=%s([0]="zero" [1]="one")%s' \' \' )
     assert equal "$expected" "$(passed params "$@")"
   end
 
   it 'accepts a hash literal'
-    set -- '[zero]="0" [one]="1"'
+    set -- '([zero]="0" [one]="1")'
     params=( %hash ) # shellcheck disable=SC2034
     expected=$(printf 'declare -A hash=%s([zero]="0" [one]="1")%s' \' \' )
     assert equal "$expected" "$(passed params "$@")"
