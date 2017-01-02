@@ -477,13 +477,13 @@ describe 'joina'
   it 'joins an array with a delimiter'
     # shellcheck disable=SC2034
     declare -a samples=([0]=zero [1]=one)
-    assert equal 'declare -- result="zero;one"' "$(joina ';' samples)"
+    assert equal 'zero;one' "$(joina ';' samples)"
   end
 
   it 'joins an array with one item'
     # shellcheck disable=SC2034
     declare -a samples=([0]=zero)
-    assert equal 'declare -- result="zero"' "$(joina ';' samples)"
+    assert equal 'zero' "$(joina ';' samples)"
   end
 end
 

@@ -144,14 +144,15 @@ is_symlink() {
 joina() {
   local params=( delimiter @array )
   eval "$(passed params "$@")"
-  # shellcheck disable=SC2154
+
+  local IFS
   local result
 
   # shellcheck disable=SC2154
   set -- "${array[@]}"
+  IFS=';'
   # shellcheck disable=SC2154
-  IFS="$delimiter" result=${array[*]}
-  pass result
+  printf '%s\n' "${array[*]}"
 }
 
 pass() { declare -p "$1" ;}
@@ -316,6 +317,5 @@ with() {
     item=${item#*=}
     declarations+=( "$(printf 'declare -- %s_%s=%s' "$1" "$key" "$item")" )
   done
-  eval "$(assign result "$(joina ';' declarations)")"
-  puts result
+  puts "$(joina ';' declarations)"
 }
