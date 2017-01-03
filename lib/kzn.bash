@@ -173,24 +173,25 @@ passed() {
   local -a _arguments=( "$@" )
   local -a _results
   local IFS
-  local _argument
+  local _argument=''
   local _declaration
   local _i
   local _parameter
   local _type
-  local _value
 
   for _i in "${!_parameters[@]}"; do
     _parameter=${_parameters[$_i]}
-    _value=${_parameter#*=}
+    [[ $_parameter == *'='* ]] && _argument=${_parameter#*=}
     _parameter=${_parameter%%=*}
-    _argument=${_arguments[$_i]:-$_value}
+    [[ ${_arguments[$_i]+x} == 'x' ]] && _argument=${_arguments[$_i]}
     _type=${_parameter:0:1}
     case $_type in
       '@' | '%' )
         _parameter=${_parameter:1}
         if [[ $_argument == '('* ]]; then
           _declaration=$(printf 'declare -%s %s=%s%s%s' "$(_options "$_type")" "$_parameter" \' "$_argument" \')
+          eval "$_declaration"
+          _declaration=$(declare -p "$_parameter")
         else
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}

@@ -36,10 +36,22 @@ describe 'passed'
     assert equal 'declare -- zero="0"' "$(passed params "$@")"
   end
 
+  it 'accepts empty values'
+    set --
+    params=( zero ) # shellcheck disable=SC2034
+    assert equal 'declare -- zero=""' "$(passed params "$@")"
+  end
+
   it 'allows default values'
     set --
     params=( zero="one two" ) # shellcheck disable=SC2034
     assert equal 'declare -- zero="one two"' "$(passed params "$@")"
+  end
+
+  it 'overrides default values with empty parameters'
+    set -- ""
+    params=( zero="one two" ) # shellcheck disable=SC2034
+    assert equal 'declare -- zero=""' "$(passed params "$@")"
   end
 
   it 'creates a scalar declaration from a scalar reference'; (

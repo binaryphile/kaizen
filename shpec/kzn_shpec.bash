@@ -378,25 +378,14 @@ describe 'is_file'
 end
 
 describe 'is_given'
-  it 'detects an unset variable'
-    unset -v dummy
-    is_given "$dummy"
+  it 'detects an empty value'
+    is_given ''
     assert unequal 0 $?
   end
 
-  it 'detects an empty variable'; (
-    dummy=''
-    is_given "$dummy"
-    assert unequal 0 $?
-    # shellcheck disable=SC2154
-    return "$_shpec_failures" )
-  end
-
-  it 'detects a set variable'; (
-    variable=value
-    is_given "$variable"
+  it 'detects a non-empty value'
+    is_given value
     assert equal 0 $?
-    return "$_shpec_failures" )
   end
 end
 
