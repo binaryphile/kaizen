@@ -209,6 +209,20 @@ EOS
   end
 end
 
+describe 'has_length'
+  it 'reports whether an array has a certain length'
+    samples=( 0 )
+    has_length 1 samples
+    assert equal 0 $?
+  end
+
+  it 'works for length zero'
+    samples=()
+    has_length 0 samples
+    assert equal 0 $?
+  end
+end
+
 describe 'is_directory'
   it 'identifies a directory'
     dir=$($mktempd)
