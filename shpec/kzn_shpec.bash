@@ -178,14 +178,14 @@ describe 'fromh'
     unset -v zero
     # shellcheck disable=SC2034
     declare -A sampleh=( [zero]=0 )
-    assert equal 'declare -- zero="0"' "$(fromh sampleh)"
+    assert equal 'declare -- zero="0"' "$(fromh sampleh '(*)')"
   end
 
   it 'imports a key with a space in its value'
     unset -v zero
     # shellcheck disable=SC2034
     declare -A sampleh=( [zero]="0 1" )
-    assert equal 'declare -- zero="0 1"' "$(fromh sampleh)"
+    assert equal 'declare -- zero="0 1"' "$(fromh sampleh '(*)')"
   end
 
   it 'imports only named keys'
