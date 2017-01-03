@@ -1,6 +1,5 @@
-source kzn.bash
-
 source shpec-helper.bash
+
 initialize_shpec_helper
 
 describe 'cleanup'
