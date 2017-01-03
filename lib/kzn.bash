@@ -155,6 +155,17 @@ joina() {
   printf '%s\n' "${array[*]}"
 }
 
+keys_of() {
+  local params=( %hash )
+  eval "$(passed params "$@")"
+  # shellcheck disable=SC2154
+
+  local -a results
+
+  results=( "${!hash[@]}" )
+  pass results
+}
+
 pass() { declare -p "$1" ;}
 
 passed() {
@@ -295,23 +306,4 @@ to_upper() {
   eval "$(passed _params "$@")"
 
   puts "${string^^}"
-}
-
-with() {
-  # shellcheck disable=SC2034
-  local params=( %hash )
-  eval "$(passed params "$@")"
-
-  local -a declarations
-  local item
-  local key
-
-  # shellcheck disable=SC2154
-  for key in "${!hash[@]}"; do
-    item=${hash[$key]}
-    item=$(declare -p item)
-    item=${item#*=}
-    declarations+=( "$(printf 'declare -- %s_%s=%s' "$1" "$key" "$item")" )
-  done
-  puts "$(joina ';' declarations)"
 }

@@ -76,7 +76,7 @@ describe 'passed'
     values=( '"zero one"' two ) # shellcheck disable=SC2034
     set -- values
     params=( @array ) # shellcheck disable=SC2034
-    expected=$(printf 'declare -a array=%s([0]="%s"zero one%s"" [1]="two")%s' \' \\ \\ \')
+    expected=$(printf 'declare -a array=%s([0]="\\"zero one\\"" [1]="two")%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
   end
 
@@ -113,30 +113,46 @@ describe 'passed'
   it 'accepts a hash literal'
     set -- '([zero]="0" [one]="1")'
     params=( %hash ) # shellcheck disable=SC2034
-    expected=$(printf 'declare -A hash=%s([zero]="0" [one]="1")%s' \' \' )
+    expected=$(printf 'declare -A hash=%s([one]="1" [zero]="0" )%s' \' \' )
+    assert equal "$expected" "$(passed params "$@")"
+  end
+
+  it 'accepts an empty hash literal'
+    set -- '()'
+    params=( %hash ) # shellcheck disable=SC2034
+    expected=$(printf 'declare -A hash=%s()%s' \' \' )
     assert equal "$expected" "$(passed params "$@")"
   end
 
   it 'allows hash default values'
     set --
-    params=( %hash='[zero]="0" [one]="1"' ) # shellcheck disable=SC2034
-    expected=$(printf 'declare -A hash=%s([zero]="0" [one]="1")%s' \' \')
+    params=( %hash='([zero]="0" [one]="1")' ) # shellcheck disable=SC2034
+    expected=$(printf 'declare -A hash=%s([one]="1" [zero]="0" )%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
   end
 end
 
-describe 'with'
-  it 'should import a hash key into the current scope with a prefix'
+describe 'fromh'
+  it 'imports a hash key into the current scope'
     unset -v zero
     # shellcheck disable=SC2034
     declare -A sampleh=( [zero]=0 )
-    assert equal 'declare -- sampleh_zero="0"' "$(with sampleh)"
+    assert equal 'declare -- zero="0"' "$(fromh sampleh)"
   end
 
-  it 'should import a keys with a space in its value'
+  it 'imports a key with a space in its value'
     unset -v zero
     # shellcheck disable=SC2034
     declare -A sampleh=( [zero]="0 1" )
-    assert equal 'declare -- sampleh_zero="0 1"' "$(with sampleh)"
+    assert equal 'declare -- zero="0 1"' "$(fromh sampleh)"
+  end
+
+  it 'imports only named keys'
+    unset -v zero one
+    # shellcheck disable=SC2034
+    declare -A sampleh=( [zero]="0" [one]="1" )
+    # shellcheck disable=SC2034
+    params=( one )
+    assert equal 'declare -- one="1"' "$(fromh sampleh params)"
   end
 end
