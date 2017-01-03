@@ -54,14 +54,29 @@ describe 'passed'
     assert equal 'declare -- zero=""' "$(passed params "$@")"
   end
 
-  it 'creates a scalar declaration from a scalar reference'; (
+  it 'creates a scalar declaration from a scalar reference'
     # shellcheck disable=SC2034
-    var=0
-    set -- var
+    sample=0
+    set -- sample
     params=( zero ) # shellcheck disable=SC2034
     assert equal 'declare -- zero="0"' "$(passed params "$@")"
-    # shellcheck disable=SC2154
-    return "$_shpec_failures" )
+  end
+
+  it 'creates a scalar declaration from an indexed array reference'
+    # shellcheck disable=SC2034
+    samples=( 0 )
+    set -- samples[0]
+    params=( zero ) # shellcheck disable=SC2034
+    assert equal 'declare -- zero="0"' "$(passed params "$@")"
+  end
+
+  it 'errors on a scalar declaration from an unset value of an array reference'
+    # shellcheck disable=SC2034
+    samples=( 0 )
+    set -- samples[1]
+    params=( zero ) # shellcheck disable=SC2034
+    passed params "$@" >/dev/null
+    assert unequal 0 $?
   end
 
   it 'works for two arguments'
@@ -112,6 +127,20 @@ describe 'passed'
     set -- '([0]="zero" [1]="one")'
     params=( @array ) # shellcheck disable=SC2034
     expected=$(printf 'declare -a array=%s([0]="zero" [1]="one")%s' \' \')
+    assert equal "$expected" "$(passed params "$@")"
+  end
+
+  it 'accepts an array literal without indices'
+    set -- '("zero" "one")'
+    params=( @array ) # shellcheck disable=SC2034
+    expected=$(printf 'declare -a array=%s([0]="zero" [1]="one")%s' \' \')
+    assert equal "$expected" "$(passed params "$@")"
+  end
+
+  it 'accepts an empty array literal'
+    set -- '()'
+    params=( @array ) # shellcheck disable=SC2034
+    expected=$(printf 'declare -a array=%s()%s' \' \')
     assert equal "$expected" "$(passed params "$@")"
   end
 

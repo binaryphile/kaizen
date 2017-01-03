@@ -210,7 +210,7 @@ passed() {
 
   for _i in "${!_parameters[@]}"; do
     _parameter=${_parameters[$_i]}
-    [[ $_parameter == *'='* ]] && _argument=${_parameter#*=}
+    [[ $_parameter == *=* ]] && _argument=${_parameter#*=}
     _parameter=${_parameter%%=*}
     [[ ${_arguments[$_i]+x} == 'x' ]] && _argument=${_arguments[$_i]}
     _type=${_parameter:0:1}
@@ -236,6 +236,10 @@ passed() {
           _declaration=$(declare -p "$_argument")
           _declaration=${_declaration/$_argument/$_parameter}
         else
+          { [[ $_argument == *[* ]] && declare -p "${_argument%[*}" >/dev/null 2>&1 ;} && {
+            [[ ${!_argument+x} == 'x' ]] || return
+            _argument=${!_argument}
+          }
           # shellcheck disable=SC2030
           _declaration=$(declare -p _argument)
           _declaration=${_declaration/_argument/$_parameter}
