@@ -86,7 +86,7 @@ fromh() {
   local value
   local key
 
-  { has_length 1 keys && is_same_as "*" keys[0] ;} && eval "$(assign keys "$(keys_of hash)")"
+  { has_length 1 keys && is_same_as '*' keys[0] ;} && eval "$(assign keys "$(keys_of hash)")"
   # shellcheck disable=SC2154
   for key in "${keys[@]}"; do
     value=${hash[$key]}
