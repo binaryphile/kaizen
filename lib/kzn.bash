@@ -58,26 +58,6 @@ errexit() {
   exit "$return_code"
 }
 
-fromh() {
-  # shellcheck disable=SC2034
-  local _params=( %hash @keys )
-  eval "$(passed _params "$@")"
-
-  local -a declarations
-  local value
-  local key
-
-  { has_length 1 keys && is_same_as '*' keys[0] ;} && eval "$(assign keys "$(keys_of hash)")"
-  # shellcheck disable=SC2154
-  for key in "${keys[@]}"; do
-    value=${hash[$key]}
-    value=$(declare -p value)
-    value=${value#*=}
-    declarations+=( "$(printf 'declare -- %s=%s' "$key" "$value")" )
-  done
-  puts "$(joina ';' declarations)"
-}
-
 geta() {
   while IFS= read -r; do
     eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
