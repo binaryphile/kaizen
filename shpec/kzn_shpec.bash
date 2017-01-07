@@ -487,15 +487,6 @@ describe 'joina'
   end
 end
 
-describe 'keys_of'
-  it 'declares the keys of a hash'
-    # shellcheck disable=SC2034
-    declare -A sampleh=([zero]=0 [one]=1)
-    printf -v expected 'declare -a results=%s([0]="one" [1]="zero")%s' \' \'
-    assert equal "$expected" "$(keys_of sampleh)"
-  end
-end
-
 describe 'puts'
   it 'outputs a string on stdout'
     assert equal sample "$(puts 'sample')"

@@ -145,17 +145,6 @@ joina() {
   printf '%s\n' "${array[*]}"
 }
 
-keys_of() {
-  local _params=( %hash )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
-
-  local -a results
-
-  results=( "${!hash[@]}" )
-  pass results
-}
-
 puts() {
   local _params=( message )
   eval "$(passed _params "$@")"
