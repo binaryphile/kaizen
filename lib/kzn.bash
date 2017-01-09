@@ -1,12 +1,14 @@
 [[ -n ${_kzn:-} ]] && return
 readonly _kzn=loaded
 
-source sorta.bash
+source import.bash
+
+sorta_imports=(
+  passed
+)
 
 absolute_path() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
   local filename
 
   unset -v CDPATH
@@ -20,9 +22,8 @@ absolute_path() {
 }
 
 basename() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   puts "${path##*/}"
 }
 
@@ -37,11 +38,8 @@ defs() {
   printf -v "$1" '%s' "${_results[*]}"
 }
 
-# shellcheck disable=SC2015
 dirname() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
   if [[ $path == */* ]]; then
     puts "${path%/?*}"
   else
@@ -50,11 +48,9 @@ dirname() {
 }
 
 errexit() {
-  local _params=( message return_code=1 )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( message return_code=1)' "$@")"
+
   putserr message
-  # shellcheck disable=SC2154
   exit "$return_code"
 }
 
@@ -65,129 +61,103 @@ geta() {
 }
 
 has_length() {
-  # shellcheck disable=SC2034
-  local _params=( length @array )
-  eval "$(passed _params "$@")"
+  eval "$(passed '( length @array )' "$@")"
 
-  # shellcheck disable=SC2154
   (( length == ${#array} ))
 }
 
 is_directory() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   [[ -d $path ]]
 }
 
 is_executable() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   [[ -x $path ]]
 }
 
 is_executable_file() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   is_file path && is_executable path
 }
 
 is_file() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   [[ -f $path ]]
 }
 
 is_given() {
-  local _params=( value )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( value )' "$@")"
+
   [[ -n $value ]]
 }
 
 is_nonexecutable_file() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   is_file path && ! is_executable path
 }
 
 is_same_as() {
-  local _params=( string1 string2 )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( string1 string2 )' "$@")"
+
   [[ $string1 == "$string2" ]]
 }
 
 is_set() { declare -p "$1" >/dev/null 2>&1 ;}
 
 is_symlink() {
-  local _params=( path )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( path )' "$@")"
+
   [[ -h $path ]]
 }
 
 joina() {
-  local _params=( delimiter @array )
-  eval "$(passed _params "$@")"
-
+  eval "$(passed '( delimiter @array )' "$@")"
   local IFS
   local result
 
-  # shellcheck disable=SC2154
   set -- "${array[@]}"
   IFS=';'
-  # shellcheck disable=SC2154
   printf '%s\n' "${array[*]}"
 }
 
 puts() {
-  local _params=( message )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( message )' "$@")"
+
   printf '%s\n' "$message"
 }
 
 putserr() {
-  local _params=( message )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( message )' "$@")"
+
   puts message >&2
 }
 
 splits() {
-  local _params=( delimiter string )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( delimiter string )' "$@")"
   local -a results
   local IFS
 
-  # shellcheck disable=SC2154
   IFS="$delimiter"
-  # shellcheck disable=SC2086,SC2154
   set -- $string
-  # shellcheck disable=SC2034
   results=( "$@" )
   pass results
 }
 
 starts_with() {
-  # shellcheck disable=SC2034
-  local _params=( prefix string )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( prefix string )' "$@")"
+
   [[ $string == "$prefix"* ]]
 }
 
 strict_mode() {
-  # shellcheck disable=SC2034
-  local _params=( status )
-  eval "$(passed _params "$@")"
-  # shellcheck disable=SC2154
+  eval "$(passed '( status )' "$@")"
+
   case $status in
     on )
       set -o errexit
@@ -203,15 +173,11 @@ strict_mode() {
 }
 
 stripa() {
-  # shellcheck disable=SC2034
-  local _params=( '&_ref' )
-  eval "$(passed _params "$@")"
-
+  eval "$(passed '( "&_ref" )' "$@")"
   local _i
   local _leading_whitespace
   local _len
 
-  # shellcheck disable=SC2154
   _leading_whitespace=${_ref[0]%%[^[:space:]]*}
   _len=${#_leading_whitespace}
   for _i in "${!_ref[@]}"; do
@@ -220,17 +186,13 @@ stripa() {
 }
 
 to_lower() {
-  # shellcheck disable=SC2034
-  local _params=( string )
-  eval "$(passed _params "$@")"
+  eval "$(passed '( string )' "$@")"
 
   puts "${string,,}"
 }
 
 to_upper() {
-  # shellcheck disable=SC2034
-  local _params=( string )
-  eval "$(passed _params "$@")"
+  eval "$(passed '( string )' "$@")"
 
   puts "${string^^}"
 }
