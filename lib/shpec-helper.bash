@@ -15,14 +15,13 @@ initialize_shpec_helper() {
   local tmp=$HOME/tmp
 
   umask 002
-  rm='rm -rf --'                # shellcheck disable=SC2034
-  mkdir='mkdir -p --'           # shellcheck disable=SC2034
-  ln='ln -sfT --'               # shellcheck disable=SC2034
+  rm='rm -rf --'
+  mkdir='mkdir -p --'
+  ln='ln -sfT --'
 
-  # shellcheck disable=SC2154
   $mkdir "$tmp"
-  mktemp='mktemp -qp '"$tmp"      # shellcheck disable=SC2034
-  mktempd='mktemp -qdp '"$tmp"    # shellcheck disable=SC2034
+  mktemp='mktemp -qp '"$tmp"
+  mktempd='mktemp -qdp '"$tmp"
 
   unset -v CDPATH
 }

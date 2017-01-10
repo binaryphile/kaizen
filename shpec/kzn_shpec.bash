@@ -1,150 +1,130 @@
-source kzn.bash
-source shpec-helper.bash
+source import.bash
+
+shpec_helper_imports=(
+  initialize_shpec_helper
+  shpec_source
+)
+
+eval "$(importa shpec-helper shpec_helper_imports)"
 
 initialize_shpec_helper
 
+shpec_source lib/kzn.bash
+
 describe 'absolute_path'
-  it 'determines the path of a directory from the parent'
-    # shellcheck disable=SC2154
+  it "determines the path of a directory from the parent"
     dir=$($mktempd) || return 1
     cd "$dir"
-    # shellcheck disable=SC2154
     $mkdir mydir
     assert equal "$dir"/mydir "$(absolute_path mydir)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a file from the parent'
-    # shellcheck disable=SC2154
+  it "determines the path of a file from the parent"
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
-    # shellcheck disable=SC2154
     touch mydir/myfile
     assert equal "$dir"/mydir/myfile "$(absolute_path mydir/myfile)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a directory from itself'
-    # shellcheck disable=SC2154
+  it "determines the path of a directory from itself"
     dir=$($mktempd) || return 1
     cd "$dir"
     assert equal "$dir" "$(absolute_path .)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a file from the itself'
-    # shellcheck disable=SC2154
+  it "determines the path of a file from the itself"
     dir=$($mktempd) || return 1
     cd "$dir"
     touch myfile
     assert equal "$dir"/myfile "$(absolute_path myfile)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a directory from a sibling'
-    # shellcheck disable=SC2154
+  it "determines the path of a directory from a sibling"
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
     $mkdir mydir2
     cd mydir2
-    # shellcheck disable=SC2154
     assert equal "$dir"/mydir1 "$(absolute_path ../mydir1)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a file from a sibling'
-    # shellcheck disable=SC2154
+  it "determines the path of a file from a sibling"
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
     $mkdir mydir2
-    # shellcheck disable=SC2154
     touch mydir1/myfile
     cd mydir2
     assert equal "$dir"/mydir1/myfile "$(absolute_path ../mydir1/myfile)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a directory from a child'
-    # shellcheck disable=SC2154
+  it "determines the path of a directory from a child"
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     cd mydir
     assert equal "$dir" "$(absolute_path ..)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'determines the path of a file from a child'
-    # shellcheck disable=SC2154
+  it "determines the path of a file from a child"
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     touch myfile
     cd mydir
     assert equal "$dir"/myfile "$(absolute_path ../myfile)"
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 
-  it 'fails on a nonexistent path'
-    # shellcheck disable=SC2154
+  it "fails on a nonexistent path"
     dir=$($mktempd) || return 1
-    # shellcheck disable=SC2154
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
-    # shellcheck disable=SC2154
     $rm "$dir"
   end
 end
 
 describe 'basename'
-  it 'returns everything past the last slash'
+  it "returns everything past the last slash"
     assert equal name "$(basename /my/name)"
   end
 end
 
 describe 'defa'
-  it 'strips each line of a heredoc and assigns each to an element of an array'
+  it "strips each line of a heredoc and assigns each to an element of an array"
     unset -v results
-    # shellcheck disable=SC1041,SC1042,SC1073
     defa results <<'EOS'
       one
       two
       three
 EOS
     expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
-    # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
-    # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p results)"
   end
 end
 
 describe 'defs'
-  it 'strips each line of a heredoc and assigns to a string'
+  it "strips each line of a heredoc and assigns to a string"
     defs result <<'EOS'
       one
       two
       three
 EOS
     expected='declare -- result="one\ntwo\nthree"'
-    # shellcheck disable=SC2059
     printf -v expected "$expected"
-    # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p result)"
   end
 
-  it 'leaves a blank line intact'
+  it "leaves a blank line intact"
     defs result <<'EOS'
       one
       two
@@ -152,46 +132,40 @@ EOS
       four
 EOS
     expected='declare -- result="one\ntwo\n\nfour"'
-    # shellcheck disable=SC2059
     printf -v expected "$expected"
-    # shellcheck disable=SC2034
     assert equal "$expected" "$(declare -p result)"
   end
 end
 
 describe 'dirname'
-  it 'finds the directory name'
+  it "finds the directory name"
     assert equal one/two "$(dirname one/two/three)"
   end
 
-  it 'finds the directory name with trailing slash'
+  it "finds the directory name with trailing slash"
     assert equal one/two "$(dirname one/two/three/)"
   end
 
-  it 'finds the directory name without slash'
+  it "finds the directory name without slash"
     assert equal . "$(dirname one)"
   end
 end
 
 describe 'geta'
-  it 'assigns each line of an input to an element of an array'
+  it "assigns each line of an input to an element of an array"
     unset -v results
-    # shellcheck disable=SC1041,SC1042,SC1073
     geta results <<'EOS'
       zero
       one
       two
 EOS
     expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="      two")%s'
-    # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
-    # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p results)"
   end
 
-  it 'preserves a blank line'
+  it "preserves a blank line"
     unset -v results
-    # shellcheck disable=SC1041,SC1042,SC1073
     geta results <<'EOS'
       zero
       one
@@ -199,21 +173,19 @@ EOS
       three
 EOS
     expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
-    # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
-    # shellcheck disable=SC2154
     assert equal "$expected" "$(declare -p results)"
   end
 end
 
 describe 'has_length'
-  it 'reports whether an array has a certain length'
+  it "reports whether an array has a certain length"
     samples=( 0 )
     has_length 1 samples
     assert equal 0 $?
   end
 
-  it 'works for length zero'
+  it "works for length zero"
     samples=()
     has_length 0 samples
     assert equal 0 $?
@@ -221,7 +193,7 @@ describe 'has_length'
 end
 
 describe 'is_directory'
-  it 'identifies a directory'
+  it "identifies a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     is_directory "$dir"
@@ -229,10 +201,9 @@ describe 'is_directory'
     cleanup "$dir"
   end
 
-  it 'identifies a symlink to a directory'
+  it "identifies a symlink to a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
-    # shellcheck disable=SC2154
     $ln . "$dir"/dirlink
     is_directory "$dir"/dirlink
     assert equal 0 $?
@@ -243,7 +214,6 @@ describe 'is_directory'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
-    # shellcheck disable=SC2154
     $ln file "$dir"/filelink
     is_directory "$dir"/filelink
     assert unequal 0 $?
@@ -261,7 +231,7 @@ describe 'is_directory'
 end
 
 describe 'is_executable'
-  it 'identifies an executable file'
+  it "identifies an executable file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -271,7 +241,7 @@ describe 'is_executable'
     cleanup "$dir"
   end
 
-  it 'identifies an executable directory'
+  it "identifies an executable directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
@@ -300,24 +270,22 @@ describe 'is_executable'
     cleanup "$dir"
   end
 
-  it 'identifies a link to an executable file'
+  it "identifies a link to an executable file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
     chmod 755 "$dir"/file
-    # shellcheck disable=SC2154
     $ln file "$dir"/link
     is_executable "$dir"/link
     assert equal 0 $?
     cleanup "$dir"
   end
 
-  it 'identifies a link to an executable directory'
+  it "identifies a link to an executable directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
     chmod 755 "$dir"/dir
-    # shellcheck disable=SC2154
     $ln dir "$dir"/link
     is_executable "$dir"/link
     assert equal 0 $?
@@ -328,7 +296,6 @@ describe 'is_executable'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
-    # shellcheck disable=SC2154
     $ln file "$dir"/link
     is_executable "$dir"/link
     assert unequal 0 $?
@@ -340,7 +307,6 @@ describe 'is_executable'
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
     chmod 664 "$dir"/dir
-    # shellcheck disable=SC2154
     $ln dir "$dir"/link
     is_executable "$dir"/link
     assert unequal 0 $?
@@ -349,7 +315,7 @@ describe 'is_executable'
 end
 
 describe 'is_file'
-  it 'identifies a file'
+  it "identifies a file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -358,11 +324,10 @@ describe 'is_file'
     cleanup "$dir"
   end
 
-  it 'identifies a symlink to a file'
+  it "identifies a symlink to a file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
-    # shellcheck disable=SC2154
     $ln file "$dir"/filelink
     is_file "$dir"/filelink
     assert equal 0 $?
@@ -372,7 +337,6 @@ describe 'is_file'
   it "doesn't identify a symlink to a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
-    # shellcheck disable=SC2154
     $ln . "$dir"/dirlink
     is_file "$dir"/dirlink
     assert unequal 0 $?
@@ -389,44 +353,43 @@ describe 'is_file'
 end
 
 describe 'is_given'
-  it 'detects an empty value'
+  it "detects an empty value"
     is_given ''
     assert unequal 0 $?
   end
 
-  it 'detects a non-empty value'
+  it "detects a non-empty value"
     is_given value
     assert equal 0 $?
   end
 end
 
 describe 'is_same_as'
-  it 'detects equivalent strings'
+  it "detects equivalent strings"
     is_same_as one one
     assert equal 0 $?
   end
 
-  it 'detects non-equivalent strings'
+  it "detects non-equivalent strings"
     is_same_as one two
     assert unequal 0 $?
   end
 end
 
 describe 'is_set'
-  it 'returns true if a variable is set'
+  it "returns true if a variable is set"
     sample=true
     is_set sample
     assert equal 0 $?
   end
 
-  it 'returns true if a variable is set to empty'
-    # shellcheck disable=SC2034
+  it "returns true if a variable is set to empty"
     sample=''
     is_set sample
     assert equal 0 $?
   end
 
-  it 'returns false if a variable is not set'
+  it "returns false if a variable is not set"
     unset -v sample
     is_set sample
     assert unequal 0 $?
@@ -447,17 +410,15 @@ describe 'is_symlink'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
-    # shellcheck disable=SC2154
     $ln file "$dir"/filelink
     is_symlink "$dir"/filelink
     assert equal 0 $?
     cleanup "$dir"
   end
 
-  it 'identifies a symlink to a directory'
+  it "identifies a symlink to a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
-    # shellcheck disable=SC2154
     $ln . "$dir"/dirlink
     is_symlink "$dir"/dirlink
     assert equal 0 $?
@@ -474,34 +435,31 @@ describe 'is_symlink'
 end
 
 describe 'joina'
-  it 'joins an array with a delimiter'
-    # shellcheck disable=SC2034
+  it "joins an array with a delimiter"
     declare -a samples=([0]=zero [1]=one)
     assert equal 'zero;one' "$(joina ';' samples)"
   end
 
-  it 'joins an array with one item'
-    # shellcheck disable=SC2034
+  it "joins an array with one item"
     declare -a samples=([0]=zero)
     assert equal 'zero' "$(joina ';' samples)"
   end
 end
 
 describe 'puts'
-  it 'outputs a string on stdout'
+  it "outputs a string on stdout"
     assert equal sample "$(puts 'sample')"
   end
 end
 
 describe 'putserr'
-  it 'outputs a string on stderr'
+  it "outputs a string on stderr"
     assert equal sample "$(putserr 'sample' 2>&1)"
   end
 end
 
 describe 'splits'
-  it 'splits a string into an array on a partition character'
-    # shellcheck disable=SC2034
+  it "splits a string into an array on a partition character"
     sample='a=b'
     printf -v expected 'declare -a results=%s([0]="a" [1]="b")%s' \' \'
     assert equal "$expected" "$(splits '=' sample)"
@@ -509,7 +467,7 @@ describe 'splits'
 end
 
 describe 'starts_with'
-  it 'detects if a string starts with a specified character'
+  it "detects if a string starts with a specified character"
     starts_with / /test
     assert equal 0 $?
   end
@@ -521,36 +479,31 @@ describe 'starts_with'
 end
 
 describe 'stripa'
-  it 'strips each element of an array'
-    # shellcheck disable=SC2034
+  it "strips each element of an array"
     results=("    zero" "    one" "    two")
     stripa results
     expected='declare -a results=%s([0]="zero" [1]="one" [2]="two")%s'
-    # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
-    # shellcheck disable=SC2154,SC2034
     assert equal "$expected" "$(declare -p results)"
   end
 
-  it 'leaves a blank element intact'
+  it "leaves a blank element intact"
     results=("    zero" "    one"  "" "    three")
     stripa results
     expected='declare -a results=%s([0]="zero" [1]="one" [2]="" [3]="three")%s'
-    # shellcheck disable=SC2059
     printf -v expected "$expected" \' \'
-    # shellcheck disable=SC2154,SC2034
     assert equal "$expected" "$(declare -p results)"
   end
 end
 
 describe 'to_lower'
-  it 'should lower-case a string'
+  it "should lower-case a string"
     assert equal upper "$(to_lower UPPER)"
   end
 end
 
 describe 'to_upper'
-  it 'should upper-case a string'
+  it "should upper-case a string"
     assert equal LOWER "$(to_upper lower)"
   end
 end
