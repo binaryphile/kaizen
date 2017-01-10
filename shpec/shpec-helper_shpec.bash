@@ -1,5 +1,8 @@
-source shpec-helper.bash
+source import.bash
 
+eval "$(imports kzn is_directory)"
+
+source shpec-helper.bash
 initialize_shpec_helper
 
 describe 'cleanup'

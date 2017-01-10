@@ -1,14 +1,14 @@
 [[ -n ${_shpec_helper:-} ]] && return
 readonly _shpec_helper=loaded
 
-source kzn.bash
+source import.bash
 
-_shpec_helper_parent_dir=$(absolute_path "$(dirname "$BASH_SOURCE")"/..)
+eval "$(importa kzn '( absolute_path dirname )')"
 
 cleanup() {
-  validate_dirname "$1" || return
-  # shellcheck disable=SC2154
-  $rm "$1"
+  eval "$(passed '( path )' "$@")"
+  validate_dirname path || return
+  $rm "$path"
 }
 
 initialize_shpec_helper() {
@@ -27,9 +27,11 @@ initialize_shpec_helper() {
 }
 
 shpec_source() {
-  local path=$1
+  eval "$(passed '( path )' "$@")"
+  local parent_dir
 
-  source "$_shpec_helper_parent_dir/$path"
+  parent_dir=$(absolute_path "$(dirname "$BASH_SOURCE")"/..)
+  source "$parent_dir/$path"
 }
 
 validate_dirname() {
