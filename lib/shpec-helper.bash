@@ -5,8 +5,17 @@ source import.bash
 
 eval "$(importa kzn '( absolute_path dirname )')"
 
+_required_imports=(
+  absolute_path
+  dirname
+  is_file
+  is_directory
+  puts
+)
+
 cleanup() {
   eval "$(passed '( path )' "$@")"
+
   validate_dirname path || return
   $rm "$path"
 }
@@ -35,12 +44,11 @@ shpec_source() {
 }
 
 validate_dirname() {
-  local dir=$1
+  eval "$(passed '( path )' "$@")"
 
-  dir=$(absolute_path "$dir") || return 1
-
+  path=$(absolute_path "$path") || return 1
   [[
-    -d $dir         &&
-    $dir == /*/*
+    -d $path        &&
+    $path == /*/*
   ]]
 }

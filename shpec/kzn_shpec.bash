@@ -1,12 +1,12 @@
 source import.bash
 
 shpec_helper_imports=(
+  cleanup
   initialize_shpec_helper
   shpec_source
+  validate_dirname
 )
-
 eval "$(importa shpec-helper shpec_helper_imports)"
-
 initialize_shpec_helper
 
 shpec_source lib/kzn.bash

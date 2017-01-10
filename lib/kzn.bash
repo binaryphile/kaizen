@@ -2,9 +2,19 @@
 readonly _kzn=loaded
 
 source import.bash
+source sorta.bash
 
-sorta_imports=(
-  passed
+_required_imports=(
+  basename
+  defa
+  dirname
+  geta
+  is_directory
+  is_executable
+  is_file
+  puts
+  putserr
+  stripa
 )
 
 absolute_path() {
