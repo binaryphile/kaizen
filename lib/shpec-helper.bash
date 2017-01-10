@@ -11,6 +11,7 @@ _required_imports=(
   is_file
   is_directory
   puts
+  validate_dirname
 )
 
 cleanup() {
