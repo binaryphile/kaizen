@@ -1,9 +1,10 @@
 source shpec-helper.bash
+
 initialize_shpec_helper
 
 shpec_source lib/import.bash
 
-eval "$(importa kzn '( defa defs geta stripa )')"
+eval "$(imports kzn defs)"
 
 describe 'importa'
   it "prints a function by array of names from a sourcefile"; (
@@ -41,7 +42,7 @@ EOS
   end
 end
 
-describe 'print_function'
+describe '_print_function'
   it "prints a function's definition"; (
     samplef() { :;}
     defs expected <<'EOS'
@@ -50,7 +51,7 @@ describe 'print_function'
           :
       }
 EOS
-    assert equal "$expected" "$(print_function samplef)"
+    assert equal "$expected" "$(_print_function samplef)"
     return "$_shpec_failures" )
   end
 end
