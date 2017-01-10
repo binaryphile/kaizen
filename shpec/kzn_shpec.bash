@@ -354,13 +354,21 @@ end
 
 describe 'is_given'
   it "detects an empty value"
-    is_given ''
+    sample=''
+    is_given sample
     assert unequal 0 $?
   end
 
   it "detects a non-empty value"
-    is_given value
+    sample=value
+    is_given sample
     assert equal 0 $?
+  end
+
+  it "detects an unset reference"
+    unset -v sample
+    is_given sample
+    assert unequal 0 $?
   end
 end
 
