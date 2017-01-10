@@ -3,22 +3,27 @@ readonly _kzn_import=loaded
 
 source sorta.bash
 
+_required_imports=(
+  _imp_test
+)
+
+_imp_test() { :;}
+
 importa() (
   eval "$(passed '( sourcefile @functions )' "$@")"
+  local function
 
+  functions=( "${_required_imports[@]}" "${functions[@]}" )
   source_file sourcefile
   for function in "${functions[@]}"; do
-    results+=( "$(print_function function)" )
+    print_function function
   done
-  IFS=$'\n'
-  printf '%s\n' "${results[*]}"
 )
 
 imports() (
   eval "$(passed '( sourcefile function )' "$@")"
 
-  source_file sourcefile
-  print_function function
+  importa sourcefile '( '"$function"' )'
 )
 
 print_function() (
