@@ -100,11 +100,7 @@ is_file() {
   [[ -f $path ]]
 }
 
-is_given() {
-  eval "$(passed '( value )' "$@")"
-
-  [[ -n $value ]]
-}
+is_given() { [[ -n $1 ]] ;}
 
 is_nonexecutable_file() {
   eval "$(passed '( path )' "$@")"
