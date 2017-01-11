@@ -370,6 +370,30 @@ describe 'is_given'
     is_given sample
     assert unequal 0 $?
   end
+
+  it "detects an empty array"
+    samples=()
+    is_given samples
+    assert unequal 0 $?
+  end
+
+  it "detects a non-empty array"
+    samples=( value )
+    is_given samples
+    assert equal 0 $?
+  end
+
+  it "detects an empty hash"
+    declare -A sampleh=()
+    is_given sampleh
+    assert unequal 0 $?
+  end
+
+  it "detects a non-empty hash"
+    declare -A sampleh=( [one]=1 )
+    is_given sampleh
+    assert equal 0 $?
+  end
 end
 
 describe 'is_same_as'

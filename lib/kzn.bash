@@ -101,9 +101,10 @@ is_file() {
 }
 
 is_given() {
-  eval "$(passed '( value )' "$@")"
+  local declaration
 
-  declare -p "$1" >/dev/null 2>&1 && [[ -n $value ]]
+  declaration=$(declare -p "$1" 2>/dev/null) || return
+  [[ $declaration != *'=""' && $declaration != *"='()'" ]]
 }
 
 is_nonexecutable_file() {
