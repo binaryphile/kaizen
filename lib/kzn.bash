@@ -50,6 +50,7 @@ defs() {
 
 dirname() {
   eval "$(passed '( path )' "$@")"
+
   if [[ $path == */* ]]; then
     puts "${path%/?*}"
   else
