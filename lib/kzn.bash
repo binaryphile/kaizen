@@ -37,7 +37,7 @@ basename() {
   puts "${path##*/}"
 }
 
-defa() { geta "$1"; stripa "$1" ;}
+defa() { eval "$(printf '%s=()' "$1")"; geta "$1"; stripa "$1" ;}
 
 defs() {
   local -a _results

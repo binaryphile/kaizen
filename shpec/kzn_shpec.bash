@@ -100,7 +100,7 @@ end
 
 describe 'defa'
   it "strips each line of a heredoc and assigns each to an element of an array"
-    unset -v results
+    results=( four )
     defa results <<'EOS'
       one
       two
