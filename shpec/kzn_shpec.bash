@@ -100,6 +100,17 @@ end
 
 describe 'defa'
   it "strips each line of a heredoc and assigns each to an element of an array"
+    defa results <<'EOS'
+      one
+      two
+      three
+EOS
+    expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
+    printf -v expected "$expected" \' \'
+    assert equal "$expected" "$(declare -p results)"
+  end
+
+  it "doesn't preserve existing contents"
     results=( four )
     defa results <<'EOS'
       one
@@ -114,6 +125,18 @@ end
 
 describe 'defs'
   it "strips each line of a heredoc and assigns to a string"
+    defs result <<'EOS'
+      one
+      two
+      three
+EOS
+    expected='declare -- result="one\ntwo\nthree"'
+    printf -v expected "$expected"
+    assert equal "$expected" "$(declare -p result)"
+  end
+
+  it "doesn't preserve existing contents"
+    result='four'
     defs result <<'EOS'
       one
       two
