@@ -492,7 +492,7 @@ end
 describe 'joina'
   it "joins an array with a delimiter"
     declare -a samples=([0]=zero [1]=one)
-    assert equal 'zero;one' "$(joina ';' samples)"
+    assert equal 'zero@one' "$(joina '@' samples)"
   end
 
   it "joins an array with one item"

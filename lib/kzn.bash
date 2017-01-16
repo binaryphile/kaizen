@@ -131,11 +131,10 @@ is_symlink() {
 joina() {
   eval "$(passed '( delimiter @array )' "$@")"
   local IFS
-  local result
 
   set -- "${array[@]}"
-  IFS=';'
-  printf '%s\n' "${array[*]}"
+  IFS=$delimiter
+  puts "${array[*]}"
 }
 
 puts() {
