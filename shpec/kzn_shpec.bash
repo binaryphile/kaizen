@@ -11,6 +11,8 @@ initialize_shpec_helper
 
 shpec_source lib/kzn.bash
 
+set -o errexit
+
 describe 'absolute_path'
   it "determines the path of a directory from the parent"
     dir=$($mktempd) || return 1
@@ -86,8 +88,10 @@ describe 'absolute_path'
 
   it "fails on a nonexistent path"
     dir=$($mktempd) || return 1
+    set +o errexit
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
+    set -o errexit
     $rm "$dir"
   end
 end
@@ -238,8 +242,10 @@ describe 'is_directory'
     validate_dirname "$dir" || return
     touch "$dir"/file
     $ln file "$dir"/filelink
+    set +o errexit
     is_directory "$dir"/filelink
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
@@ -247,8 +253,10 @@ describe 'is_directory'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    set +o errexit
     is_directory "$dir"/file
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 end
@@ -278,8 +286,10 @@ describe 'is_executable'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    set +o errexit
     is_executable "$dir"/file
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
@@ -288,8 +298,10 @@ describe 'is_executable'
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
     chmod 664 "$dir"/dir
+    set +o errexit
     is_executable "$dir"/dir
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
@@ -320,8 +332,10 @@ describe 'is_executable'
     validate_dirname "$dir" || return
     touch "$dir"/file
     $ln file "$dir"/link
+    set +o errexit
     is_executable "$dir"/link
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
@@ -331,8 +345,10 @@ describe 'is_executable'
     mkdir "$dir"/dir
     chmod 664 "$dir"/dir
     $ln dir "$dir"/link
+    set +o errexit
     is_executable "$dir"/link
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 end
@@ -361,16 +377,20 @@ describe 'is_file'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     $ln . "$dir"/dirlink
+    set +o errexit
     is_file "$dir"/dirlink
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
   it "doesn't identify a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
+    set +o errexit
     is_file "$dir"
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 end
@@ -378,8 +398,10 @@ end
 describe 'is_given'
   it "detects an empty value"
     sample=''
+    set +o errexit
     is_given sample
     assert unequal 0 $?
+    set -o errexit
   end
 
   it "detects a non-empty value"
@@ -390,14 +412,18 @@ describe 'is_given'
 
   it "detects an unset reference"
     unset -v sample
+    set +o errexit
     is_given sample
     assert unequal 0 $?
+    set -o errexit
   end
 
   it "detects an empty array"
     samples=()
+    set +o errexit
     is_given samples
     assert unequal 0 $?
+    set -o errexit
   end
 
   it "detects a non-empty array"
@@ -408,8 +434,10 @@ describe 'is_given'
 
   it "detects an empty hash"
     declare -A sampleh=()
+    set +o errexit
     is_given sampleh
     assert unequal 0 $?
+    set -o errexit
   end
 
   it "detects a non-empty hash"
@@ -426,8 +454,10 @@ describe 'is_same_as'
   end
 
   it "detects non-equivalent strings"
+    set +o errexit
     is_same_as one two
     assert unequal 0 $?
+    set -o errexit
   end
 end
 
@@ -446,8 +476,10 @@ describe 'is_set'
 
   it "returns false if a variable is not set"
     unset -v sample
+    set +o errexit
     is_set sample
     assert unequal 0 $?
+    set -o errexit
   end
 end
 
@@ -456,8 +488,10 @@ describe 'is_symlink'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    set +o errexit
     is_symlink "$dir"/file
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 
@@ -483,8 +517,10 @@ describe 'is_symlink'
   it "doesn't identify a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
+    set +o errexit
     is_symlink "$dir"
     assert unequal 0 $?
+    set -o errexit
     cleanup "$dir"
   end
 end
@@ -528,8 +564,10 @@ describe 'starts_with'
   end
 
   it "detects if a string doesn't end with a specified character"
+    set +o errexit
     starts_with / test
     assert unequal 0 $?
+    set -o errexit
   end
 end
 
