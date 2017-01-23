@@ -150,14 +150,14 @@ putserr() {
 }
 
 splits() {
-  eval "$(passed '( delimiter string )' "$@")"
-  local -a results
+  eval "$(passed '( _delimiter _string *ref )' "$@")"
   local IFS
+  local -a _results
 
-  IFS="$delimiter"
-  set -- $string
-  results=( "$@" )
-  pass results
+  IFS=$_delimiter
+  set -- $_string
+  _results=( "$@" )
+  local "$ref"= && reta _results "$ref"
 }
 
 starts_with() {

@@ -44,6 +44,13 @@ shpec_source() {
   source "$parent_dir/$path"
 }
 
+stop_on_error() {
+  local toggle=${1:-}
+
+  [[ -n $toggle ]] && { set +o errexit; return ;}
+  [[ $stop_on_error == 'true' ]] && set -o errexit
+}
+
 validate_dirname() {
   eval "$(passed '( path )' "$@")"
 
