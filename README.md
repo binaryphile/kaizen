@@ -241,95 +241,131 @@ directory with the executable permission, or a symlink to one</p>
 <p>Has the same semantics as the <code>[[ -x ]]</code> test</p>
 </dd>
 
-- **`is_executable_file <path>`** - determines whether a path is a file
-  and has the executable permission
+<dt><code>is_executable_file &lt;path&gt;</code> - determines whether a
+path is a file and has the executable permission</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: boolean true if `path` is a file with the executable
-  permission, or a symlink to one
+<p><em>Returns</em>: boolean true if <code>path</code> is a file with
+the executable permission, or a symlink to one</p>
 
-  Equivalent to `is_file path && is_executable path`
+<p>Equivalent to <code>is_file path && is_executable path</code></p>
+</dd>
 
-- **`is_file <path>`** - determines whether a path is a file
+<dt><code>is_file &lt;path&gt;</code> - determines whether a path is a
+file</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: boolean true if `path` is a file permission, or a symlink
-  to one
+<p><em>Returns</em>: boolean true if <code>path</code> is a file
+permission, or a symlink to one</p>
 
-  Has the same semantics as the `[[ -f ]]` test
+<p>Has the same semantics as the <code>[[ -f ]]</code> test</p>
+</dd>
 
-- **`is_given <variable_name>`** - determines whether the named variable
-  is not empty
+<dt><code>is_given &lt;variable_name&gt;</code> - determines whether the
+named variable is not empty</dt>
 
-  *Returns*: boolean false if `variable_name` is a blank string, if a
-  string variable, or has elements, if an array or associative array.
-  Also returns false if `variable_name` is not set.
+<dd>
+<p><em>Returns</em>: boolean false if <code>variable_name</code> is a
+blank string, if a string variable, or has elements, if an array or
+associative array.  Also returns false if <code>variable_name</code> is
+not set.</p>
 
-  Has the same semantics as the `[[ -n ]]` test
+<p>Has the same semantics as the <code>[[ -n ]]</code> test</p>
+</dd>
 
-- **`is_nonexecutable_file <path>`** - determines whether a path is a
-  file and does not have the executable permission
+<dt><code>is_nonexecutable_file &lt;path&gt;</code> - determines whether
+a path is a file and does not have the executable permission</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: boolean true if `path` is a file with the executable
-  permission, or a symlink to one
+<p><em>Returns</em>: boolean true if <code>path</code> is a file with
+the executable permission, or a symlink to one</p>
 
-  Equivalent to `is_file path && is_executable path`
+<p>Equivalent to <code>is_file path && is_executable path</code></p>
+</dd>
 
-- **`is_same_as <string_1> <string_2>`** - determines whether two
-  strings are the same
+<dt><code>is_same_as &lt;string_1&gt; &lt;string_2&gt;</code> -
+determines whether two strings are the same</dt>
 
-  Accepts literals or variable names
+<dd>
+<p>Accepts literals or variable names</p>
 
-  *Returns*: boolean true if `string_1` and `string_2` are exactly the
-  same
+<p><em>Returns</em>: boolean true if <code>string_1</code> and
+<code>string_2</code> are exactly the same</p>
+</dd>
 
-- **`is_set <variable_name>`** - determines whether `variable_name` is
-  set to anything (including an empty string or array)
+<dt><code>is_set &lt;variable_name&gt;</code> - determines whether
+<code>variable_name</code> is set to anything (including an empty string
+or array)</dt>
 
-  *Returns*: boolean true if `variable_name` has been set
+<dd>
+<p><em>Returns</em>: boolean true if <code>variable_name</code> has been
+set</p>
 
-  Has the same semantics as `declare -p <variable_name>`
+<p>Has the same semantics as <code>declare -p <variable_name></code></p>
+</dd>
 
-- **`is_symlink <path>`** - determines whether `path` is a symbolic link
+<dt><code>is_symlink &lt;path&gt;</code> - determines whether
+<code>path</code> is a symbolic link</dt>
 
-  *Returns*: boolean true if `path` is a symbolic link
+<dd>
+<p><em>Returns</em>: boolean true if <code>path</code> is a symbolic
+link</p>
 
-  Has the same semantics as the `[[ -h ]]` test
+<p>Has the same semantics as the <code>[[ -h ]]</code> test</p>
+</dd>
 
-- **`joina <delimiter> <array>`** - joins an array of variables, with
-  the delimiter, into a string
+<dt><code>joina &lt;delimiter&gt; &lt;array&gt;</code> - joins an array
+of variables, with the delimiter, into a string</dt>
 
-  Accepts literals or variable names
+<dd>
+<p>Accepts literals or variable names</p>
 
-  *Returns*: the joined string on stdout
+<p><em>Returns</em>: the joined string on stdout</p>
 
-  `delimiter` must be a single character
+<p><code>delimiter</code> must be a single character</p>
+</dd>
 
-- **`puts <message>`** - output a newline-terminated string on stdout
+<dt><code>puts &lt;message&gt;</code> - output a newline-terminated
+string on stdout</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: the `message` string and a newline on stdout
+<p><em>Returns</em>: the <code>message</code> string and a newline on
+stdout</p>
 
-  Meant as a substitute for the `echo` command.  Provides a more
-  consistent output mechanism than `echo` (try `echo`ing "-n", for
-  example).  [Recommended reading] on why `echo` can be an issue.
+<p>Meant as a substitute for the <code>echo</code> command.  Provides a
+more consistent output mechanism than <code>echo</code> (try
+<code>echo</code>ing "-n", for example).  [Recommended reading] on why
+<code>echo</code> can be an issue.</p>
+</dd>
 
-- **`putserr <message>`** - output a newline-terminated string on stderr
+<dt><code>putserr &lt;message&gt;</code> - output a newline-terminated
+string on stderr</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: the `message` string and a newline on stderr
+<p><em>Returns</em>: the <code>message</code> string and a newline on
+stderr</p>
+</dd>
 
-- **`putserr <message>`** - output a newline-terminated string on stderr
+<dt><code>putserr &lt;message&gt; - output a newline-terminated string
+on stderr</dt>
 
-  Accepts a literal or variable name
+<dd>
+<p>Accepts a literal or variable name</p>
 
-  *Returns*: the `message` string and a newline on stderr
+<p><em>Returns</em>: the <code>message</code> string and a newline on
+stderr</p>
+</dd>
+</dl>
 
 [sorta]: https://github.com/binaryphile/sorta
 [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
