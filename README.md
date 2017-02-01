@@ -356,8 +356,8 @@ string on stderr</dt>
 stderr</p>
 </dd>
 
-<dt><code>putserr &lt;message&gt; - output a newline-terminated string
-on stderr</dt>
+<dt><code>putserr &lt;message&gt;</code> - output a newline-terminated
+string on stderr</dt>
 
 <dd>
 <p>Accepts a literal or variable name</p>
