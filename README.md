@@ -336,9 +336,9 @@ stdout</p>
 
 <p>Meant as a substitute for the <code>echo</code> command.  Provides a
 more consistent output mechanism than <code>echo</code> (try
-<code>echo</code>ing "-n", for example).  [Recommended reading] on why
-<code>echo</code> can be an issue.</p>
-</dd>
+<code>echo</code>ing "-n", for example).  <a
+href=http://www.in-ulm.de/~mascheck/various/echo+printf/>Recommended
+reading</a> on why <code>echo</code> can be an issue.</p> </dd>
 
 <dt><code>putserr &lt;message&gt;</code> - output a newline-terminated
 string on stderr</dt>
@@ -364,4 +364,3 @@ stderr</p>
 [sorta]: https://github.com/binaryphile/sorta
 [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
 [shpec]: https://github.com/rylnd/shpec
-[Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf/
