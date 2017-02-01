@@ -129,13 +129,11 @@ preserved.</p>
 
 <p>Usually fed with a heredoc, such as:</p>
 
-<pre><code>
-myarray=()
+<pre><code>myarray=()
 defa myarray <<'EOS'
   Here are
   my lines.
-EOS
-</code></pre>
+EOS</code></pre>
 </dd>
 
 <dt><code>defs &lt;variable_name&gt;</code> - read and un-indent a
@@ -153,13 +151,11 @@ preserved.</p>
 
 <p>Usually fed with a heredoc, such as:</p>
 
-<pre><code>
-mystring=''
+<pre><code>mystring=''
 defs mystring <<'EOS'
   Here are
   my lines.
-EOS
-</code></pre>
+EOS</code></pre>
 </dd>
 
 <dt><code>dirname &lt;path&gt;</code> - pure bash implementation of the
@@ -198,13 +194,11 @@ to an array of the lines read from stdin.</p>
 
 <p>Usually fed with a heredoc, such as:</p>
 
-<pre><code>
-myarray=()
+<pre><code>myarray=()
 geta myarray <<'EOS'
   Here are
   my lines.
-EOS
-</code></pre>
+EOS</code></pre>
 </dd>
 
 <dt><code>has_length &lt;length&gt; &lt;array&gt;</code> - determines
