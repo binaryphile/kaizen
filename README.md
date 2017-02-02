@@ -94,270 +94,209 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 &emsp;*Returns*: normalized path on stdout
 
-&emsp;The given path must exist.  It can be a directory or filename.
-Returns the fully qualified path, without any relative path
-components or double-slashes.
+&emsp;The given path must exist.  It can be a directory or filename. Returns the fully qualified path, without any relative path<br/>
+&emsp;components or double-slashes.
 
-<dl>
-<dt><code>basename &lt;path&gt;</code> - pure bash implementation of the
-basename command</dt>
+**`basename <path>`** - pure bash implementation of the basename command
 
-<dd>
-<p>Accepts a literal or a variable name</p>
+Accepts a literal or a variable name
 
-<p><em>Returns</em>: the final component of the path on stdout</p>
+*Returns*: the final component of the path on stdout
 
-<p>The path does not have to exist.  It can be a directory or filename.
-Returns the portion of the path after the final slash.</p>
-</dd>
+The path does not have to exist.  It can be a directory or filename.
+Returns the portion of the path after the final slash.
 
-<dt><code>defa &lt;variable name&gt;</code> - read and un-indent a
-string from stdin and split lines into the named array variable</dt>
+**`defa <variable name>`** - read and un-indent a string from stdin and
+split lines into the named array variable
 
-<dd>
-<p><em>Returns</em>: nothing.  Creates or sets the named array
-variable as a side-effect.  If you want to scope the variable locally,
-it must already be declared.  Any contents will be replaced.  Sets the
-variable to an array of the lines read from stdin.</p>
 
-<p>The lines are de-indented by the amount of whitespace indentation of
-the first line.  Blank lines (even without indentation) are
-preserved.</p>
+*Returns*: nothing.  Creates or sets the named array variable as a
+side-effect.  If you want to scope the variable locally, it must already
+be declared.  Any contents will be replaced.  Sets the variable to an
+array of the lines read from stdin.
 
-<p>Usually fed with a heredoc, such as:</p>
+The lines are de-indented by the amount of whitespace indentation of the
+first line.  Blank lines (even without indentation) are preserved.
 
-<pre><code>myarray=()
-defa myarray <<'EOS'
-  Here are
-  my lines.
-EOS</code></pre>
-</dd>
+Usually fed with a heredoc, such as:
 
-<dt><code>defs &lt;variable_name&gt;</code> - read and un-indent a
-string from stdin into the named string variable</dt>
+    myarray=()
+    defa myarray <<'EOS'
+      Here are
+      my lines.
+    EOS
 
-<dd>
-<p><em>Returns</em>: nothing.  Creates or sets the named string variable
-as a side-effect.  If you want to scope the variable locally, it must
-already be declared.  Any contents will be replaced.  Sets the variable
-to the lines read from stdin, including newlines.</p>
+`defs <variable_name>` - read and un-indent a string from stdin into the
+named string variable
 
-<p>The lines are de-indented by the amount of whitespace indentation of
-the first line.  Blank lines (even without indentation) are
-preserved.</p>
+*Returns*: nothing.  Creates or sets the named string variable as a
+side-effect.  If you want to scope the variable locally, it must already
+be declared.  Any contents will be replaced.  Sets the variable to the
+lines read from stdin, including newlines.
 
-<p>Usually fed with a heredoc, such as:</p>
+The lines are de-indented by the amount of whitespace indentation of the
+first line.  Blank lines (even without indentation) are preserved.
 
-<pre><code>mystring=''
-defs mystring <<'EOS'
-  Here are
-  my lines.
-EOS</code></pre>
-</dd>
+Usually fed with a heredoc, such as:
 
-<dt><code>dirname &lt;path&gt;</code> - pure bash implementation of the
-dirname command</dt>
+    mystring=''
+    defs mystring <<'EOS'
+      Here are
+      my lines.
+    EOS
 
-<dd>
-<p>Accepts a literal or a variable name</p>
+`dirname <path>` - pure bash implementation of the dirname command
 
-<p><em>Returns</em>: the path argument without its final component on
-stdout</p>
+Accepts a literal or a variable name
 
-<p>The path does not have to exist.  It can be a directory or filename.
+*Returns*: the path argument without its final component on stdout
+
+The path does not have to exist.  It can be a directory or filename.
 Returns the portion of the path before the final slash.  If there are no
-slashes in <code>path</code>, returns ".".</p>
-</dd>
+slashes in `path`, returns ".".
 
-<dt><code>errexit &lt;message&gt; [return_code]</code> - print
-<code>message</code> on stderr and exit with optional return code</dt>
+`errexit <message> [return_code]` - print `message` on stderr and exit
+with optional return code
 
-<dd>
-<p>Accepts literals or variable names</p>
+Accepts literals or variable names
 
-<p><code>return_code</code> defaults to 1</p>
-</dd>
+`return_code` defaults to 1
 
-<dt><code>geta &lt;variable_name&gt;</code> - read a string from stdin
-and split lines into the named array variable</dt>
+`geta <variable_name>` - read a string from stdin and split lines into
+the named array variable
 
-<dd>
-<p><em>Returns</em>: nothing.  Creates or sets the named array variable
-as a side-effect.  If you want to scope the variable locally, it must
-already be declared.  Any contents will be replaced.  Sets the variable
-to an array of the lines read from stdin.</p>
+*Returns*: nothing.  Creates or sets the named array variable as a
+side-effect.  If you want to scope the variable locally, it must already
+be declared.  Any contents will be replaced.  Sets the variable to an
+array of the lines read from stdin.
 
-<p>Blank lines are preserved.</p>
+Blank lines are preserved.
 
-<p>Usually fed with a heredoc, such as:</p>
+Usually fed with a heredoc, such as:
 
-<pre><code>myarray=()
-geta myarray <<'EOS'
-  Here are
-  my lines.
-EOS</code></pre>
-</dd>
+    myarray=()
+    geta myarray <<'EOS'
+      Here are
+      my lines.
+    EOS
 
-<dt><code>has_length &lt;length&gt; &lt;array&gt;</code> - determines
-whether an array is of the named length</dt>
+`has_length <length> <array>` - determines whether an array is of the
+named length
 
-<dd>
-<p>Accepts literals or variable names</p>
+Accepts literals or variable names
 
-<p><em>Returns</em>: boolean true if <code>array</code> has
-<code>length</code> number of items, false otherwise</p>
-</dd>
+*Returns*: boolean true if `array` has `length` number of items, false
+otherwise
 
-<dt><code>is_directory &lt;path&gt;</code> - determines whether a path
-is an actual directory</dt>
+`is_directory <path>` - determines whether a path is an actual directory
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: boolean true if <code>path</code> is a directory or
-symlink to a directory</p>
+*Returns*: boolean true if `path` is a directory or symlink to a
+directory
 
-<p>Has the same semantics as the <code>[[ -d ]]</code> test</p>
-</dd>
+Has the same semantics as the `[[ -d ]]` test
 
-<dt><code>is_executable &lt;path&gt;</code> - determines whether a path
-has the executable permission</dt>
+`is_executable <path>` - determines whether a path is executable
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: boolean true if <code>path</code> is a file or
-directory with the executable permission, or a symlink to one</p>
+*Returns*: boolean true if `path` is a file or directory with the
+executable permission, or a symlink to one
 
-<p>Has the same semantics as the <code>[[ -x ]]</code> test</p>
-</dd>
+Has the same semantics as the `[[ -x ]]` test
 
-<dt><code>is_executable_file &lt;path&gt;</code> - determines whether a
-path is a file and has the executable permission</dt>
+`is_executable_file <path>` - determines whether a path is a file and
+has the executable permission
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: boolean true if <code>path</code> is a file with
-the executable permission, or a symlink to one</p>
+*Returns*: boolean true if `path` is a file with the executable
+permission, or a symlink to one
 
-<p>Equivalent to <code>is_file path && is_executable path</code></p>
-</dd>
+Equivalent to `is_file path && is_executable path`
 
-<dt><code>is_file &lt;path&gt;</code> - determines whether a path is a
-file</dt>
+`is_file <path>` - determines whether a path is a file
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: boolean true if <code>path</code> is a file
-permission, or a symlink to one</p>
+*Returns*: boolean true if `path` is a file permission, or a symlink to
+one
 
-<p>Has the same semantics as the <code>[[ -f ]]</code> test</p>
-</dd>
+Has the same semantics as the `[[ -f ]]` test
 
-<dt><code>is_given &lt;variable_name&gt;</code> - determines whether the
-named variable is not empty</dt>
+`is_given <variable_name>` - determines whether the named variable is
+not empty
 
-<dd>
-<p><em>Returns</em>: boolean false if <code>variable_name</code> is a
-blank string, if a string variable, or has elements, if an array or
-associative array.  Also returns false if <code>variable_name</code> is
-not set.</p>
+*Returns*: boolean false if `variable_name` is a blank string, if a
+string variable, or has elements, if an array or associative array.
+Also returns false if `variable_name` is not set.
 
-<p>Has the same semantics as the <code>[[ -n ]]</code> test</p>
-</dd>
+Has the same semantics as the `[[ -n ]]` test
 
-<dt><code>is_nonexecutable_file &lt;path&gt;</code> - determines whether
-a path is a file and does not have the executable permission</dt>
+`is_nonexecutable_file <path>` - determines whether a path is a file and
+does not have the executable permission
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: boolean true if <code>path</code> is a file with
-the executable permission, or a symlink to one</p>
+*Returns*: boolean true if `path` is a file with the executable
+permission, or a symlink to one
 
-<p>Equivalent to <code>is_file path && is_executable path</code></p>
-</dd>
+Equivalent to `is_file path && is_executable path`
 
-<dt><code>is_same_as &lt;string_1&gt; &lt;string_2&gt;</code> -
-determines whether two strings are the same</dt>
+`is_same_as <string_1> <string_2>` - determines whether two strings are
+the same
 
-<dd>
-<p>Accepts literals or variable names</p>
+Accepts literals or variable names
 
-<p><em>Returns</em>: boolean true if <code>string_1</code> and
-<code>string_2</code> are exactly the same</p>
-</dd>
+*Returns*: boolean true if `string_1` and `string_2` are exactly the
+same
 
-<dt><code>is_set &lt;variable_name&gt;</code> - determines whether
-<code>variable_name</code> is set to anything (including an empty string
-or array)</dt>
+`is_set <variable_name>` - determines whether `variable_name` is set to
+anything (including an empty string or array)
 
-<dd>
-<p><em>Returns</em>: boolean true if <code>variable_name</code> has been
-set</p>
+*Returns*: boolean true if `variable_name` has been set
 
-<p>Has the same semantics as <code>declare -p <variable_name></code></p>
-</dd>
+Has the same semantics as `declare -p <variable_name>`
 
-<dt><code>is_symlink &lt;path&gt;</code> - determines whether
-<code>path</code> is a symbolic link</dt>
+`is_symlink <path>` - determines whether `path` is a symbolic link
 
-<dd>
-<p><em>Returns</em>: boolean true if <code>path</code> is a symbolic
-link</p>
+*Returns*: boolean true if `path` is a symbolic link
 
-<p>Has the same semantics as the <code>[[ -h ]]</code> test</p>
-</dd>
+Has the same semantics as the `[[ -h ]]` test
 
-<dt><code>joina &lt;delimiter&gt; &lt;array&gt;</code> - joins an array
-of variables, with the delimiter, into a string</dt>
+`joina <delimiter> <array>` - joins an array of variables, with the
+delimiter, into a string
 
-<dd>
-<p>Accepts literals or variable names</p>
+Accepts literals or variable names
 
-<p><em>Returns</em>: the joined string on stdout</p>
+*Returns*: the joined string on stdout
 
-<p><code>delimiter</code> must be a single character</p>
-</dd>
+`delimiter` must be a single character
 
-<dt><code>puts &lt;message&gt;</code> - output a newline-terminated
-string on stdout</dt>
+`puts <message>` - output a newline-terminated string on stdout
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: the <code>message</code> string and a newline on
-stdout</p>
+*Returns*: the `message` string and a newline on stdout
 
-<p>Meant as a substitute for the <code>echo</code> command.  Provides a
-more consistent output mechanism than <code>echo</code> (try
-<code>echo</code>ing "-n", for example).  <a
-href=http://www.in-ulm.de/~mascheck/various/echo+printf/>Recommended
-reading</a> on why <code>echo</code> can be an issue.</p> </dd>
+Meant as a substitute for the `echo` command.  Provides a more
+consistent output mechanism than `echo` (try `echo`ing "-n", for
+example). [Recommended reading] on why `echo` can be an issue.
 
-<dt><code>putserr &lt;message&gt;</code> - output a newline-terminated
-string on stderr</dt>
+`putserr <message>` - output a newline-terminated string on stderr
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: the <code>message</code> string and a newline on
-stderr</p>
-</dd>
+*Returns*: the `message` string and a newline on stderr
 
-<dt><code>putserr &lt;message&gt;</code> - output a newline-terminated
-string on stderr</dt>
+`putserr <message>` - output a newline-terminated string on stderr
 
-<dd>
-<p>Accepts a literal or variable name</p>
+Accepts a literal or variable name
 
-<p><em>Returns</em>: the <code>message</code> string and a newline on
-stderr</p>
-</dd>
-</dl>
+*Returns*: the `message` string and a newline on stderr
 
 [sorta]: https://github.com/binaryphile/sorta
 [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
 [shpec]: https://github.com/rylnd/shpec
+[Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
