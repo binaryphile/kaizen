@@ -1,4 +1,5 @@
-# kaizen
+kaizen
+======
 
 In the spirit of small, continuous improvements of its namesake, kaizen
 is a library of functions meant to be small improvements to working with
@@ -6,120 +7,115 @@ Bash (hereafter, "bash").
 
 Features:
 
-- pure bash - no non-builtin commands or calls (macros discussed below
-  are a separate library)
+-   pure bash - no non-builtin commands or calls (macros discussed below
+    are a separate library)
 
-- readability - many cryptic bashisms are given simple names, for
-  example `is_given` for `[[ -n ]]`
+-   readability - many cryptic bashisms are given simple names, for
+    example `is_given` for `[[ -n ]]`
 
-- some basic string operations - such as `to_upper` and `starts_with`
+-   some basic string operations - such as `to_upper` and `starts_with`
 
-- most functions accept variable names as arguments thanks to the
-  [sorta] library
+-   most functions accept variable names as arguments thanks to the
+    [sorta] library
 
-- compatible with `sorta`'s import capabilities, which allows you to
-  source only the functions you want rather than the entire library
+-   compatible with `sorta`'s import capabilities, which allows you to
+    source only the functions you want rather than the entire library
 
-- the good parts of `strict_mode` (set -euo pipefail), as outlined by
-  [Aaron Maxwell]
+-   the good parts of `strict_mode` (set -euo pipefail), as outlined by
+    [Aaron Maxwell]
 
-- macros (actually global variables) for the safest forms of dangerous
-  commands such as `rm -rf`, to make it easy to use them consistently
+-   macros (actually global variables) for the safest forms of dangerous
+    commands such as `rm -rf`, to make it easy to use them consistently
 
-- a shpec helper library is included, useful if you are a user of
-  [shpec]
+-   a shpec helper library is included, useful if you are a user of
+    [shpec]
 
-# Installation
+Installation
+============
 
 Clone this repository and add its `lib` directory to your PATH in
 `.bash_profile` or another suitable rc file.
 
-# Usage
+Usage
+=====
 
 The whole library:
 
-```
-source kzn.bash
-```
+    source kzn.bash
 
 Just the `is_given` and `to_upper` functions:
 
-```
-source import.bash
-import_functions=(
-  is_given
-  to_upper
-)
-eval "$(importa kzn import_functions)"
-```
+    source import.bash
+    import_functions=(
+      is_given
+      to_upper
+    )
+    eval "$(importa kzn import_functions)"
 
 Use the macros:
 
-```
-source macros.bash
+    source macros.bash
 
-$rm myfile
-```
+    $rm myfile
 
 Use some of the shpec-helper functions:
 
-```
-source import.bash
-import_functions=(
-  cleanup
-  initialize_shpec_helper
-  shpec_source
-)
-eval "$(importa shpec-helper import_functions)"
+    source import.bash
+    import_functions=(
+      cleanup
+      initialize_shpec_helper
+      shpec_source
+    )
+    eval "$(importa shpec-helper import_functions)"
 
-shpec_source lib/mylib.bash
-```
+    shpec_source lib/mylib.bash
 
-# Kaizen API
+Kaizen API
+==========
 
 "Accepts literals or variable names" means that the arguments may be
 specified normally, using string literals or expansions for example, or
-with the bare name of a variable (as a normal string argument).  If the
+with the bare name of a variable (as a normal string argument). If the
 receiving function detects that the supplied argument is the name of a
 defined variable, it will automatically expand the variable itself.
 
 Array and hash (associative array) literals may also be passed as
-strings for those types of variables.  Any literal that would work for
+strings for those types of variables. Any literal that would work for
 the right-hand-side of an assignment statement works in that case, such
 as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 **`absolute_path <path>`** - normalize a path string
 
-&emsp;Accepts a literal or a variable name
+ Accepts a literal or a variable name
 
-&emsp;*Returns*: normalized path on stdout
+ *Returns*: normalized path on stdout
 
-&emsp;The given path must exist.  It can be a directory or filename.
-Returns the fully qualified path, without any relative path<br/>
-&emsp;components or double-slashes.
+ The given path must exist. It can be a directory or filename. Returns
+the fully qualified path, without any relative path<br/>  components or
+double-slashes.
 
 **`basename <path>`** - pure bash implementation of the basename command
 
-&emsp;Accepts a literal or a variable name
+ Accepts a literal or a variable name
 
-&emsp;*Returns*: the final component of the path on stdout
+ *Returns*: the final component of the path on stdout
 
-&emsp;The path does not have to exist.  It can be a directory or
-filename.  Returns the portion of the path after the final slash.
+ The path does not have to exist. It can be a directory or filename.
+Returns the portion of the path after the final slash.
 
 **`defa <variable name>`** - read and un-indent a string from stdin and
 split lines into the named array variable
 
-&emsp;*Returns*: nothing.  Creates or sets the named array variable as a
-side-effect.  If you want to scope the variable locally, it must<br/>
-&emsp;already be declared.  Any contents will be replaced.  Sets the
-variable to an array of the lines read from stdin.
+ *Returns*: nothing. Creates or sets the named array variable as a
+side-effect. If you want to scope the variable locally, it must<br/>
+ already be declared. Any contents will be replaced. Sets the variable
+to an array of the lines read from stdin.
 
-&emsp;The lines are de-indented by the amount of whitespace indentation
-of the first line.  Blank lines (even without indentation) are<br/>
-&emsp;preserved.
+ The lines are de-indented by the amount of whitespace indentation of
+the first line. Blank lines (even without indentation) are<br/>
+ preserved.
 
-&emsp;Usually fed with a heredoc, such as:
+ Usually fed with a heredoc, such as:
 
         myarray=()
         defa myarray <<'EOS'
@@ -130,13 +126,13 @@ of the first line.  Blank lines (even without indentation) are<br/>
 **`defs <variable_name>`** - read and un-indent a string from stdin into
 the named string variable
 
-*Returns*: nothing.  Creates or sets the named string variable as a
-side-effect.  If you want to scope the variable locally, it must already
-be declared.  Any contents will be replaced.  Sets the variable to the
+*Returns*: nothing. Creates or sets the named string variable as a
+side-effect. If you want to scope the variable locally, it must already
+be declared. Any contents will be replaced. Sets the variable to the
 lines read from stdin, including newlines.
 
 The lines are de-indented by the amount of whitespace indentation of the
-first line.  Blank lines (even without indentation) are preserved.
+first line. Blank lines (even without indentation) are preserved.
 
 Usually fed with a heredoc, such as:
 
@@ -152,8 +148,8 @@ Accepts a literal or a variable name
 
 *Returns*: the path argument without its final component on stdout
 
-The path does not have to exist.  It can be a directory or filename.
-Returns the portion of the path before the final slash.  If there are no
+The path does not have to exist. It can be a directory or filename.
+Returns the portion of the path before the final slash. If there are no
 slashes in `path`, returns ".".
 
 **`errexit <message> [return_code]`** - print `message` on stderr and
@@ -166,9 +162,9 @@ Accepts literals or variable names
 **`geta <variable_name>`** - read a string from stdin and split lines
 into the named array variable
 
-*Returns*: nothing.  Creates or sets the named array variable as a
-side-effect.  If you want to scope the variable locally, it must already
-be declared.  Any contents will be replaced.  Sets the variable to an
+*Returns*: nothing. Creates or sets the named array variable as a
+side-effect. If you want to scope the variable locally, it must already
+be declared. Any contents will be replaced. Sets the variable to an
 array of the lines read from stdin.
 
 Blank lines are preserved.
@@ -231,8 +227,8 @@ Has the same semantics as the `[[ -f ]]` test
 is not empty
 
 *Returns*: boolean false if `variable_name` is a blank string, if a
-string variable, or has elements, if an array or associative array.
-Also returns false if `variable_name` is not set.
+string variable, or has elements, if an array or associative array. Also
+returns false if `variable_name` is not set.
 
 Has the same semantics as the `[[ -n ]]` test
 
@@ -282,9 +278,9 @@ Accepts a literal or variable name
 
 *Returns*: the `message` string and a newline on stdout
 
-Meant as a substitute for the `echo` command.  Provides a more
-consistent output mechanism than `echo` (try `echo`ing "-n", for
-example). [Recommended reading] on why `echo` can be an issue.
+Meant as a substitute for the `echo` command. Provides a more consistent
+output mechanism than `echo` (try `echo`ing "-n", for example).
+[Recommended reading] on why `echo` can be an issue.
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
@@ -298,7 +294,7 @@ Accepts a literal or variable name
 
 *Returns*: the `message` string and a newline on stderr
 
-[sorta]: https://github.com/binaryphile/sorta
-[Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
-[shpec]: https://github.com/rylnd/shpec
-[Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
+  [sorta]: https://github.com/binaryphile/sorta
+  [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
+  [shpec]: https://github.com/rylnd/shpec
+  [Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
