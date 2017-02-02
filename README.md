@@ -127,12 +127,13 @@ preserved.
 into the named string variable
 
  *Returns*: nothing. Creates or sets the named string variable as a
-side-effect. If you want to scope the variable locally, it must already
-be declared. Any contents will be replaced. Sets the variable to the
-lines read from stdin, including newlines.
+side-effect. If you want to scope the variable locally, it
+must<br/>&emsp;already be declared. Any contents will be replaced. Sets
+the variable to the lines read from stdin, including newlines.
 
  The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation) are preserved.
+the first line. Blank lines (even without indentation)<br/>&emsp;are
+preserved.
 
  Usually fed with a heredoc, such as:
 
