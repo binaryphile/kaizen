@@ -94,7 +94,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 &emsp;*Returns*: normalized path on stdout
 
-&emsp;The given path must exist.  It can be a directory or filename. Returns the fully qualified path, without any relative path<br/>
+&emsp;The given path must exist.  It can be a directory or filename.
+Returns the fully qualified path, without any relative path<br/>
 &emsp;components or double-slashes.
 
 **`basename <path>`** - pure bash implementation of the basename command
@@ -103,19 +104,19 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 &emsp;*Returns*: the final component of the path on stdout
 
-&emsp;The path does not have to exist.  It can be a directory or filename.
-Returns the portion of the path after the final slash.
+&emsp;The path does not have to exist.  It can be a directory or
+filename.  Returns the portion of the path after the final slash.
 
 **`defa <variable name>`** - read and un-indent a string from stdin and
 split lines into the named array variable
 
 &emsp;*Returns*: nothing.  Creates or sets the named array variable as a
 side-effect.  If you want to scope the variable locally, it must<br/>
-&emsp;already be declared.  Any contents will be replaced.  Sets the variable
-to an array of the lines read from stdin.
+&emsp;already be declared.  Any contents will be replaced.  Sets the
+variable to an array of the lines read from stdin.
 
-&emsp;The lines are de-indented by the amount of whitespace indentation of the
-first line.  Blank lines (even without indentation) are<br/>
+&emsp;The lines are de-indented by the amount of whitespace indentation
+of the first line.  Blank lines (even without indentation) are<br/>
 &emsp;preserved.
 
 &emsp;Usually fed with a heredoc, such as:
