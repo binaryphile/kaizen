@@ -112,8 +112,8 @@ side-effect. If you want to scope the variable locally, it must<br/>
 to an array of the lines read from stdin.
 
  The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation) are<br/>
- preserved.
+the first line. Blank lines (even without indentation)<br/>  are
+preserved.
 
  Usually fed with a heredoc, such as:
 
@@ -123,24 +123,24 @@ the first line. Blank lines (even without indentation) are<br/>
           my lines.
         EOS
 
-**`defs <variable_name>`** - read and un-indent a string from stdin into
-the named string variable
+**`defs <variable_name>`** - read and un-indent a string from stdin
+into the named string variable
 
-*Returns*: nothing. Creates or sets the named string variable as a
+ *Returns*: nothing. Creates or sets the named string variable as a
 side-effect. If you want to scope the variable locally, it must already
 be declared. Any contents will be replaced. Sets the variable to the
 lines read from stdin, including newlines.
 
-The lines are de-indented by the amount of whitespace indentation of the
-first line. Blank lines (even without indentation) are preserved.
+ The lines are de-indented by the amount of whitespace indentation of
+the first line. Blank lines (even without indentation) are preserved.
 
-Usually fed with a heredoc, such as:
+ Usually fed with a heredoc, such as:
 
-    mystring=''
-    defs mystring <<'EOS'
-      Here are
-      my lines.
-    EOS
+        mystring=''
+        defs mystring <<'EOS'
+          Here are
+          my lines.
+        EOS
 
 **`dirname <path>`** - pure bash implementation of the dirname command
 
@@ -266,33 +266,33 @@ to anything (including an empty string or array)
 **`joina <delimiter> <array>`** - joins an array of variables, with the
 delimiter, into a string
 
-Accepts literals or variable names
+ Accepts literals or variable names
 
-*Returns*: the joined string on stdout
+ *Returns*: the joined string on stdout
 
-`delimiter` must be a single character
+ `delimiter` must be a single character
 
 **`puts <message>`** - output a newline-terminated string on stdout
 
-Accepts a literal or variable name
+ Accepts a literal or variable name
 
-*Returns*: the `message` string and a newline on stdout
+ *Returns*: the `message` string and a newline on stdout
 
-Meant as a substitute for the `echo` command. Provides a more consistent
+ Meant as a substitute for the `echo` command. Provides a more consistent
 output mechanism than `echo` (try `echo`ing "-n", for example).
 [Recommended reading] on why `echo` can be an issue.
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
-Accepts a literal or variable name
+ Accepts a literal or variable name
 
-*Returns*: the `message` string and a newline on stderr
+ *Returns*: the `message` string and a newline on stderr
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
-Accepts a literal or variable name
+ Accepts a literal or variable name
 
-*Returns*: the `message` string and a newline on stderr
+ *Returns*: the `message` string and a newline on stderr
 
   [sorta]: https://github.com/binaryphile/sorta
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
