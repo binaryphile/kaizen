@@ -53,7 +53,7 @@ import_functions=(
 eval "$(importa kzn import_functions)"
 ```
 
-Use the macros (sourced, not imported):
+Use the macros:
 
 ```
 source macros.bash
@@ -70,7 +70,7 @@ import_functions=(
   initialize_shpec_helper
   shpec_source
 )
-eval "$(importa kzn import_functions)"
+eval "$(importa shpec-helper import_functions)"
 
 shpec_source lib/mylib.bash
 ```
@@ -88,20 +88,17 @@ strings for those types of variables.  Any literal that would work for
 the right-hand-side of an assignment statement works in that case, such
 as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
+**`absolute_path <path>`** - normalize a path string
+
+&emsp;Accepts a literal or a variable name
+
+&emsp;*Returns*: normalized path on stdout
+
+&emsp;The given path must exist.  It can be a directory or filename.
+&emsp;Returns the fully qualified path, without any relative path components
+&emsp;or double-slashes.
+
 <dl>
-<dt><code>absolute_path &lt;path&gt;</code> - normalize a path
-string</dt>
-
-<dd>
-<p>Accepts a literal or a variable name</p>
-
-<p><em>Returns</em>: normalized path on stdout</p>
-
-<p>The given path must exist.  It can be a directory or filename.
-Returns the fully qualified path, without any relative path components
-or double-slashes.</p>
-</dd>
-
 <dt><code>basename &lt;path&gt;</code> - pure bash implementation of the
 basename command</dt>
 
