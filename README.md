@@ -296,6 +296,18 @@ example). [Recommended reading] on why `echo` can be an issue.
 
 &emsp;*Returns*: the `message` string and a newline on stderr
 
+splits
+
+starts_with
+
+strict_mode
+
+stripa
+
+to_lower
+
+to_upper
+
   [sorta]: https://github.com/binaryphile/sorta
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
   [shpec]: https://github.com/rylnd/shpec
