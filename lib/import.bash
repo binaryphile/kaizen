@@ -9,7 +9,7 @@ _required_imports=(
 
 _imp_test() { :;}
 
-importa() (
+importa() {(
   eval "$(passed '( _sourcefile @_functions )' "$@")"
   local _function
 
@@ -18,7 +18,7 @@ importa() (
   for _function in "${_functions[@]}"; do
     _print_function _function
   done
-)
+)}
 
 imports() (
   eval "$(passed '( sourcefile function )' "$@")"
@@ -26,14 +26,14 @@ imports() (
   importa sourcefile '( '"$function"' )'
 )
 
-_print_function() (
+_print_function() {(
   eval "$(passed '( function )' "$@")"
 
   IFS=$'\n'
   set -- $(type "$function")
   shift
   printf '%s\n' "$*"
-)
+)}
 
 _source_file() {
   eval "$(passed '( sourcefile )' "$@")"
