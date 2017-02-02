@@ -108,11 +108,11 @@ split lines into the named array variable
 
  *Returns*: nothing. Creates or sets the named array variable as a
 side-effect. If you want to scope the variable locally, it must<br/>
- already be declared. Any contents will be replaced. Sets the variable
-to an array of the lines read from stdin.
+&emsp;already be declared. Any contents will be replaced. Sets the
+variable to an array of the lines read from stdin.
 
  The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation)<br/>  are
+the first line. Blank lines (even without indentation)<br/>&emsp;are
 preserved.
 
  Usually fed with a heredoc, such as:
@@ -149,8 +149,8 @@ the first line. Blank lines (even without indentation) are preserved.
 &emsp;*Returns*: the path argument without its final component on stdout
 
 &emsp;The path does not have to exist. It can be a directory or
-filename.  Returns the portion of the path before the final slash. If
-there are no slashes in `path`, returns ".".
+filename.  Returns the portion of the path before the final slash.
+If<br/>&emsp; there are no slashes in `path`, returns ".".
 
 **`errexit <message> [return_code]`** - print `message` on stderr and
 exit with optional return code
@@ -163,9 +163,9 @@ exit with optional return code
 into the named array variable
 
 &emsp;*Returns*: nothing. Creates or sets the named array variable as a
-side-effect. If you want to scope the variable locally, it must already
-be declared. Any contents will be replaced. Sets the variable to an
-array of the lines read from stdin.
+side-effect. If you want to scope the variable locally, it
+must<br/>&emsp;already be declared. Any contents will be replaced. Sets
+the variable to an array of the lines read from stdin.
 
 &emsp;Blank lines are preserved.
 
@@ -227,8 +227,9 @@ symlink to one
 is not empty
 
 &emsp;*Returns*: boolean false if `variable_name` is a blank string, if
-a string variable, or has elements, if an array or associative array.
-Also returns false if `variable_name` is not set.
+a string variable, or has elements, if an array or
+associative<br/>&emsp; array.  Also returns false if `variable_name` is
+not set.
 
 &emsp;Has the same semantics as the `[[ -n ]]` test
 
@@ -279,7 +280,7 @@ delimiter, into a string
  *Returns*: the `message` string and a newline on stdout
 
  Meant as a substitute for the `echo` command. Provides a more consistent
-output mechanism than `echo` (try `echo`ing "-n", for example).
+output mechanism than `echo` (try `echo`ing<br/>&emsp; "-n", for example).
 [Recommended reading] on why `echo` can be an issue.
 
 **`putserr <message>`** - output a newline-terminated string on stderr
