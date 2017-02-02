@@ -99,11 +99,11 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 **`basename <path>`** - pure bash implementation of the basename command
 
-Accepts a literal or a variable name
+&emsp;Accepts a literal or a variable name
 
-*Returns*: the final component of the path on stdout
+&emsp;*Returns*: the final component of the path on stdout
 
-The path does not have to exist.  It can be a directory or filename.
+&emsp;The path does not have to exist.  It can be a directory or filename.
 Returns the portion of the path after the final slash.
 
 **`defa <variable name>`** - read and un-indent a string from stdin and
