@@ -33,8 +33,9 @@ Features:
 Installation
 ============
 
-Clone this repository and add its `lib` directory to your PATH in
-`.bash_profile` or another suitable rc file.
+First clone [sorta] and add its `lib` to your PATH.
+
+Then clone this repository and add its `lib` directory to your PATH.
 
 Usage
 =====
