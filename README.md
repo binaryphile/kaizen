@@ -109,22 +109,22 @@ Returns the portion of the path after the final slash.
 **`defa <variable name>`** - read and un-indent a string from stdin and
 split lines into the named array variable
 
-
 *Returns*: nothing.  Creates or sets the named array variable as a
-side-effect.  If you want to scope the variable locally, it must already
-be declared.  Any contents will be replaced.  Sets the variable to an
-array of the lines read from stdin.
+side-effect.  If you want to scope the variable locally, it must<br/>
+&emsp;already be declared.  Any contents will be replaced.  Sets the variable
+to an array of the lines read from stdin.
 
 The lines are de-indented by the amount of whitespace indentation of the
-first line.  Blank lines (even without indentation) are preserved.
+first line.  Blank lines (even without indentation) are<br/>
+&emsp;preserved.
 
-Usually fed with a heredoc, such as:
+&emsp;Usually fed with a heredoc, such as:
 
-    myarray=()
-    defa myarray <<'EOS'
-      Here are
-      my lines.
-    EOS
+        myarray=()
+        defa myarray <<'EOS'
+          Here are
+          my lines.
+        EOS
 
 **`defs <variable_name>`** - read and un-indent a string from stdin into
 the named string variable
