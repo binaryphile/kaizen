@@ -86,36 +86,36 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 **`absolute_path <path>`** - normalize a path string
 
- Accepts a literal or a variable name
+&emsp;Accepts a literal or a variable name
 
- *Returns*: normalized path on stdout
+&emsp;*Returns*: normalized path on stdout
 
- The given path must exist. It can be a directory or filename. Returns
-the fully qualified path, without any relative path<br/>  components or
+&emsp;The given path must exist. It can be a directory or filename. Returns
+the fully qualified path, without any relative path<br/> &emsp;components or
 double-slashes.
 
 **`basename <path>`** - pure bash implementation of the basename command
 
- Accepts a literal or a variable name
+&emsp;Accepts a literal or a variable name
 
- *Returns*: the final component of the path on stdout
+&emsp;*Returns*: the final component of the path on stdout
 
- The path does not have to exist. It can be a directory or filename.
+&emsp;The path does not have to exist. It can be a directory or filename.
 Returns the portion of the path after the final slash.
 
 **`defa <variable name>`** - read and un-indent a string from stdin and
 split lines into the named array variable
 
- *Returns*: nothing. Creates or sets the named array variable as a
+&emsp;*Returns*: nothing. Creates or sets the named array variable as a
 side-effect. If you want to scope the variable locally, it must<br/>
- already be declared. Any contents will be replaced. Sets the variable
+&emsp;already be declared. Any contents will be replaced. Sets the variable
 to an array of the lines read from stdin.
 
- The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation)<br/> are
+&emsp;The lines are de-indented by the amount of whitespace indentation of
+the first line. Blank lines (even without indentation)<br/>&emsp;are
 preserved.
 
- Usually fed with a heredoc, such as:
+&emsp;Usually fed with a heredoc, such as:
 
         myarray=()
         defa myarray <<'EOS'
@@ -126,16 +126,16 @@ preserved.
 **`defs <variable_name>`** - read and un-indent a string from stdin into
 the named string variable
 
- *Returns*: nothing. Creates or sets the named string variable as a
+&emsp;*Returns*: nothing. Creates or sets the named string variable as a
 side-effect. If you want to scope the variable locally, it
-must<br/> already be declared. Any contents will be replaced. Sets the
+must<br/>&emsp;already be declared. Any contents will be replaced. Sets the
 variable to the lines read from stdin, including newlines.
 
- The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation)<br/> are
+&emsp;The lines are de-indented by the amount of whitespace indentation of
+the first line. Blank lines (even without indentation)<br/>&emsp;are
 preserved.
 
- Usually fed with a heredoc, such as:
+&emsp;Usually fed with a heredoc, such as:
 
         mystring=''
         defs mystring <<'EOS'
@@ -145,32 +145,32 @@ preserved.
 
 **`dirname <path>`** - pure bash implementation of the dirname command
 
- Accepts a literal or a variable name
+&emsp;Accepts a literal or a variable name
 
- *Returns*: the path argument without its final component on stdout
+&emsp;*Returns*: the path argument without its final component on stdout
 
- The path does not have to exist. It can be a directory or filename.
-Returns the portion of the path before the final slash. If<br/>  there
+&emsp;The path does not have to exist. It can be a directory or filename.
+Returns the portion of the path before the final slash. If<br/>&emsp; there
 are no slashes in `path`, returns ".".
 
 **`errexit <message> [return_code]`** - print `message` on stderr and
 exit with optional return code
 
- Accepts literals or variable names
+&emsp;Accepts literals or variable names
 
- `return_code` defaults to 1
+&emsp;`return_code` defaults to 1
 
 **`geta <variable_name>`** - read a string from stdin and split lines
 into the named array variable
 
- *Returns*: nothing. Creates or sets the named array variable as a
+&emsp;*Returns*: nothing. Creates or sets the named array variable as a
 side-effect. If you want to scope the variable locally, it
-must<br/> already be declared. Any contents will be replaced. Sets the
+must<br/>&emsp;already be declared. Any contents will be replaced. Sets the
 variable to an array of the lines read from stdin.
 
- Blank lines are preserved.
+&emsp;Blank lines are preserved.
 
- Usually fed with a heredoc, such as:
+&emsp;Usually fed with a heredoc, such as:
 
         myarray=()
         geta myarray <<'EOS'
@@ -181,119 +181,119 @@ variable to an array of the lines read from stdin.
 **`has_length <length> <array>`** - determines whether an array is of
 the named length
 
- Accepts literals or variable names
+&emsp;Accepts literals or variable names
 
- *Returns*: boolean true if `array` has `length` number of items, false
+&emsp;*Returns*: boolean true if `array` has `length` number of items, false
 otherwise
 
 **`is_directory <path>`** - determines whether a path is an actual
 directory
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: boolean true if `path` is a directory or symlink to a
+&emsp;*Returns*: boolean true if `path` is a directory or symlink to a
 directory
 
- Has the same semantics as the `[[ -d ]]` test
+&emsp;Has the same semantics as the `[[ -d ]]` test
 
 **`is_executable <path>`** - determines whether a path is executable
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: boolean true if `path` is a file or directory with the
+&emsp;*Returns*: boolean true if `path` is a file or directory with the
 executable permission, or a symlink to one
 
- Has the same semantics as the `[[ -x ]]` test
+&emsp;Has the same semantics as the `[[ -x ]]` test
 
 **`is_executable_file <path>`** - determines whether a path is a file
 and has the executable permission
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: boolean true if `path` is a file with the executable
+&emsp;*Returns*: boolean true if `path` is a file with the executable
 permission, or a symlink to one
 
- Equivalent to `is_file path && is_executable path`
+&emsp;Equivalent to `is_file path && is_executable path`
 
 **`is_file <path>`** - determines whether a path is a file
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: boolean true if `path` is a file permission, or a symlink to
+&emsp;*Returns*: boolean true if `path` is a file permission, or a symlink to
 one
 
- Has the same semantics as the `[[ -f ]]` test
+&emsp;Has the same semantics as the `[[ -f ]]` test
 
 **`is_given <variable_name>`** - determines whether the named variable
 is not empty
 
- *Returns*: boolean false if `variable_name` is a blank string, if a
-string variable, or has elements, if an array or associative<br/> 
+&emsp;*Returns*: boolean false if `variable_name` is a blank string, if a
+string variable, or has elements, if an array or associative<br/>&emsp;
 array. Also returns false if `variable_name` is not set.
 
- Has the same semantics as the `[[ -n ]]` test
+&emsp;Has the same semantics as the `[[ -n ]]` test
 
 **`is_nonexecutable_file <path>`** - determines whether a path is a file
 and does not have the executable permission
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: boolean true if `path` is a file with the executable
+&emsp;*Returns*: boolean true if `path` is a file with the executable
 permission, or a symlink to one
 
- Equivalent to `is_file path && is_executable path`
+&emsp;Equivalent to `is_file path && is_executable path`
 
 **`is_same_as <string_1> <string_2>`** - determines whether two strings
 are the same
 
- Accepts literals or variable names
+&emsp;Accepts literals or variable names
 
- *Returns*: boolean true if `string_1` and `string_2` are exactly the
+&emsp;*Returns*: boolean true if `string_1` and `string_2` are exactly the
 same
 
 **`is_set <variable_name>`** - determines whether `variable_name` is set
 to anything (including an empty string or array)
 
- *Returns*: boolean true if `variable_name` has been set
+&emsp;*Returns*: boolean true if `variable_name` has been set
 
- Has the same semantics as `declare -p <variable_name>`
+&emsp;Has the same semantics as `declare -p <variable_name>`
 
 **`is_symlink <path>`** - determines whether `path` is a symbolic link
 
- *Returns*: boolean true if `path` is a symbolic link
+&emsp;*Returns*: boolean true if `path` is a symbolic link
 
- Has the same semantics as the `[[ -h ]]` test
+&emsp;Has the same semantics as the `[[ -h ]]` test
 
 **`joina <delimiter> <array>`** - joins an array of variables, with the
 delimiter, into a string
 
- Accepts literals or variable names
+&emsp;Accepts literals or variable names
 
- *Returns*: the joined string on stdout
+&emsp;*Returns*: the joined string on stdout
 
- `delimiter` must be a single character
+&emsp;`delimiter` must be a single character
 
 **`puts <message>`** - output a newline-terminated string on stdout
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: the `message` string and a newline on stdout
+&emsp;*Returns*: the `message` string and a newline on stdout
 
- Meant as a substitute for the `echo` command. Provides a more
-consistent output mechanism than `echo` (try `echo`ing<br/>  "-n", for
+&emsp;Meant as a substitute for the `echo` command. Provides a more
+consistent output mechanism than `echo` (try `echo`ing<br/>&emsp; "-n", for
 example). [Recommended reading] on why `echo` can be an issue.
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: the `message` string and a newline on stderr
+&emsp;*Returns*: the `message` string and a newline on stderr
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
- Accepts a literal or variable name
+&emsp;Accepts a literal or variable name
 
- *Returns*: the `message` string and a newline on stderr
+&emsp;*Returns*: the `message` string and a newline on stderr
 
   [sorta]: https://github.com/binaryphile/sorta
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
