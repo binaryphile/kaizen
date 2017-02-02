@@ -126,8 +126,8 @@ Usually fed with a heredoc, such as:
       my lines.
     EOS
 
-`defs <variable_name>` - read and un-indent a string from stdin into the
-named string variable
+**`defs <variable_name>`** - read and un-indent a string from stdin into
+the named string variable
 
 *Returns*: nothing.  Creates or sets the named string variable as a
 side-effect.  If you want to scope the variable locally, it must already
@@ -145,7 +145,7 @@ Usually fed with a heredoc, such as:
       my lines.
     EOS
 
-`dirname <path>` - pure bash implementation of the dirname command
+**`dirname <path>`** - pure bash implementation of the dirname command
 
 Accepts a literal or a variable name
 
@@ -155,15 +155,15 @@ The path does not have to exist.  It can be a directory or filename.
 Returns the portion of the path before the final slash.  If there are no
 slashes in `path`, returns ".".
 
-`errexit <message> [return_code]` - print `message` on stderr and exit
-with optional return code
+**`errexit <message> [return_code]`** - print `message` on stderr and
+exit with optional return code
 
 Accepts literals or variable names
 
 `return_code` defaults to 1
 
-`geta <variable_name>` - read a string from stdin and split lines into
-the named array variable
+**`geta <variable_name>`** - read a string from stdin and split lines
+into the named array variable
 
 *Returns*: nothing.  Creates or sets the named array variable as a
 side-effect.  If you want to scope the variable locally, it must already
@@ -180,15 +180,16 @@ Usually fed with a heredoc, such as:
       my lines.
     EOS
 
-`has_length <length> <array>` - determines whether an array is of the
-named length
+**`has_length <length> <array>`** - determines whether an array is of
+the named length
 
 Accepts literals or variable names
 
 *Returns*: boolean true if `array` has `length` number of items, false
 otherwise
 
-`is_directory <path>` - determines whether a path is an actual directory
+**`is_directory <path>`** - determines whether a path is an actual
+directory
 
 Accepts a literal or variable name
 
@@ -197,7 +198,7 @@ directory
 
 Has the same semantics as the `[[ -d ]]` test
 
-`is_executable <path>` - determines whether a path is executable
+**`is_executable <path>`** - determines whether a path is executable
 
 Accepts a literal or variable name
 
@@ -206,8 +207,8 @@ executable permission, or a symlink to one
 
 Has the same semantics as the `[[ -x ]]` test
 
-`is_executable_file <path>` - determines whether a path is a file and
-has the executable permission
+**`is_executable_file <path>`** - determines whether a path is a file
+and has the executable permission
 
 Accepts a literal or variable name
 
@@ -216,7 +217,7 @@ permission, or a symlink to one
 
 Equivalent to `is_file path && is_executable path`
 
-`is_file <path>` - determines whether a path is a file
+**`is_file <path>`** - determines whether a path is a file
 
 Accepts a literal or variable name
 
@@ -225,8 +226,8 @@ one
 
 Has the same semantics as the `[[ -f ]]` test
 
-`is_given <variable_name>` - determines whether the named variable is
-not empty
+**`is_given <variable_name>`** - determines whether the named variable
+is not empty
 
 *Returns*: boolean false if `variable_name` is a blank string, if a
 string variable, or has elements, if an array or associative array.
@@ -234,8 +235,8 @@ Also returns false if `variable_name` is not set.
 
 Has the same semantics as the `[[ -n ]]` test
 
-`is_nonexecutable_file <path>` - determines whether a path is a file and
-does not have the executable permission
+**`is_nonexecutable_file <path>`** - determines whether a path is a file
+and does not have the executable permission
 
 Accepts a literal or variable name
 
@@ -244,28 +245,28 @@ permission, or a symlink to one
 
 Equivalent to `is_file path && is_executable path`
 
-`is_same_as <string_1> <string_2>` - determines whether two strings are
-the same
+**`is_same_as <string_1> <string_2>`** - determines whether two strings
+are the same
 
 Accepts literals or variable names
 
 *Returns*: boolean true if `string_1` and `string_2` are exactly the
 same
 
-`is_set <variable_name>` - determines whether `variable_name` is set to
-anything (including an empty string or array)
+**`is_set <variable_name>`** - determines whether `variable_name` is set
+to anything (including an empty string or array)
 
 *Returns*: boolean true if `variable_name` has been set
 
 Has the same semantics as `declare -p <variable_name>`
 
-`is_symlink <path>` - determines whether `path` is a symbolic link
+**`is_symlink <path>`** - determines whether `path` is a symbolic link
 
 *Returns*: boolean true if `path` is a symbolic link
 
 Has the same semantics as the `[[ -h ]]` test
 
-`joina <delimiter> <array>` - joins an array of variables, with the
+**`joina <delimiter> <array>`** - joins an array of variables, with the
 delimiter, into a string
 
 Accepts literals or variable names
@@ -274,7 +275,7 @@ Accepts literals or variable names
 
 `delimiter` must be a single character
 
-`puts <message>` - output a newline-terminated string on stdout
+**`puts <message>`** - output a newline-terminated string on stdout
 
 Accepts a literal or variable name
 
@@ -284,13 +285,13 @@ Meant as a substitute for the `echo` command.  Provides a more
 consistent output mechanism than `echo` (try `echo`ing "-n", for
 example). [Recommended reading] on why `echo` can be an issue.
 
-`putserr <message>` - output a newline-terminated string on stderr
+**`putserr <message>`** - output a newline-terminated string on stderr
 
 Accepts a literal or variable name
 
 *Returns*: the `message` string and a newline on stderr
 
-`putserr <message>` - output a newline-terminated string on stderr
+**`putserr <message>`** - output a newline-terminated string on stderr
 
 Accepts a literal or variable name
 
