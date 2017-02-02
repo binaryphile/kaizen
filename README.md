@@ -94,8 +94,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
 &emsp;*Returns*: normalized path on stdout
 
-&emsp;The given path must exist.  It can be a directory or filename.
-&emsp;Returns the fully qualified path, without any relative path components
+&emsp;The given path must exist.  It can be a directory or filename. \
+&emsp;Returns the fully qualified path, without any relative path components \
 &emsp;or double-slashes.
 
 <dl>
