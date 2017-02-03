@@ -138,11 +138,11 @@ preserved.
 
         Usually fed with a heredoc, such as:
 
-        mystring=''
-        defs mystring <<'EOS'
-          Here are
-          my lines.
-        EOS
+            mystring=''
+            defs mystring <<'EOS'
+              Here are
+              my lines.
+            EOS
 
 **`dirname <path>`** - pure bash implementation of the dirname command
 
