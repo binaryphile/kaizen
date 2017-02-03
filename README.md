@@ -101,8 +101,8 @@ Returns the fully qualified path, without any relative path<br/>
 
         *Returns*: the final component of the path on stdout
 
-        The path does not have to exist. It can be a directory or filename.
-Returns the portion of the path after the final slash.
+        The path does not have to exist. It can be a directory or
+filename. Returns the portion of the path after the final slash.
 
 **`defa <variable name>`** - read and un-indent a string from stdin and
 split lines into the named array variable
@@ -112,9 +112,9 @@ a side-effect. If you want to scope the variable locally, it<br/>
         must already be declared. Any contents will be replaced. Sets
 the variable to an array of the lines read from stdin.
 
-        The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation)<br/>        are
-preserved.
+        The lines are de-indented by the amount of whitespace
+indentation of the first line. Blank lines (even without
+indentation)<br/>        are preserved.
 
         Usually fed with a heredoc, such as:
 
@@ -127,14 +127,14 @@ preserved.
 **`defs <variable_name>`** - read and un-indent a string from stdin into
 the named string variable
 
-        *Returns*: nothing. Creates or sets the named string variable as a
-side-effect. If you want to scope the variable locally, it
-must<br/>        already be declared. Any contents will be replaced. Sets
-the variable to the lines read from stdin, including newlines.
+        *Returns*: nothing. Creates or sets the named string variable as
+a side-effect. If you want to scope the variable locally, it
+must<br/>        already be declared. Any contents will be replaced.
+Sets the variable to the lines read from stdin, including newlines.
 
-        The lines are de-indented by the amount of whitespace indentation of
-the first line. Blank lines (even without indentation)<br/>        are
-preserved.
+        The lines are de-indented by the amount of whitespace
+indentation of the first line. Blank lines (even without
+indentation)<br/>        are preserved.
 
         Usually fed with a heredoc, such as:
 
@@ -148,11 +148,12 @@ preserved.
 
         Accepts a literal or a variable name
 
-        *Returns*: the path argument without its final component on stdout
+        *Returns*: the path argument without its final component on
+stdout
 
-        The path does not have to exist. It can be a directory or filename.
-Returns the portion of the path before the final slash. If<br/>        
-there are no slashes in `path`, returns ".".
+        The path does not have to exist. It can be a directory or
+filename. Returns the portion of the path before the final slash.
+If<br/>         there are no slashes in `path`, returns ".".
 
 **`errexit <message> [return_code]`** - print `message` on stderr and
 exit with optional return code
@@ -201,8 +202,8 @@ directory
 
         Accepts a literal or variable name
 
-        *Returns*: boolean true if `path` is a file or directory with the
-executable permission, or a symlink to one
+        *Returns*: boolean true if `path` is a file or directory with
+the executable permission, or a symlink to one
 
         Has the same semantics as the `[[ -x ]]` test
 
@@ -220,17 +221,18 @@ permission, or a symlink to one
 
         Accepts a literal or variable name
 
-        *Returns*: boolean true if `path` is a file permission, or a symlink
-to one
+        *Returns*: boolean true if `path` is a file permission, or a
+symlink to one
 
         Has the same semantics as the `[[ -f ]]` test
 
 **`is_given <variable_name>`** - determines whether the named variable
 is not empty
 
-        *Returns*: boolean false if `variable_name` is a blank string, if a
-string variable, or has elements, if an array or associative<br/>        
-array. Also returns false if `variable_name` is not set.
+        *Returns*: boolean false if `variable_name` is a blank string,
+if a string variable, or has elements, if an array or
+associative<br/>         array. Also returns false if `variable_name` is
+not set.
 
         Has the same semantics as the `[[ -n ]]` test
 
@@ -249,8 +251,8 @@ are the same
 
         Accepts literals or variable names
 
-        *Returns*: boolean true if `string_1` and `string_2` are exactly the
-same
+        *Returns*: boolean true if `string_1` and `string_2` are exactly
+the same
 
 **`is_set <variable_name>`** - determines whether `variable_name` is set
 to anything (including an empty string or array)
@@ -281,8 +283,8 @@ delimiter, into a string
         *Returns*: the `message` string and a newline on stdout
 
         Meant as a substitute for the `echo` command. Provides a more
-consistent output mechanism than `echo` (try `echo`ing<br/>         "-n",
-for example). [Recommended reading] on why `echo` can be an issue.
+consistent output mechanism than `echo` (try `echo`ing<br/>        
+"-n", for example). [Recommended reading] on why `echo` can be an issue.
 
 **`putserr <message>`** - output a newline-terminated string on stderr
 
