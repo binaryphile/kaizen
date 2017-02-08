@@ -301,8 +301,8 @@ delimiter
         *Returns*: the split elements in the named array
 
         Only works with single-character delimiters.  The return array
-must be declared prior to invocation and should be empty.  Setting the
-return value is a side-effect.
+must be declared prior to invocation and should be
+empty.<br/>        Setting the return value is a side-effect.
 
 **`starts_with <prefix> <string>`** - test if the string starts with the
 prefix
@@ -320,15 +320,16 @@ prefix
         *Returns*: nothing
 
         Strict mode is the three shell options "errexit", "nounset" and
-"pipefail".  Together they tell bash to be more aggressive about
-stopping upon unexpected error conditions.  Read more about it from
-[Aaron Maxwell].
+"pipefail".  Together they tell bash to be more
+aggressive<br/>        about stopping upon unexpected error conditions.
+Read more about it from [Aaron Maxwell].
 
         Also read all the reasons why [you shouldn't use it].  Then
-realize how stupid they are and use it anyway.  But *don't expect any
-help with it*.  It won't always work.  Don't depend on it, just
-appreciate it when it stops your script from puking all over itself,
-without having had to write error-handling code on *every line*.
+realize how stupid they are and use it anyway.  But *don't
+expect<br/>        any help with it*.  It won't always work.  Don't
+depend on it, just appreciate it when it stops your script from
+puking<br/>        all over itself, without having had to write
+error-handling code on *every line*.
 
 stripa
 
