@@ -128,8 +128,9 @@ indentation)<br/>        are preserved.
 the named string variable
 
         *Returns*: nothing. Creates or sets the named string variable as
-a side-effect. If you want to scope the variable locally, it
-must<br/>        already be declared. Any contents will be replaced.
+a side-effect. If you want to scope the variable locally, it<br/>
+        
+must already be declared. Any contents will be replaced.
 Sets the variable to the lines read from stdin, including newlines.
 
         The lines are de-indented by the amount of whitespace
@@ -292,17 +293,42 @@ consistent output mechanism than `echo` (try `echo`ing<br/>        
 
         *Returns*: the `message` string and a newline on stderr
 
-**`putserr <message>`** - output a newline-terminated string on stderr
+**`splits <delimiter> <string> <array_name>`** - split a string on a
+delimiter
 
-        Accepts a literal or variable name
+        Accepts literals or variable names except for `array_name`
 
-        *Returns*: the `message` string and a newline on stderr
+        *Returns*: the split elements in the named array
 
-splits
+        Only works with single-character delimiters.  The return array
+must be declared prior to invocation and should be empty.  Setting the
+return value is a side-effect.
 
-starts\_with
+**`starts_with <prefix> <string>`** - test if the string starts with the
+prefix
 
-strict\_mode
+        Accepts literals or variable names
+
+        *Returns*: true or false
+
+        `prefix` may be a single character or string.
+
+**`strict_mode <status>`** - enable or disable bash strict mode
+
+        Accepts a literals or variable name
+
+        *Returns*: nothing
+
+        Strict mode is the three shell options "errexit", "nounset" and
+"pipefail".  Together they tell bash to be more aggressive about
+stopping upon unexpected error conditions.  Read more about it from
+[Aaron Maxwell].
+
+        Also read all the reasons why [you shouldn't use it].  Then
+realize how stupid they are and use it anyway.  But *don't expect any
+help with it*.  It won't always work.  Don't depend on it, just
+appreciate it when it stops your script from puking all over itself,
+without having had to write error-handling code on *every line*.
 
 stripa
 
@@ -314,3 +340,4 @@ to\_upper
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
   [shpec]: https://github.com/rylnd/shpec
   [Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
+  [you shouldn't use it]: http://mywiki.wooledge.org/BashFAQ/105
