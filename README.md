@@ -327,8 +327,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     Also read all the reasons why [you shouldn't use it].  Then realize
     how stupid they are and use it anyway.  But *don't expect any help
     with it*.  It won't always work.  Don't depend on it, just
-    appreciate it when it stops your script from puking all over
-    itself, without having had to write error-handling code on *every
+    appreciate it when it stops your script from puking all over itself,
+    without having had to write perfect error-handling code on *every
     line* (like any other sane language).
 
 stripa
