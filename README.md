@@ -317,6 +317,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     *Returns*: nothing
 
+    `status` can be `on` or `off`.
+
     Strict mode is the three shell options "errexit", "nounset" and
     "pipefail".  Together they tell bash to be more aggressive     about
     stopping upon unexpected error conditions.  Read more about it from
