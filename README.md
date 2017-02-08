@@ -320,7 +320,7 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     Strict mode is the three shell options "errexit", "nounset" and
     "pipefail".  Together they tell bash to be more aggressive     about
     stopping upon unexpected error conditions.  Read more about it from
-    [Aaron Maxwell].
+    [Aaron Maxwell] and [David Pashley].
 
     Also read all the reasons why [you shouldn't use it].  Then realize
     how stupid they are and use it anyway.  But *don't expect any help
@@ -339,4 +339,5 @@ to\_upper
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
   [shpec]: https://github.com/rylnd/shpec
   [Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
+  [David Pashley]: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
   [you shouldn't use it]: http://mywiki.wooledge.org/BashFAQ/105
