@@ -37,7 +37,7 @@ basename() {
   puts "${path##*/}"
 }
 
-defa() { geta "$1"; stripa "$1" ;}
+defa() { eval "$(printf '%s=()' "$1")"; geta "$1"; stripa "$1" ;}
 
 defs() {
   local -a _results
@@ -131,11 +131,10 @@ is_symlink() {
 joina() {
   eval "$(passed '( delimiter @array )' "$@")"
   local IFS
-  local result
 
   set -- "${array[@]}"
-  IFS=';'
-  printf '%s\n' "${array[*]}"
+  IFS=$delimiter
+  puts "${array[*]}"
 }
 
 puts() {
@@ -151,14 +150,14 @@ putserr() {
 }
 
 splits() {
-  eval "$(passed '( delimiter string )' "$@")"
-  local -a results
+  eval "$(passed '( delimiter string "*refa" )' "$@")"
   local IFS
+  local results=()
 
-  IFS="$delimiter"
+  IFS=$delimiter
   set -- $string
   results=( "$@" )
-  pass results
+  local "$refa" && reta results "$refa"
 }
 
 starts_with() {

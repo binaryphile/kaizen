@@ -4,12 +4,15 @@ shpec_helper_imports=(
   cleanup
   initialize_shpec_helper
   shpec_source
+  stop_on_error
   validate_dirname
 )
 eval "$(importa shpec-helper shpec_helper_imports)"
 initialize_shpec_helper
 
 shpec_source lib/kzn.bash
+
+stop_on_error=true
 
 describe 'absolute_path'
   it "determines the path of a directory from the parent"
@@ -86,8 +89,10 @@ describe 'absolute_path'
 
   it "fails on a nonexistent path"
     dir=$($mktempd) || return 1
+    stop_on_error off
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
+    stop_on_error
     $rm "$dir"
   end
 end
@@ -100,7 +105,18 @@ end
 
 describe 'defa'
   it "strips each line of a heredoc and assigns each to an element of an array"
-    unset -v results
+    defa results <<'EOS'
+      one
+      two
+      three
+EOS
+    expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
+    printf -v expected "$expected" \' \'
+    assert equal "$expected" "$(declare -p results)"
+  end
+
+  it "doesn't preserve existing contents"
+    results=( four )
     defa results <<'EOS'
       one
       two
@@ -114,6 +130,18 @@ end
 
 describe 'defs'
   it "strips each line of a heredoc and assigns to a string"
+    defs result <<'EOS'
+      one
+      two
+      three
+EOS
+    expected='declare -- result="one\ntwo\nthree"'
+    printf -v expected "$expected"
+    assert equal "$expected" "$(declare -p result)"
+  end
+
+  it "doesn't preserve existing contents"
+    result='four'
     defs result <<'EOS'
       one
       two
@@ -215,8 +243,10 @@ describe 'is_directory'
     validate_dirname "$dir" || return
     touch "$dir"/file
     $ln file "$dir"/filelink
+    stop_on_error off
     is_directory "$dir"/filelink
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
@@ -224,8 +254,10 @@ describe 'is_directory'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    stop_on_error off
     is_directory "$dir"/file
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 end
@@ -255,8 +287,10 @@ describe 'is_executable'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    stop_on_error off
     is_executable "$dir"/file
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
@@ -265,8 +299,10 @@ describe 'is_executable'
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
     chmod 664 "$dir"/dir
+    stop_on_error off
     is_executable "$dir"/dir
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
@@ -297,8 +333,10 @@ describe 'is_executable'
     validate_dirname "$dir" || return
     touch "$dir"/file
     $ln file "$dir"/link
+    stop_on_error off
     is_executable "$dir"/link
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
@@ -308,8 +346,10 @@ describe 'is_executable'
     mkdir "$dir"/dir
     chmod 664 "$dir"/dir
     $ln dir "$dir"/link
+    stop_on_error off
     is_executable "$dir"/link
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 end
@@ -338,16 +378,20 @@ describe 'is_file'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     $ln . "$dir"/dirlink
+    stop_on_error off
     is_file "$dir"/dirlink
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
   it "doesn't identify a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
+    stop_on_error off
     is_file "$dir"
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 end
@@ -355,8 +399,10 @@ end
 describe 'is_given'
   it "detects an empty value"
     sample=''
+    stop_on_error off
     is_given sample
     assert unequal 0 $?
+    stop_on_error
   end
 
   it "detects a non-empty value"
@@ -367,14 +413,18 @@ describe 'is_given'
 
   it "detects an unset reference"
     unset -v sample
+    stop_on_error off
     is_given sample
     assert unequal 0 $?
+    stop_on_error
   end
 
   it "detects an empty array"
     samples=()
+    stop_on_error off
     is_given samples
     assert unequal 0 $?
+    stop_on_error
   end
 
   it "detects a non-empty array"
@@ -385,8 +435,10 @@ describe 'is_given'
 
   it "detects an empty hash"
     declare -A sampleh=()
+    stop_on_error off
     is_given sampleh
     assert unequal 0 $?
+    stop_on_error
   end
 
   it "detects a non-empty hash"
@@ -403,8 +455,10 @@ describe 'is_same_as'
   end
 
   it "detects non-equivalent strings"
+    stop_on_error off
     is_same_as one two
     assert unequal 0 $?
+    stop_on_error
   end
 end
 
@@ -423,8 +477,10 @@ describe 'is_set'
 
   it "returns false if a variable is not set"
     unset -v sample
+    stop_on_error off
     is_set sample
     assert unequal 0 $?
+    stop_on_error
   end
 end
 
@@ -433,8 +489,10 @@ describe 'is_symlink'
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
+    stop_on_error off
     is_symlink "$dir"/file
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 
@@ -460,8 +518,10 @@ describe 'is_symlink'
   it "doesn't identify a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
+    stop_on_error off
     is_symlink "$dir"
     assert unequal 0 $?
+    stop_on_error
     cleanup "$dir"
   end
 end
@@ -469,7 +529,7 @@ end
 describe 'joina'
   it "joins an array with a delimiter"
     declare -a samples=([0]=zero [1]=one)
-    assert equal 'zero;one' "$(joina ';' samples)"
+    assert equal 'zero@one' "$(joina '@' samples)"
   end
 
   it "joins an array with one item"
@@ -492,9 +552,11 @@ end
 
 describe 'splits'
   it "splits a string into an array on a partition character"
+    results=()
     sample='a=b'
+    splits '=' sample results
     printf -v expected 'declare -a results=%s([0]="a" [1]="b")%s' \' \'
-    assert equal "$expected" "$(splits '=' sample)"
+    assert equal "$expected" "$(declare -p results)"
   end
 end
 
@@ -505,8 +567,10 @@ describe 'starts_with'
   end
 
   it "detects if a string doesn't end with a specified character"
+    stop_on_error off
     starts_with / test
     assert unequal 0 $?
+    stop_on_error
   end
 end
 
@@ -514,8 +578,7 @@ describe 'stripa'
   it "strips each element of an array"
     results=("    zero" "    one" "    two")
     stripa results
-    expected='declare -a results=%s([0]="zero" [1]="one" [2]="two")%s'
-    printf -v expected "$expected" \' \'
+    expected=$(printf 'declare -a results=%s([0]="zero" [1]="one" [2]="two")%s' \' \')
     assert equal "$expected" "$(declare -p results)"
   end
 
