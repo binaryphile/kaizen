@@ -33,9 +33,9 @@ Features:
 Installation
 ============
 
-First clone [sorta] and add its `lib` to your PATH.
+First clone [sorta] and [nano] and add their `lib`s to your path.
 
-Then clone this repository and add its `lib` directory to your PATH.
+Then clone this repository and add its `lib` directory to your path.
 
 Usage
 =====
@@ -337,6 +337,7 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     (like any other sane language).
 
   [sorta]: https://github.com/binaryphile/sorta
+  [nano]: https://github.com/binaryphile/nano
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
   [shpec]: https://github.com/rylnd/shpec
   [Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
