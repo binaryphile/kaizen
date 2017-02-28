@@ -17,6 +17,6 @@ v0 in semver parlance.
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
-  [v10.10.10]: https://github.com/binaryphile/sorta/compare/v0.4...v10.10.10
+  [v10.10.10]: https://github.com/binaryphile/kaizen/compare/v0.4...v10.10.10
   [sorta]: https://github.com/binaryphile/sorta
   [nano]: https://github.com/binaryphile/nano
