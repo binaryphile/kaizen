@@ -307,7 +307,7 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     be declared prior to invocation and should be empty. Setting the
     return value is a side-effect.
 
--   **`starts_with`** `*prefix string`\* - test if the string starts
+-   **`starts_with`** *`prefix string`* - test if the string starts
     with the prefix
 
     Accepts literals or variable names
