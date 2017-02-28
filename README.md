@@ -3,7 +3,7 @@ kaizen
 
 In the spirit of small, continuous improvements of its namesake, kaizen
 is a library of functions meant to be small improvements to working with
-Bash (hereafter, "bash").
+bash.
 
 Features:
 
@@ -85,7 +85,7 @@ strings for those types of variables. Any literal that would work for
 the right-hand-side of an assignment statement works in that case, such
 as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
-- **`absolute_path <path>`** - normalize a path string
+-   **`absolute_path`** *`path`* - normalize a path string
 
     Accepts a literal or a variable name
 
@@ -95,8 +95,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     Returns the fully qualified path, without any relative path
     components or double-slashes.
 
-- **`basename <path>`** - pure bash implementation of the basename
-  command
+-   **`basename`** *`path`* - pure bash implementation of the basename
+    command
 
     Accepts a literal or a variable name
 
@@ -105,17 +105,17 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     The path does not have to exist. It can be a directory or filename.
     Returns the portion of the path after the final slash.
 
-- **`defa <variable name>`** - read and un-indent a string from stdin
-  and split lines into the named array variable
+-   **`defa`** *`variable name`* - read and un-indent a string from
+    stdin and split lines into the named array variable
 
-    *Returns*: nothing. Creates or sets the named array variable as a
-    side-effect. If you want to scope the variable locally, it must
+    *Returns*: nothing. Creates or sets the named array variable as
+    a side-effect. If you want to scope the variable locally, it must
     already be declared. Any contents will be replaced. Sets the
     variable to an array of the lines read from stdin.
 
     The lines are de-indented by the amount of whitespace indentation of
-    the first line. Blank lines (even without indentation) are
-    preserved.
+    the first line. Blank lines (even without indentation)
+    are preserved.
 
     Usually fed with a heredoc, such as:
 
@@ -125,17 +125,17 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
           my lines.
         EOS
 
-- **`defs <variable_name>`** - read and un-indent a string from stdin
-  into the named string variable
+-   **`defs`** *`variable_name`* - read and un-indent a string from
+    stdin into the named string variable
 
-    *Returns*: nothing. Creates or sets the named string variable as a
-    side-effect. If you want to scope the variable locally, it must
-    already be declared. Any contents will be replaced.  Sets the
+    *Returns*: nothing. Creates or sets the named string variable as
+    a side-effect. If you want to scope the variable locally, it must
+    already be declared. Any contents will be replaced. Sets the
     variable to the lines read from stdin, including newlines.
 
     The lines are de-indented by the amount of whitespace indentation of
-    the first line. Blank lines (even without indentation) are
-    preserved.
+    the first line. Blank lines (even without indentation)
+    are preserved.
 
     Usually fed with a heredoc, such as:
 
@@ -145,28 +145,29 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
           my lines.
         EOS
 
-- **`dirname <path>`** - pure bash implementation of the dirname command
+-   **`dirname`** *`path`* - pure bash implementation of the dirname
+    command
 
     Accepts a literal or a variable name
 
     *Returns*: the path argument without its final component on stdout
 
     The path does not have to exist. It can be a directory or filename.
-    Returns the portion of the path before the final slash.  If
-    there are no slashes in `path`, returns ".".
+    Returns the portion of the path before the final slash. If there are
+    no slashes in `path`, returns ".".
 
-- **`errexit <message> [return_code]`** - print `message` on stderr and
-  exit with optional return code
+-   **`errexit`** *`message [return_code]`* - print `message` on stderr
+    and exit with optional return code
 
     Accepts literals or variable names
 
     `return_code` defaults to 1
 
-- **`geta <variable_name>`** - read a string from stdin and split lines
-  into the named array variable
+-   **`geta`** *`variable_name`* - read a string from stdin and split
+    lines into the named array variable
 
-    *Returns*: nothing. Creates or sets the named array variable as a
-    side-effect. If you want to scope the variable locally, it must
+    *Returns*: nothing. Creates or sets the named array variable as
+    a side-effect. If you want to scope the variable locally, it must
     already be declared. Any contents will be replaced. Sets the
     variable to an array of the lines read from stdin.
 
@@ -180,16 +181,16 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
           my lines.
         EOS
 
-- **`has_length <length> <array>`** - determines whether an array is of
-  the named length
+-   **`has_length`** *`length array`* - determines whether an array is
+    of the named length
 
     Accepts literals or variable names
 
     *Returns*: boolean true if `array` has `length` number of items,
     false otherwise
 
-- **`is_directory <path>`** - determines whether a path is an actual
-  directory
+-   **`is_directory`** *`path`* - determines whether a path is an actual
+    directory
 
     Accepts a literal or variable name
 
@@ -198,7 +199,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     Has the same semantics as the `[[ -d ]]` test
 
-- **`is_executable <path>`** - determines whether a path is executable
+-   **`is_executable`** *`path`* - determines whether a path is
+    executable
 
     Accepts a literal or variable name
 
@@ -207,8 +209,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     Has the same semantics as the `[[ -x ]]` test
 
-- **`is_executable_file <path>`** - determines whether a path is a file
-  and has the executable permission
+-   **`is_executable_file`** *`path`* - determines whether a path is a
+    file and has the executable permission
 
     Accepts a literal or variable name
 
@@ -217,7 +219,7 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     Equivalent to `is_file path && is_executable path`
 
-- **`is_file <path>`** - determines whether a path is a file
+-   **`is_file`** *`path`* - determines whether a path is a file
 
     Accepts a literal or variable name
 
@@ -226,17 +228,17 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     Has the same semantics as the `[[ -f ]]` test
 
-- **`is_given <variable_name>`** - determines whether the named variable
-  is not empty
+-   **`is_given`** *`variable_name`* - determines whether the named
+    variable is not empty
 
     *Returns*: boolean false if `variable_name` is a blank string, if a
-    string variable, or has elements, if an array or associative
-    array. Also returns false if `variable_name` is not set.
+    string variable, or has elements, if an array or associative array.
+    Also returns false if `variable_name` is not set.
 
     Has the same semantics as the `[[ -n ]]` test
 
-- **`is_nonexecutable_file <path>`** - determines whether a path is a
-  file and does not have the executable permission
+-   **`is_nonexecutable_file`** *`path`* - determines whether a path is
+    a file and does not have the executable permission
 
     Accepts a literal or variable name
 
@@ -245,29 +247,30 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     Equivalent to `is_file path && is_executable path`
 
-- **`is_same_as <string_1> <string_2>`** - determines whether two
-  strings are the same
+-   **`is_same_as`** *`string_1 string_2`* - determines whether two
+    strings are the same
 
     Accepts literals or variable names
 
     *Returns*: boolean true if `string_1` and `string_2` are exactly the
     same
 
-- **`is_set <variable_name>`** - determines whether `variable_name` is
-  set to anything (including an empty string or array)
+-   **`is_set`** *`variable_name`* - determines whether `variable_name`
+    is set to anything (including an empty string or array)
 
     *Returns*: boolean true if `variable_name` has been set
 
     Has the same semantics as `declare -p <variable_name>`
 
-- **`is_symlink <path>`** - determines whether `path` is a symbolic link
+-   **`is_symlink`** *`path`* - determines whether `path` is a symbolic
+    link
 
     *Returns*: boolean true if `path` is a symbolic link
 
     Has the same semantics as the `[[ -h ]]` test
 
-- **`joina <delimiter> <array>`** - joins an array of variables, with
-  the delimiter, into a string
+-   **`joina`** *`delimiter array`* - joins an array of variables, with
+    the delimiter, into a string
 
     Accepts literals or variable names
 
@@ -275,35 +278,37 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     `delimiter` must be a single character
 
-- **`puts <message>`** - output a newline-terminated string on stdout
+-   **`puts`** *`message`* - output a newline-terminated string on
+    stdout
 
     Accepts a literal or variable name
 
     *Returns*: the `message` string and a newline on stdout
 
     Meant as a substitute for the `echo` command. Provides a more
-    consistent output mechanism than `echo` (try `echo`ing     "-n", for
-    example). [Recommended reading] on why `echo` can be an issue.
+    consistent output mechanism than `echo` (try `echo`ing "-n",
+    for example). [Recommended reading] on why `echo` can be an issue.
 
-- **`putserr <message>`** - output a newline-terminated string on stderr
+-   **`putserr <message>`** - output a newline-terminated string on
+    stderr
 
     Accepts a literal or variable name
 
     *Returns*: the `message` string and a newline on stderr
 
-- **`splits <delimiter> <string> <array_name>`** - split a string on a
-  delimiter
+-   **`splits`** *`delimiter string array_name`* - split a string on a
+    delimiter
 
     Accepts literals or variable names except for `array_name`
 
     *Returns*: the split elements in the named array
 
-    Only works with single-character delimiters.  The return array must
-    be declared prior to invocation and should be empty.  Setting the
+    Only works with single-character delimiters. The return array must
+    be declared prior to invocation and should be empty. Setting the
     return value is a side-effect.
 
-- **`starts_with <prefix> <string>`** - test if the string starts with
-  the prefix
+-   **`starts_with`** `*prefix string`\* - test if the string starts
+    with the prefix
 
     Accepts literals or variable names
 
@@ -311,7 +316,7 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     `prefix` may be a single character or string.
 
-- **`strict_mode <status>`** - enable or disable bash strict mode
+-   **`strict_mode`** *`status`* - enable or disable bash strict mode
 
     Accepts a literals or variable name
 
@@ -319,23 +324,17 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     `status` can be `on` or `off`.
 
-    Strict mode is the three shell options "errexit", "nounset" and
-    "pipefail".  Together they tell bash to be more aggressive     about
-    stopping upon unexpected error conditions.  Read more about it from
+    Strict mode is the three shell options "errexit", "nounset"
+    and "pipefail". Together they tell bash to be more aggressive about
+    stopping upon unexpected error conditions. Read more about it from
     [Aaron Maxwell] and [David Pashley].
 
-    Also read all the reasons why [you shouldn't use it].  Then realize
-    how stupid they are and use it anyway.  But *don't expect any help
-    with it*.  It won't always work.  Don't depend on it, just
-    appreciate it when it stops your script from puking all over itself,
-    without having had to write perfect error-handling code on *every
-    line* (like any other sane language).
-
-stripa
-
-to\_lower
-
-to\_upper
+    Also read all the reasons why [you shouldn't use it]. Then realize
+    how stupid they are and use it anyway. But *don't expect any help
+    with it*. It won't always work. Don't depend on it, just appreciate
+    it when it stops your script from puking all over itself, without
+    having had to write perfect error-handling code on *every line*
+    (like any other sane language).
 
   [sorta]: https://github.com/binaryphile/sorta
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
