@@ -157,7 +157,7 @@ splits () {
   IFS=$delimiter
   set -- $string
   results=( "$@" )
-  local "$refa" && reta results "$refa"
+  local "$refa" && ret results "$refa"
 }
 
 starts_with () {

@@ -13,6 +13,7 @@ initialize_shpec_helper
 shpec_source lib/kzn.bash
 
 stop_on_error=true
+stop_on_error
 
 describe 'absolute_path'
   it "determines the path of a directory from the parent"

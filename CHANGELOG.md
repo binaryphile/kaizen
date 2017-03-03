@@ -12,6 +12,13 @@ v0 in semver parlance.
 
 -   formatting of function declarations to match bash internal format
 
+### Fixed
+
+-   `strips` function updated for sorta v11.10.10
+
+-   `kzn_shpec.bash` was already employing `stop_on_error`, however it
+    did not turn it on at the very start. Fixed
+
 [v10.10.10] - 2017-02-28
 ------------------------
 
