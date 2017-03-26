@@ -12,12 +12,24 @@ v0 in semver parlance.
 
 -   formatting of function declarations to match bash internal format
 
+-   shpec test turns on stop_on_error before sourcing kaizen
+
+### Added
+
+-   shpec_source has a macro (variable) now to prevent scoping issues
+    with declarations
+
 ### Fixed
 
 -   `strips` function updated for sorta v11.10.10
 
--   `kzn_shpec.bash` was already employing `stop_on_error`, however it
-    did not turn it on at the very start. Fixed
+-   `kzn_shpec.bash` enables stop_on_error
+
+-   `absolute_path` declares all local variables
+
+-   `absolute_path` uses one less subshell
+
+-   `macros.bash` works with strict_mode
 
 [v10.10.10] - 2017-02-28
 ------------------------

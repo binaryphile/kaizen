@@ -27,8 +27,8 @@ absolute_path () {
     path=$(dirname path)
   }
   is_directory path || return
-  result=$( ( cd "$path"; pwd ) ) || return
-  puts "$result${filename:+/}${filename:-}"
+  path=$(cd "$path"; pwd) || return
+  puts "$path${filename:+/}${filename:-}"
 }
 
 basename () {

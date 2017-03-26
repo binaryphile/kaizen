@@ -9,11 +9,10 @@ shpec_helper_imports=(
 )
 eval "$(importa shpec-helper shpec_helper_imports)"
 initialize_shpec_helper
-
-shpec_source lib/kzn.bash
-
 stop_on_error=true
 stop_on_error
+
+shpec_source lib/kzn.bash
 
 describe 'absolute_path'
   it "determines the path of a directory from the parent"
@@ -88,13 +87,22 @@ describe 'absolute_path'
     $rm "$dir"
   end
 
-  it "fails on a nonexistent path"
+  it "fails on a nonexistent file path"
     dir=$($mktempd) || return 1
     stop_on_error off
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
     stop_on_error
     $rm "$dir"
+  end
+
+  it "fails on a nonexistent directory path"
+    dir=$($mktempd) || return 1
+    cleanup "$dir"
+    stop_on_error off
+    absolute_path "$dir" >/dev/null
+    assert unequal 0 $?
+    stop_on_error
   end
 end
 
