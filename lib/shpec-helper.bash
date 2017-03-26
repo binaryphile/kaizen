@@ -3,7 +3,7 @@ readonly _shpec_helper=loaded
 
 source import.bash
 
-eval "$(importa kzn '( absolute_path dirname )')"
+eval "$(importa kzn '( absolute_path dirname putserr )')"
 
 _required_imports=(
   absolute_path
@@ -11,14 +11,13 @@ _required_imports=(
   is_file
   is_directory
   puts
+  putserr
   validate_dirname
 )
 
 cleanup() {
-  eval "$(passed '( path )' "$@")"
-
-  validate_dirname path || return
-  $rm "$path"
+  putserr "DEPRECATION: cleanup has been changed to shpec_cleanup. Please change your code."
+  shpec_cleanup "$@"
 }
 
 initialize_shpec_helper() {
@@ -32,8 +31,16 @@ initialize_shpec_helper() {
   $mkdir "$tmp"
   mktemp='mktemp -qp '"$tmp"
   mktempd='mktemp -qdp '"$tmp"
+  shpec_source='source $(absolute_path "$(dirname "$BASH_SOURCE")"/..)'
 
   unset -v CDPATH
+}
+
+shpec_cleanup() {
+  eval "$(passed '( path )' "$@")"
+
+  validate_dirname path || return
+  $rm "$path"
 }
 
 shpec_source() {

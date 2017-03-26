@@ -5,12 +5,30 @@ eval "$(imports kzn is_directory)"
 source shpec-helper.bash
 initialize_shpec_helper
 
-describe 'cleanup'
+describe cleanup
+  it "prints a deprecation warning"; (
+    stub_command shpec_cleanup
+
+    expected="DEPRECATION: cleanup has been changed to shpec_cleanup. Please change your code."
+    assert equal "$expected" "$(cleanup 2>&1)"
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+
+  it "calls shpec_cleanup"; (
+    stub_command putserr
+    stub_command shpec_cleanup 'echo called'
+
+    assert equal called "$(cleanup)"
+    return "$_shpec_failures" ); (( _shpec_failures += $? )) ||:
+  end
+end
+
+describe shpec_cleanup
   it "should delete a given directory"
     dir=$($mktempd) || return 1
     is_directory "$dir"
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
     is_directory "$dir"
     assert unequal 0 $?
   end
@@ -18,7 +36,7 @@ describe 'cleanup'
   it "should validate before deletion"; (
     stub_command validate_dirname 'printf validate'
     stub_command rm "$(printf 'puts %s rm%s' \' \')"
-    result=$(cleanup)
+    result=$(shpec_cleanup)
     assert equal 'validate rm' "$result"
     return "$_shpec_failures" )
   end

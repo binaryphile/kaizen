@@ -16,8 +16,11 @@ v0 in semver parlance.
 
 ### Added
 
--   shpec_source has a macro (variable) now to prevent scoping issues
+-   `shpec_source` is a macro (variable) now to prevent scoping issues
     with declarations
+
+-   `shpec_cleanup` is the new name for `cleanup`, which was too generic
+    conflicted with other libraries under test
 
 ### Fixed
 
@@ -30,6 +33,12 @@ v0 in semver parlance.
 -   `absolute_path` uses one less subshell
 
 -   `macros.bash` works with strict_mode
+
+### Deprecated
+
+-   `shpec_source` - use macro instead
+
+-   `cleanup` - replaced by shpec_cleanup
 
 [v10.10.10] - 2017-02-28
 ------------------------
