@@ -14,13 +14,18 @@ v0 in semver parlance.
 
 -   shpec test turns on stop_on_error before sourcing kaizen
 
+-   stop_on_error turns on nounset and pipefail now
+
 ### Added
 
--   `shpec_source` is a macro (variable) now to prevent scoping issues
-    with declarations
+-   `shpec_cwd` is a macro (variable) meant to replace shpec_source, to
+    prevent scoping issues with declarations (function context) when
+    trying to use shpec_source function
 
 -   `shpec_cleanup` is the new name for `cleanup`, which was too generic
     conflicted with other libraries under test
+
+-   macros for install
 
 ### Fixed
 
