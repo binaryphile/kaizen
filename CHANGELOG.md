@@ -57,7 +57,7 @@ v0 in semver parlance.
     [nano]
 
 -   API documentation (still lacking `stripa`, `to_lower` and
-    `to_upper`)
+    `to_upper`, shpec-helper functions)
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
