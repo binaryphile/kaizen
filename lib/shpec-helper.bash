@@ -12,6 +12,7 @@ _required_imports=(
   is_directory
   puts
   putserr
+  shpec_cleanup
   validate_dirname
 )
 
@@ -31,7 +32,6 @@ initialize_shpec_helper() {
   $mkdir "$tmp"
   mktemp='mktemp -qp '"$tmp"
   mktempd='mktemp -qdp '"$tmp"
-  shpec_source='source $(absolute_path "$(dirname "$BASH_SOURCE")"/..)'
 
   unset -v CDPATH
 }

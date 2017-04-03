@@ -1,8 +1,8 @@
 source import.bash
 
 shpec_helper_imports=(
-  cleanup
   initialize_shpec_helper
+  shpec_cleanup
   shpec_source
   stop_on_error
   validate_dirname
@@ -98,7 +98,7 @@ describe 'absolute_path'
 
   it "fails on a nonexistent directory path"
     dir=$($mktempd) || return 1
-    cleanup "$dir"
+    shpec_cleanup "$dir"
     stop_on_error off
     absolute_path "$dir" >/dev/null
     assert unequal 0 $?
@@ -235,7 +235,7 @@ describe 'is_directory'
     validate_dirname "$dir" || return
     is_directory "$dir"
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies a symlink to a directory"
@@ -244,7 +244,7 @@ describe 'is_directory'
     $ln . "$dir"/dirlink
     is_directory "$dir"/dirlink
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a symlink to a file"
@@ -256,7 +256,7 @@ describe 'is_directory'
     is_directory "$dir"/filelink
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a file"
@@ -267,7 +267,7 @@ describe 'is_directory'
     is_directory "$dir"/file
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 end
 
@@ -279,7 +279,7 @@ describe 'is_executable'
     chmod 755 "$dir"/file
     is_executable "$dir"/file
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies an executable directory"
@@ -289,7 +289,7 @@ describe 'is_executable'
     chmod 755 "$dir"/dir
     is_executable "$dir"/dir
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify an non-executable file"
@@ -300,7 +300,7 @@ describe 'is_executable'
     is_executable "$dir"/file
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a non-executable directory"
@@ -312,7 +312,7 @@ describe 'is_executable'
     is_executable "$dir"/dir
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies a link to an executable file"
@@ -323,7 +323,7 @@ describe 'is_executable'
     $ln file "$dir"/link
     is_executable "$dir"/link
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies a link to an executable directory"
@@ -334,7 +334,7 @@ describe 'is_executable'
     $ln dir "$dir"/link
     is_executable "$dir"/link
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a link to a non-executable file"
@@ -346,7 +346,7 @@ describe 'is_executable'
     is_executable "$dir"/link
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a link to a non-executable directory"
@@ -359,7 +359,7 @@ describe 'is_executable'
     is_executable "$dir"/link
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 end
 
@@ -370,7 +370,7 @@ describe 'is_file'
     touch "$dir"/file
     is_file "$dir"/file
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies a symlink to a file"
@@ -380,7 +380,7 @@ describe 'is_file'
     $ln file "$dir"/filelink
     is_file "$dir"/filelink
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a symlink to a directory"
@@ -391,7 +391,7 @@ describe 'is_file'
     is_file "$dir"/dirlink
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a directory"
@@ -401,7 +401,7 @@ describe 'is_file'
     is_file "$dir"
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 end
 
@@ -502,7 +502,7 @@ describe 'is_symlink'
     is_symlink "$dir"/file
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it 'identifies a symlink to a file'
@@ -512,7 +512,7 @@ describe 'is_symlink'
     $ln file "$dir"/filelink
     is_symlink "$dir"/filelink
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "identifies a symlink to a directory"
@@ -521,7 +521,7 @@ describe 'is_symlink'
     $ln . "$dir"/dirlink
     is_symlink "$dir"/dirlink
     assert equal 0 $?
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 
   it "doesn't identify a directory"
@@ -531,7 +531,7 @@ describe 'is_symlink'
     is_symlink "$dir"
     assert unequal 0 $?
     stop_on_error
-    cleanup "$dir"
+    shpec_cleanup "$dir"
   end
 end
 
