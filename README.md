@@ -65,11 +65,10 @@ Use some of the shpec-helper functions:
     helper_functions=(
       cleanup
       initialize_shpec_helper
-      shpec_source
     )
     eval "$(importa shpec-helper helper_functions)"
 
-    shpec_source lib/mylib.bash
+    initialize_shpec_helper
 
 Kaizen API
 ==========
