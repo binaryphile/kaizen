@@ -17,7 +17,7 @@ _required_imports=(
   stripa
 )
 
-absolute_path() {
+absolute_path () {
   eval "$(passed '( path )' "$@")"
   local filename
 
@@ -26,20 +26,20 @@ absolute_path() {
     filename=$(basename path)
     path=$(dirname path)
   }
-  is_directory path || return 1
-  result=$( ( cd "$path"; pwd ) ) || return
-  puts "$result${filename:+/}${filename:-}"
+  is_directory path || return
+  path=$(cd "$path"; pwd) || return
+  puts "$path${filename:+/}${filename:-}"
 }
 
-basename() {
+basename () {
   eval "$(passed '( path )' "$@")"
 
   puts "${path##*/}"
 }
 
-defa() { eval "$(printf '%s=()' "$1")"; geta "$1"; stripa "$1" ;}
+defa () { eval "$(printf '%s=()' "$1")"; geta "$1"; stripa "$1" ;}
 
-defs() {
+defs () {
   local -a _results
   local IFS
 
@@ -48,7 +48,7 @@ defs() {
   printf -v "$1" '%s' "${_results[*]}"
 }
 
-dirname() {
+dirname () {
   eval "$(passed '( path )' "$@")"
 
   if [[ $path == */* ]]; then
@@ -58,77 +58,77 @@ dirname() {
   fi
 }
 
-errexit() {
+errexit () {
   eval "$(passed '( message return_code=1)' "$@")"
 
   putserr message
   exit "$return_code"
 }
 
-geta() {
+geta () {
   while IFS= read -r; do
     eval "$(printf '%s+=( %q )' "$1" "$REPLY")"
   done
 }
 
-has_length() {
+has_length () {
   eval "$(passed '( length @array )' "$@")"
 
-  (( length == ${#array} ))
+  (( length == ${#array[@]} ))
 }
 
-is_directory() {
+is_directory () {
   eval "$(passed '( path )' "$@")"
 
   [[ -d $path ]]
 }
 
-is_executable() {
+is_executable () {
   eval "$(passed '( path )' "$@")"
 
   [[ -x $path ]]
 }
 
-is_executable_file() {
+is_executable_file () {
   eval "$(passed '( path )' "$@")"
 
   is_file path && is_executable path
 }
 
-is_file() {
+is_file () {
   eval "$(passed '( path )' "$@")"
 
   [[ -f $path ]]
 }
 
-is_given() {
+is_given () {
   local declaration
 
   declaration=$(declare -p "$1" 2>/dev/null) || return
   [[ $declaration != *'=""' && $declaration != *"='()'" ]]
 }
 
-is_nonexecutable_file() {
+is_nonexecutable_file () {
   eval "$(passed '( path )' "$@")"
 
   is_file path && ! is_executable path
 }
 
-is_same_as() {
+is_same_as () {
   eval "$(passed '( string1 string2 )' "$@")"
 
   [[ $string1 == "$string2" ]]
 }
 
-is_set() { declare -p "$1" >/dev/null 2>&1 ;}
+is_set () { declare -p "$1" >/dev/null 2>&1 ;}
 
-is_symlink() {
+is_symlink () {
   eval "$(passed '( path )' "$@")"
 
   [[ -h $path ]]
 }
 
-joina() {
+joina () {
   eval "$(passed '( delimiter @array )' "$@")"
   local IFS
 
@@ -137,19 +137,19 @@ joina() {
   puts "${array[*]}"
 }
 
-puts() {
+puts () {
   eval "$(passed '( message )' "$@")"
 
   printf '%s\n' "$message"
 }
 
-putserr() {
+putserr () {
   eval "$(passed '( message )' "$@")"
 
   puts message >&2
 }
 
-splits() {
+splits () {
   eval "$(passed '( delimiter string "*refa" )' "$@")"
   local IFS
   local results=()
@@ -157,16 +157,16 @@ splits() {
   IFS=$delimiter
   set -- $string
   results=( "$@" )
-  local "$refa" && reta results "$refa"
+  local "$refa" && ret results "$refa"
 }
 
-starts_with() {
+starts_with () {
   eval "$(passed '( prefix string )' "$@")"
 
   [[ $string == "$prefix"* ]]
 }
 
-strict_mode() {
+strict_mode () {
   eval "$(passed '( status )' "$@")"
 
   case $status in
@@ -183,7 +183,7 @@ strict_mode() {
   esac
 }
 
-stripa() {
+stripa () {
   eval "$(passed '( "&_ref" )' "$@")"
   local _i
   local _leading_whitespace
@@ -196,13 +196,13 @@ stripa() {
   done
 }
 
-to_lower() {
+to_lower () {
   eval "$(passed '( string )' "$@")"
 
   puts "${string,,}"
 }
 
-to_upper() {
+to_upper () {
   eval "$(passed '( string )' "$@")"
 
   puts "${string^^}"

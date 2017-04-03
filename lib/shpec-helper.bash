@@ -3,7 +3,7 @@ readonly _shpec_helper=loaded
 
 source import.bash
 
-eval "$(importa kzn '( absolute_path dirname )')"
+eval "$(importa kzn '( absolute_path dirname putserr )')"
 
 _required_imports=(
   absolute_path
@@ -11,14 +11,14 @@ _required_imports=(
   is_file
   is_directory
   puts
+  putserr
+  shpec_cleanup
   validate_dirname
 )
 
 cleanup() {
-  eval "$(passed '( path )' "$@")"
-
-  validate_dirname path || return
-  $rm "$path"
+  putserr "DEPRECATION: cleanup has been changed to shpec_cleanup. Please change your code."
+  shpec_cleanup "$@"
 }
 
 initialize_shpec_helper() {
@@ -36,6 +36,15 @@ initialize_shpec_helper() {
   unset -v CDPATH
 }
 
+shpec_cleanup() {
+  eval "$(passed '( path )' "$@")"
+
+  validate_dirname path || return
+  $rm "$path"
+}
+
+shpec_cwd () { absolute_path "$(dirname "$BASH_SOURCE")" ;}
+
 shpec_source() {
   eval "$(passed '( path )' "$@")"
   local parent_dir
@@ -47,8 +56,17 @@ shpec_source() {
 stop_on_error() {
   local toggle=${1:-}
 
-  [[ -n $toggle ]] && { set +o errexit; return ;}
-  [[ $stop_on_error == 'true' ]] && set -o errexit
+  if [[ -n $toggle ]]; then
+    set +o errexit
+    set +o nounset
+    set +o pipefail
+    return
+  fi
+  if [[ $stop_on_error == 'true' ]]; then
+    set -o errexit
+    set -o nounset
+    set -o pipefail
+  fi
 }
 
 validate_dirname() {

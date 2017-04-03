@@ -47,11 +47,11 @@ The whole library:
 Just the `is_given` and `to_upper` functions:
 
     source import.bash
-    import_functions=(
+    kzn_functions=(
       is_given
       to_upper
     )
-    eval "$(importa kzn import_functions)"
+    eval "$(importa kzn kzn_functions)"
 
 Use the macros:
 
@@ -62,14 +62,13 @@ Use the macros:
 Use some of the shpec-helper functions:
 
     source import.bash
-    import_functions=(
+    helper_functions=(
       cleanup
       initialize_shpec_helper
-      shpec_source
     )
-    eval "$(importa shpec-helper import_functions)"
+    eval "$(importa shpec-helper helper_functions)"
 
-    shpec_source lib/mylib.bash
+    initialize_shpec_helper
 
 Kaizen API
 ==========
