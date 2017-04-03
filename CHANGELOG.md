@@ -34,6 +34,9 @@ v0 in semver parlance.
 
 -   `macros.bash` works with strict_mode
 
+-   `has_length` function incorrectly referenced array, resulting in
+    unbound variable error
+
 ### Deprecated
 
 -   `shpec_source` - use macro instead

@@ -74,7 +74,7 @@ geta () {
 has_length () {
   eval "$(passed '( length @array )' "$@")"
 
-  (( length == ${#array} ))
+  (( length == ${#array[@]} ))
 }
 
 is_directory () {
