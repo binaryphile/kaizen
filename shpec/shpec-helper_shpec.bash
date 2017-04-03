@@ -42,7 +42,7 @@ describe shpec_cleanup
   end
 end
 
-describe 'shpec_source'
+describe shpec_source
   it "should source a file in the shpec directory"; (
     path=$(absolute_path "$(dirname "$BASH_SOURCE")")
     cd "$path"
@@ -66,7 +66,7 @@ describe 'shpec_source'
   end
 end
 
-describe 'validate_dirname'
+describe validate_dirname
   it "should error on a non-existent directory name"
     dir=$($mktempd) || return 1
     validate_dirname "$dir"/mydir
