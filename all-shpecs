@@ -5,4 +5,4 @@ shpec_files=( $("${find_expression[@]}" -print) )
 
 printf 'shpec %s\n' "${shpec_files[*]}"
 
-"${find_expression[@]}" -exec shpec '{}' \;
+"${find_expression[@]}" -print0 | xargs -0I filename bash -c 'shpec filename'
