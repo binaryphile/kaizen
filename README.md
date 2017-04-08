@@ -1,4 +1,4 @@
-kaizen
+kaizen [![Build Status](https://travis-ci.org/binaryphile/kaizen.svg?branch=master)](https://travis-ci.org/binaryphile/kaizen)
 ======
 
 In the spirit of small, continuous improvements of its namesake, kaizen
