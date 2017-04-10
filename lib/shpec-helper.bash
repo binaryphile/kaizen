@@ -1,7 +1,9 @@
 [[ -n ${_shpec_helper:-} ]] && return
 readonly _shpec_helper=loaded
 
-source kzn.bash
+source import.bash
+
+eval "$(importa kzn '( absolute_path dirname putserr )')"
 
 _required_imports=(
   absolute_path
