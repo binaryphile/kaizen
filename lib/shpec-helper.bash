@@ -43,7 +43,7 @@ shpec_cleanup() {
   $rm "$path"
 }
 
-shpec_cwd () { absolute_path "$(dirname "$BASH_SOURCE")" ;}
+shpec_cwd () { absolute_path "$(dirname "${BASH_SOURCE[1]}")" ;}
 
 shpec_source() {
   eval "$(passed '( path )' "$@")"
