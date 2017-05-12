@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
+[Unreleased]
+------------
+
+
 [v0.5.3] - 2017-05-12
 ---------------------
 
@@ -30,15 +34,15 @@ Latest Changes
 -   `shpec_cwd` correctly locates the calling file, not
     shpec-helper.bash
 
+Older Changes
+=============
+
 [v0.5.1] - 2017-04-07
 ---------------------
 
 ### Added
 
 -   Travis CI support
-
-Older Changes
-=============
 
 [v0.5.0] - 2017-04-03
 ---------------------
@@ -96,6 +100,7 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
+  [Unreleased]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5
   [v0.5.2]: https://github.com/binaryphile/kaizen/compare/v0.5.1...v0.5.2
   [v0.5.1]: https://github.com/binaryphile/kaizen/compare/v0.5.0...v0.5.1
   [v0.5.0]: https://github.com/binaryphile/kaizen/compare/v0.4.1...v0.5.0
