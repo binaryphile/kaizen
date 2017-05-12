@@ -1,7 +1,6 @@
 [[ -n ${_kzn:-} ]] && return
 readonly _kzn=loaded
 
-source import.bash
 source sorta.bash
 
 _required_imports=(

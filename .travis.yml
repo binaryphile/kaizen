@@ -1,0 +1,11 @@
+language: sh
+dist:     trusty
+sudo:     false
+install:
+  - git clone git://github.com/rylnd/shpec        --branch 0.2.2      --depth 1 "$HOME"/shpec
+  - git clone git://github.com/binaryphile/nano   --branch v10.11.12  --depth 1 "$TRAVIS_BUILD_DIR"/../nano
+  - git clone git://github.com/binaryphile/sorta  --branch v11.10.11  --depth 1 "$TRAVIS_BUILD_DIR"/../sorta
+  - export PATH=$HOME/shpec/bin:$TRAVIS_BUILD_DIR/lib:$TRAVIS_BUILD_DIR/../nano/lib:$TRAVIS_BUILD_DIR/../sorta/lib:$PATH
+script:   ./all-shpecs
+git:
+  depth:  1
