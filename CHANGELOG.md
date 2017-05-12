@@ -2,11 +2,20 @@ Change Log
 ==========
 
 The format is based on [Keep a Changelog] and this project adheres to
-[Semantic Versioning], with the minor exception that v10 is considered
-v0 in semver parlance.
+[Semantic Versioning].
 
-[v10.11.12] - 2017-04-10
-------------------------
+Latest Changes
+==============
+
+[v0.1.3] - 2017-04-10
+---------------------
+
+### Changed
+
+-   reverted to normal versioning
+
+[v0.1.2] - 2017-04-10
+---------------------
 
 ### Changed
 
@@ -21,15 +30,18 @@ v0 in semver parlance.
 -   `shpec_cwd` correctly locates the calling file, not
     shpec-helper.bash
 
-[v10.11.11] - 2017-04-07
-------------------------
+[v0.1.1] - 2017-04-07
+---------------------
 
 ### Added
 
 -   Travis CI support
 
-[v10.11.10] - 2017-04-03
-------------------------
+Older Changes
+=============
+
+[v0.1.0] - 2017-04-03
+---------------------
 
 ### Changed
 
@@ -52,7 +64,7 @@ v0 in semver parlance.
 
 ### Fixed
 
--   `strips` function updated for sorta v11.10.10
+-   `strips` function updated for sorta v1.0.0
 
 -   `kzn_shpec.bash` enables stop\_on\_error
 
@@ -71,8 +83,8 @@ v0 in semver parlance.
 
 -   `cleanup` - replaced by shpec\_cleanup
 
-[v10.10.10] - 2017-02-28
-------------------------
+[v0.0.0] - 2017-02-28
+---------------------
 
 ### Added
 
@@ -84,9 +96,9 @@ v0 in semver parlance.
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
-  [v10.11.12]: https://github.com/binaryphile/kaizen/compare/v10.11.11...v10.11.12
-  [v10.11.11]: https://github.com/binaryphile/kaizen/compare/v10.11.10...v10.11.11
-  [v10.11.10]: https://github.com/binaryphile/kaizen/compare/v10.10.10...v10.11.10
-  [v10.10.10]: https://github.com/binaryphile/kaizen/compare/v0.4...v10.10.10
+  [v0.1.2]: https://github.com/binaryphile/kaizen/compare/v0.1.1...v0.1.2
+  [v0.1.1]: https://github.com/binaryphile/kaizen/compare/v0.1.0...v0.1.1
+  [v0.1.0]: https://github.com/binaryphile/kaizen/compare/v0.0.0...v0.1.0
+  [v0.0.0]: https://github.com/binaryphile/kaizen/compare/v0.4...v0.0.0
   [sorta]: https://github.com/binaryphile/sorta
   [nano]: https://github.com/binaryphile/nano
