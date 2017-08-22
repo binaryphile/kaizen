@@ -1,4 +1,5 @@
 source concorde.bash
+$(grab '( mktempd rmdir )' fromns concorde.macros)
 $(require_relative ../lib/kaizen)
 
 set -o nounset
@@ -237,49 +238,48 @@ end
 #     assert equal 0 $?
 #   end
 # end
-#
-# describe 'is_directory'
-#   it "identifies a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     is_directory "$dir"
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a symlink to a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     $ln . "$dir"/dirlink
-#     is_directory "$dir"/dirlink
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a symlink to a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/filelink
-#     stop_on_error off
-#     is_directory "$dir"/filelink
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     stop_on_error off
-#     is_directory "$dir"/file
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
+
+describe directory?
+  it "identifies a directory"
+    dir=$($mktempd)
+    directory? "$dir"
+    assert equal 0 $?
+    $rmdir "$dir"
+  end
+
+  # it "identifies a symlink to a directory"
+  #   dir=$($mktempd)
+  #   validate_dirname "$dir" || return
+  #   $ln . "$dir"/dirlink
+  #   is_directory "$dir"/dirlink
+  #   assert equal 0 $?
+  #   shpec_cleanup "$dir"
+  # end
+  #
+  # it "doesn't identify a symlink to a file"
+  #   dir=$($mktempd)
+  #   validate_dirname "$dir" || return
+  #   touch "$dir"/file
+  #   $ln file "$dir"/filelink
+  #   stop_on_error off
+  #   is_directory "$dir"/filelink
+  #   assert unequal 0 $?
+  #   stop_on_error
+  #   shpec_cleanup "$dir"
+  # end
+  #
+  # it "doesn't identify a file"
+  #   dir=$($mktempd)
+  #   validate_dirname "$dir" || return
+  #   touch "$dir"/file
+  #   stop_on_error off
+  #   is_directory "$dir"/file
+  #   assert unequal 0 $?
+  #   stop_on_error
+  #   shpec_cleanup "$dir"
+  # end
+end
+
 # describe 'is_executable'
 #   it "identifies an executable file"
 #     dir=$($mktempd)
