@@ -365,6 +365,28 @@ describe executable?
   end
 end
 
+describe executable_file?
+  it "identifies an executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    executable_file? "$dir"/file
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify an executable directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    executable_file? "$dir"/dir
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+end
+
 describe file?
   it "identifies a file"
     dir=$($mktempd)
@@ -400,6 +422,36 @@ describe file?
     file? "$dir"
     assert unequal 0 $?
     $rmdir "$dir"
+  end
+end
+
+describe nonexecutable_file?
+  it "identifies a nonexecutable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    nonexecutable_file? "$dir"/file
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify an executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    nonexecutable_file? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    nonexecutable_file? "$dir"/dir
+    assert unequal 0 $?
+    $rmtree "$dir"
   end
 end
 
