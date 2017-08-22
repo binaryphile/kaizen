@@ -281,98 +281,90 @@ describe directory?
   end
 end
 
-# describe 'is_executable'
-#   it "identifies an executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     chmod 755 "$dir"/file
-#     is_executable "$dir"/file
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies an executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 755 "$dir"/dir
-#     is_executable "$dir"/dir
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify an non-executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     stop_on_error off
-#     is_executable "$dir"/file
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a non-executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 664 "$dir"/dir
-#     stop_on_error off
-#     is_executable "$dir"/dir
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a link to an executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     chmod 755 "$dir"/file
-#     $ln file "$dir"/link
-#     is_executable "$dir"/link
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a link to an executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 755 "$dir"/dir
-#     $ln dir "$dir"/link
-#     is_executable "$dir"/link
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a link to a non-executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/link
-#     stop_on_error off
-#     is_executable "$dir"/link
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a link to a non-executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 664 "$dir"/dir
-#     $ln dir "$dir"/link
-#     stop_on_error off
-#     is_executable "$dir"/link
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
+describe executable?
+  it "identifies an executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    executable? "$dir"/file
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies an executable directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    executable? "$dir"/dir
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify an non-executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    executable? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a non-executable directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    executable? "$dir"/dir
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a link to an executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    $ln file "$dir"/link
+    executable? "$dir"/link
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a link to an executable directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    $ln dir "$dir"/link
+    executable? "$dir"/link
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a link to a non-executable file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/link
+    executable? "$dir"/link
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a link to a non-executable directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    $ln dir "$dir"/link
+    executable? "$dir"/link
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+end
+
 # describe 'is_file'
 #   it "identifies a file"
 #     dir=$($mktempd)
