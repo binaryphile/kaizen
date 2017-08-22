@@ -365,48 +365,44 @@ describe executable?
   end
 end
 
-# describe 'is_file'
-#   it "identifies a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     is_file "$dir"/file
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a symlink to a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/filelink
-#     is_file "$dir"/filelink
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a symlink to a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     $ln . "$dir"/dirlink
-#     stop_on_error off
-#     is_file "$dir"/dirlink
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     stop_on_error off
-#     is_file "$dir"
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
+describe file?
+  it "identifies a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    file? "$dir"/file
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a symlink to a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    file? "$dir"/filelink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a symlink to a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    $ln . "$dir"/dirlink
+    file? "$dir"/dirlink
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    file? "$dir"
+    assert unequal 0 $?
+    $rmdir "$dir"
+  end
+end
+
 # describe 'is_given'
 #   it "detects an empty value"
 #     sample=''
