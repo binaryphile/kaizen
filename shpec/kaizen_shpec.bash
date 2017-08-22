@@ -1,5 +1,10 @@
 source concorde.bash
-$(grab '( mktempd rmdir )' fromns concorde.macros)
+$(grab '(
+  ln
+  mktempd
+  rmdir
+  rmtree
+)' fromns concorde.macros)
 $(require_relative ../lib/kaizen)
 
 set -o nounset
@@ -247,37 +252,33 @@ describe directory?
     $rmdir "$dir"
   end
 
-  # it "identifies a symlink to a directory"
-  #   dir=$($mktempd)
-  #   validate_dirname "$dir" || return
-  #   $ln . "$dir"/dirlink
-  #   is_directory "$dir"/dirlink
-  #   assert equal 0 $?
-  #   shpec_cleanup "$dir"
-  # end
-  #
-  # it "doesn't identify a symlink to a file"
-  #   dir=$($mktempd)
-  #   validate_dirname "$dir" || return
-  #   touch "$dir"/file
-  #   $ln file "$dir"/filelink
-  #   stop_on_error off
-  #   is_directory "$dir"/filelink
-  #   assert unequal 0 $?
-  #   stop_on_error
-  #   shpec_cleanup "$dir"
-  # end
-  #
-  # it "doesn't identify a file"
-  #   dir=$($mktempd)
-  #   validate_dirname "$dir" || return
-  #   touch "$dir"/file
-  #   stop_on_error off
-  #   is_directory "$dir"/file
-  #   assert unequal 0 $?
-  #   stop_on_error
-  #   shpec_cleanup "$dir"
-  # end
+  it "identifies a symlink to a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    $ln . "$dir"/dirlink
+    directory? "$dir"/dirlink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a symlink to a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    directory? "$dir"/filelink
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    directory? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
 end
 
 # describe 'is_executable'
