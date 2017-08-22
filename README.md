@@ -107,14 +107,14 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 -   **`defa`** *`variable name`* - read and un-indent a string from
     stdin and split lines into the named array variable
 
-    *Returns*: nothing. Creates or sets the named array variable as
-    a side-effect. If you want to scope the variable locally, it must
+    *Returns*: nothing. Creates or sets the named array variable as a
+    side-effect. If you want to scope the variable locally, it must
     already be declared. Any contents will be replaced. Sets the
     variable to an array of the lines read from stdin.
 
     The lines are de-indented by the amount of whitespace indentation of
-    the first line. Blank lines (even without indentation)
-    are preserved.
+    the first line. Blank lines (even without indentation) are
+    preserved.
 
     Usually fed with a heredoc, such as:
 
@@ -127,14 +127,14 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 -   **`defs`** *`variable_name`* - read and un-indent a string from
     stdin into the named string variable
 
-    *Returns*: nothing. Creates or sets the named string variable as
-    a side-effect. If you want to scope the variable locally, it must
+    *Returns*: nothing. Creates or sets the named string variable as a
+    side-effect. If you want to scope the variable locally, it must
     already be declared. Any contents will be replaced. Sets the
     variable to the lines read from stdin, including newlines.
 
     The lines are de-indented by the amount of whitespace indentation of
-    the first line. Blank lines (even without indentation)
-    are preserved.
+    the first line. Blank lines (even without indentation) are
+    preserved.
 
     Usually fed with a heredoc, such as:
 
@@ -165,8 +165,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 -   **`geta`** *`variable_name`* - read a string from stdin and split
     lines into the named array variable
 
-    *Returns*: nothing. Creates or sets the named array variable as
-    a side-effect. If you want to scope the variable locally, it must
+    *Returns*: nothing. Creates or sets the named array variable as a
+    side-effect. If you want to scope the variable locally, it must
     already be declared. Any contents will be replaced. Sets the
     variable to an array of the lines read from stdin.
 
@@ -285,8 +285,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     *Returns*: the `message` string and a newline on stdout
 
     Meant as a substitute for the `echo` command. Provides a more
-    consistent output mechanism than `echo` (try `echo`ing "-n",
-    for example). [Recommended reading] on why `echo` can be an issue.
+    consistent output mechanism than `echo` (try `echo`ing "-n", for
+    example). [Recommended reading] on why `echo` can be an issue.
 
 -   **`putserr <message>`** - output a newline-terminated string on
     stderr
@@ -306,8 +306,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     be declared prior to invocation and should be empty. Setting the
     return value is a side-effect.
 
--   **`starts_with`** *`prefix string`* - test if the string starts
-    with the prefix
+-   **`starts_with`** *`prefix string`* - test if the string starts with
+    the prefix
 
     Accepts literals or variable names
 
@@ -323,8 +323,8 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
 
     `status` can be `on` or `off`.
 
-    Strict mode is the three shell options "errexit", "nounset"
-    and "pipefail". Together they tell bash to be more aggressive about
+    Strict mode is the three shell options "errexit", "nounset" and
+    "pipefail". Together they tell bash to be more aggressive about
     stopping upon unexpected error conditions. Read more about it from
     [Aaron Maxwell] and [David Pashley].
 
@@ -336,9 +336,9 @@ as `'( [one]=1 [two]=2 )'` (remember to use single- or double-quotes).
     (like any other sane language).
 
   [sorta]: https://github.com/binaryphile/sorta
-  [nano]: https://github.com/binaryphile/nano
   [Aaron Maxwell]: http://redsymbol.net/articles/unofficial-bash-strict-mode/
   [shpec]: https://github.com/rylnd/shpec
+  [nano]: https://github.com/binaryphile/nano
   [Recommended reading]: http://www.in-ulm.de/~mascheck/various/echo+printf
   [David Pashley]: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
   [you shouldn't use it]: http://mywiki.wooledge.org/BashFAQ/105

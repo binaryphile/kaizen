@@ -51,15 +51,15 @@ Older Changes
 
 -   formatting of function declarations to match bash internal format
 
--   shpec test turns on stop\_on\_error before sourcing kaizen
+-   shpec test turns on `stop_on_error` before sourcing kaizen
 
--   stop\_on\_error turns on nounset and pipefail now
+-   `stop_on_error` turns on nounset and pipefail now
 
 ### Added
 
--   `shpec_cwd` is a macro (variable) meant to replace shpec\_source, to
-    prevent scoping issues with declarations (function context) when
-    trying to use shpec\_source function
+-   `shpec_cwd` is a macro (variable) meant to replace `shpec_source`,
+    to prevent scoping issues with declarations (function context) when
+    trying to use `shpec_source` function
 
 -   `shpec_cleanup` is the new name for `cleanup`, which was too generic
     conflicted with other libraries under test
@@ -70,13 +70,13 @@ Older Changes
 
 -   `strips` function updated for sorta v1.0.0
 
--   `kzn_shpec.bash` enables stop\_on\_error
+-   `kzn_shpec.bash` enables `stop_on_error`
 
 -   `absolute_path` declares all local variables
 
 -   `absolute_path` uses one less subshell
 
--   `macros.bash` works with strict\_mode
+-   `macros.bash` works with `strict_mode`
 
 -   `has_length` function incorrectly referenced array, resulting in
     unbound variable error
@@ -85,7 +85,7 @@ Older Changes
 
 -   `shpec_source` - use macro instead
 
--   `cleanup` - replaced by shpec\_cleanup
+-   `cleanup` - replaced by `shpec_cleanup`
 
 [v0.4.1] - 2017-02-28
 ---------------------
@@ -100,10 +100,11 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
-  [Unreleased]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5
+  [unreleased]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5
+  [v0.5.3]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5.3
   [v0.5.2]: https://github.com/binaryphile/kaizen/compare/v0.5.1...v0.5.2
   [v0.5.1]: https://github.com/binaryphile/kaizen/compare/v0.5.0...v0.5.1
   [v0.5.0]: https://github.com/binaryphile/kaizen/compare/v0.4.1...v0.5.0
-  [v0.4.0]: https://github.com/binaryphile/kaizen/compare/v0.4...v0.4.1
+  [v0.4.1]: https://github.com/binaryphile/kaizen/tree/v0.4.1
   [sorta]: https://github.com/binaryphile/sorta
   [nano]: https://github.com/binaryphile/nano
