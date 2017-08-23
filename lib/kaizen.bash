@@ -1,13 +1,18 @@
+set -o noglob
+
 source concorde.bash
 $(feature kaizen)
 
-set -o noglob
+kaize_attrs () {
+  local dependencies
 
-stuff '(
-  directory?
-  executable?
-  file?
-)' intons kaizen.dependencies
+  dependencies='(
+    directory?
+    executable?
+    file?
+  )'
+  stuff dependencies intons kaizen
+}
 
 args?               () { (( $# ))     ;}
 directory?          () { [[ -d $1 ]]  ;}
@@ -16,3 +21,5 @@ executable_file?    () { file? "$1"   &&   executable? "$1" ;}
 file?               () { [[ -f $1 ]]  ;}
 length?             () { (( $#    ))  ;}
 nonexecutable_file? () { file? "$1"   && ! executable? "$1" ;}
+
+kaize_attrs

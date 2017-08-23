@@ -7,9 +7,28 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
-[Unreleased]
+[unreleased]
 ------------
 
+### Added
+
+-   concorde dependency
+
+### Changed
+
+-   `has_any` is `args?`
+
+-   glob is off
+
+### Removed
+
+-   `shpec-helper.bash` - will rework if necessary
+
+-   `macros.bash` - macros are in concorde
+
+-   `darwin-macros.bash` - in concorde
+
+-   almost all functions, will bring back in as necessary
 
 [v0.5.3] - 2017-05-12
 ---------------------
