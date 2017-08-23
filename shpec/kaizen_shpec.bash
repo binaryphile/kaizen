@@ -240,3 +240,23 @@ describe nonexecutable_file?
     $rmtree "$dir"
   end
 end
+
+describe trim_to_last
+  it "trims up to the last specifier of a single character"; ( _shpec_failures=0
+    trim_to_last e stereo
+    assert equal o "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "trims a multicharacter specifier"; ( _shpec_failures=0
+    trim_to_last el hello
+    assert equal lo "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "trims nothing if the specifier isn't present"; ( _shpec_failures=0
+    trim_to_last a hello
+    assert equal hello "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
