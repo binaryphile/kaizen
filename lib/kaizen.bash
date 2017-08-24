@@ -22,6 +22,7 @@ ends_with?          () { [[ ${2:-} == *${1:-} ]]          ;}
 executable?         () { [[ -x $1 ]]                      ;}
 executable_file?    () { file? "$1" &&   executable? "$1" ;}
 file?               () { [[ -f $1 ]]                      ;}
+less_than?          () { (( ($# - 1) < $1 ))              ;}
 nonexecutable_file? () { file? "$1" && ! executable? "$1" ;}
 sourced?            () { sourced "$@"                     ;}
 trim_from_last      () { __=${2%$1*}                      ;}

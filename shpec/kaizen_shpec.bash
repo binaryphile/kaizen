@@ -264,6 +264,20 @@ describe file?
   end
 end
 
+describe less_than?
+  it "should identify numbers of arguments less than specified"; ( _shpec_failures=0
+    less_than? 2 one
+    assert equal $? 0
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "shouldn't identify numbers of arguments not less than specified"; ( _shpec_failures=0
+    less_than? 2 one two
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe nonexecutable_file?
   it "identifies a nonexecutable file"
     dir=$($mktempd)
