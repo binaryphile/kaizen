@@ -280,3 +280,23 @@ describe trim_to_last
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
+
+describe contains?
+  it "identifies a character in a string"; ( _shpec_failures=0
+    contains? / one/two
+    assert equal $? 0
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a missing character in a string"; ( _shpec_failures=0
+    contains? / one_two
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a character in an empty string"; ( _shpec_failures=0
+    contains? / ''
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
