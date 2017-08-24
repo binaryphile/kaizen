@@ -30,6 +30,26 @@ describe args?
   end
 end
 
+describe contains?
+  it "identifies a character in a string"; ( _shpec_failures=0
+    contains? / one/two
+    assert equal $? 0
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a missing character in a string"; ( _shpec_failures=0
+    contains? / one_two
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a character in an empty string"; ( _shpec_failures=0
+    contains? / ''
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe directory?
   it "identifies a directory"
     dir=$($mktempd)
@@ -277,26 +297,6 @@ describe trim_to_last
   it "trims nothing if the specifier isn't present"; ( _shpec_failures=0
     trim_to_last a hello
     assert equal hello "$__"
-    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-  end
-end
-
-describe contains?
-  it "identifies a character in a string"; ( _shpec_failures=0
-    contains? / one/two
-    assert equal $? 0
-    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-  end
-
-  it "doesn't identify a missing character in a string"; ( _shpec_failures=0
-    contains? / one_two
-    assert equal $? 1
-    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-  end
-
-  it "doesn't identify a character in an empty string"; ( _shpec_failures=0
-    contains? / ''
-    assert equal $? 1
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
