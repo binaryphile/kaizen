@@ -106,6 +106,20 @@ describe directory?
   end
 end
 
+describe ends_with?
+  it "detects if a string ends with a specified character"; ( _shpec_failures=0
+    ends_with? / test/
+    assert equal $? 0
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects if a string doesn't end with a specified character"; ( _shpec_failures=0
+    ends_with? / test
+    assert equal $? 1
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe executable?
   it "identifies an executable file"
     dir=$($mktempd)

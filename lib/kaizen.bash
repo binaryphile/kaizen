@@ -13,10 +13,12 @@ kaizen_init () {
   )'
   stuff dependencies intons kaizen
 }
+
 append_to_file      () { put "$2" >>"$1"                  ;}
-args?               () { (( $#    ))                      ;}
-contains?           () { [[ $2 == *"$1"*  ]]              ;}
+args?               () { (( $# ))                         ;}
+contains?           () { [[ $2 == *"$1"* ]]               ;}
 directory?          () { [[ -d $1 ]]                      ;}
+ends_with?          () { [[ ${2:-} == *${1:-} ]]          ;}
 executable?         () { [[ -x $1 ]]                      ;}
 executable_file?    () { file? "$1" &&   executable? "$1" ;}
 file?               () { [[ -f $1 ]]                      ;}
