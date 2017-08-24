@@ -241,8 +241,28 @@ describe nonexecutable_file?
   end
 end
 
+describe trim_from_last
+  it "trims from the last single-character specifier"; ( _shpec_failures=0
+    trim_from_last e stereo
+    assert equal ster "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "trims a multicharacter specifier"; ( _shpec_failures=0
+    trim_from_last el hello
+    assert equal h "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "trims nothing if the specifier isn't present"; ( _shpec_failures=0
+    trim_from_last a hello
+    assert equal hello "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe trim_to_last
-  it "trims up to the last specifier of a single character"; ( _shpec_failures=0
+  it "trims up to the last single character specifier"; ( _shpec_failures=0
     trim_to_last e stereo
     assert equal o "$__"
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
