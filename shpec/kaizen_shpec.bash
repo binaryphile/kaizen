@@ -10,6 +10,25 @@ $(grab '(
   rmtree
 )' fromns concorde.macros)
 
+describe append_to_file
+  it "makes a new file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    append_to_file "$dir"/file hello
+    assert equal hello "$(< "$dir"/file )"
+    $rmtree "$dir"
+  end
+
+  it "appends to an existing file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    echo -n 'hello ' >"$dir"/file
+    append_to_file "$dir"/file there
+    assert equal 'hello there' "$(< "$dir"/file )"
+    $rmtree "$dir"
+  end
+end
+
 describe args?
   it "detects no arguments"; ( _shpec_failures=0
     args?
