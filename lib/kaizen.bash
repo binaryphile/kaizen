@@ -1,11 +1,10 @@
-set -o noglob
-
 source concorde.bash
 $(feature kaizen)
 
 kaizen_init () {
   local dependencies
 
+  set -o noglob
   dependencies='(
     executable?
     file?
