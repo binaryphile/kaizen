@@ -20,6 +20,16 @@ ends_with?          () { [[ ${2:-} == *${1:-} ]]          ;}
 executable?         () { [[ -x $1 ]]                      ;}
 executable_file?    () { file? "$1" &&   executable? "$1" ;}
 file?               () { [[ -f $1 ]]                      ;}
+
+glob () {
+  local ary=()
+
+  set +o noglob
+  eval "ary=( $* )"
+  set -o noglob
+  repr ary
+}
+
 less_than?          () { (( ($# - 1) < $1 ))              ;}
 more_than?          () { (( ($# - 1) > $1 ))              ;}
 nonexecutable_file? () { file? "$1" && ! executable? "$1" ;}

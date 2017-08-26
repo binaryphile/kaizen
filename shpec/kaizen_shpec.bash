@@ -264,6 +264,53 @@ describe file?
   end
 end
 
+describe glob
+  it "expands a glob"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    cd "$dir"
+    touch file1
+    glob *
+    eval "declare -a result_ary=$__"
+    assert equal file1 "$result_ary"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "expands a glob with multiple entries"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    cd "$dir"
+    touch file1
+    touch file2
+    glob *
+    eval "declare -a result_ary=$__"
+    assert equal 'file1 file2' "${result_ary[0]} ${result_ary[1]}"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "expands a glob with a space"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    cd "$dir"
+    touch 'file 1'
+    glob *
+    eval "declare -a result_ary=$__"
+    assert equal 'file 1' "$result_ary"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't split a non-glob with a space"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    cd "$dir"
+    touch 'file 1'
+    glob '"file 1"'
+    eval "declare -a result_ary=$__"
+    assert equal 'file 1' "$result_ary"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe less_than?
   it "should identify numbers of arguments less than specified"; ( _shpec_failures=0
     less_than? 2 one
