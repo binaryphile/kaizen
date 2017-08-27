@@ -11,21 +11,23 @@ $(grab '(
 )' fromns concorde.macros)
 
 describe append_to_file
-  it "makes a new file"
+  it "makes a new file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     append_to_file "$dir"/file hello
     assert equal hello "$(< "$dir"/file )"
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "appends to an existing file"
+  it "appends to an existing file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     echo -n 'hello ' >"$dir"/file
     append_to_file "$dir"/file there
     assert equal 'hello there' "$(< "$dir"/file )"
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
@@ -70,23 +72,25 @@ describe contains?
 end
 
 describe directory?
-  it "identifies a directory"
+  it "identifies a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir"
     assert equal 0 $?
     $rmdir "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a symlink to a directory"
+  it "identifies a symlink to a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     $ln . "$dir"/dirlink
     directory? "$dir"/dirlink
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a symlink to a file"
+  it "doesn't identify a symlink to a file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -94,15 +98,17 @@ describe directory?
     directory? "$dir"/filelink
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a file"
+  it "doesn't identify a file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
     directory? "$dir"/file
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
@@ -121,7 +127,7 @@ describe ends_with?
 end
 
 describe executable?
-  it "identifies an executable file"
+  it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -129,9 +135,10 @@ describe executable?
     executable? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies an executable directory"
+  it "identifies an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
@@ -139,18 +146,20 @@ describe executable?
     executable? "$dir"/dir
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify an non-executable file"
+  it "doesn't identify an non-executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
     executable? "$dir"/file
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a non-executable directory"
+  it "doesn't identify a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
@@ -158,9 +167,10 @@ describe executable?
     executable? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a link to an executable file"
+  it "identifies a link to an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -169,9 +179,10 @@ describe executable?
     executable? "$dir"/link
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a link to an executable directory"
+  it "identifies a link to an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
@@ -180,9 +191,10 @@ describe executable?
     executable? "$dir"/link
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a link to a non-executable file"
+  it "doesn't identify a link to a non-executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -190,9 +202,10 @@ describe executable?
     executable? "$dir"/link
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a link to a non-executable directory"
+  it "doesn't identify a link to a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
@@ -201,11 +214,12 @@ describe executable?
     executable? "$dir"/link
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
 describe executable_file?
-  it "identifies an executable file"
+  it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -213,9 +227,10 @@ describe executable_file?
     executable_file? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify an executable directory"
+  it "doesn't identify an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
@@ -223,20 +238,22 @@ describe executable_file?
     executable_file? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
 describe file?
-  it "identifies a file"
+  it "identifies a file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
     file? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a symlink to a file"
+  it "identifies a symlink to a file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -244,23 +261,26 @@ describe file?
     file? "$dir"/filelink
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a symlink to a directory"
+  it "doesn't identify a symlink to a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     $ln . "$dir"/dirlink
     file? "$dir"/dirlink
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a directory"
+  it "doesn't identify a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     file? "$dir"
     assert unequal 0 $?
     $rmdir "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
@@ -340,16 +360,17 @@ describe more_than?
 end
 
 describe nonexecutable_file?
-  it "identifies a nonexecutable file"
+  it "identifies a nonexecutable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
     nonexecutable_file? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify an executable file"
+  it "doesn't identify an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     touch "$dir"/file
@@ -357,15 +378,17 @@ describe nonexecutable_file?
     nonexecutable_file? "$dir"/file
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a directory"
+  it "doesn't identify a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     directory? "$dir" || return
     mkdir "$dir"/dir
     nonexecutable_file? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
@@ -405,6 +428,27 @@ describe trim_to_last
   it "trims nothing if the specifier isn't present"; ( _shpec_failures=0
     trim_to_last a hello
     assert equal hello "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe write_to_file
+  it "makes a new file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    write_to_file "$dir"/file hello
+    assert equal hello "$(< "$dir"/file )"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "overwrites an existing file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    echo -n 'hello ' >"$dir"/file
+    write_to_file "$dir"/file there
+    assert equal there "$(< "$dir"/file )"
+    $rmtree "$dir"
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
