@@ -38,6 +38,7 @@ starts_with?        () { [[ $2 == $1*     ]]              ;}
 sourced?            () { [[ ${FUNCNAME[1]} == 'source' ]] ;}
 trim_from_last      () { __=${2%$1*}                      ;}
 trim_to_last        () { __=${2##*$1}                     ;}
+true?               () { (( ${!1:-} ))                    ;}
 write_to_file       () { put "$2" >"$1"                   ;}
 
 kaizen_init

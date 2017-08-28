@@ -432,6 +432,30 @@ describe trim_to_last
   end
 end
 
+describe true?
+  it "detects a reference to a positive value"; ( _shpec_failures=0
+    sample=1
+    true? sample
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't detect a reference to a non-positive value"; ( _shpec_failures=0
+    sample=0
+    true? sample
+    assert unequal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't detect an unset reference"; ( _shpec_failures=0
+    sample=''
+    unset -v sample
+    true? sample
+    assert unequal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe write_to_file
   it "makes a new file"; ( _shpec_failures=0
     dir=$($mktempd)
