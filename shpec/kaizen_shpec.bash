@@ -242,6 +242,30 @@ describe executable_file?
   end
 end
 
+describe false?
+  it "doesn't detect a reference to a positive value"; ( _shpec_failures=0
+    sample=1
+    false? sample
+    assert unequal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects a reference to a non-positive value"; ( _shpec_failures=0
+    sample=0
+    false? sample
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects an unset reference"; ( _shpec_failures=0
+    sample=''
+    unset -v sample
+    false? sample
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe file?
   it "identifies a file"; ( _shpec_failures=0
     dir=$($mktempd)
