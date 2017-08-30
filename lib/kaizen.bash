@@ -1,16 +1,12 @@
 source concorde.bash
 $(feature kaizen)
 
-kaizen_init () {
-  local dependencies
-
-  set -o noglob
-  dependencies='(
-    executable?
-    file?
-  )'
-  stuff dependencies intons kaizen
-}
+dependencies='(
+  executable?
+  file?
+)'
+stuff dependencies intons kaizen
+unset -v dependencies
 
 append_to_file      () { put "$2" >>"$1"                  ;}
 args?               () { (( $# ))                         ;}
@@ -41,5 +37,9 @@ trim_from_last      () { __=${2%$1*}                      ;}
 trim_to_last        () { __=${2##*$1}                     ;}
 true?               () { (( ${!1:-}       ))              ;}
 write_to_file       () { put "$2" >"$1"                   ;}
+
+kaizen_init () {
+  set -o noglob
+}
 
 kaizen_init
