@@ -14,7 +14,7 @@ stop_on_error
 
 shpec_source lib/kzn.bash
 
-describe 'absolute_path'
+describe absolute_path
   it "determines the path of a directory from the parent"
     dir=$($mktempd) || return 1
     cd "$dir"
@@ -106,13 +106,13 @@ describe 'absolute_path'
   end
 end
 
-describe 'basename'
+describe basename
   it "returns everything past the last slash"
     assert equal name "$(basename /my/name)"
   end
 end
 
-describe 'defa'
+describe defa
   it "strips each line of a heredoc and assigns each to an element of an array"
     defa results <<'EOS'
       one
@@ -137,7 +137,7 @@ EOS
   end
 end
 
-describe 'defs'
+describe defs
   it "strips each line of a heredoc and assigns to a string"
     defs result <<'EOS'
       one
@@ -174,7 +174,7 @@ EOS
   end
 end
 
-describe 'dirname'
+describe dirname
   it "finds the directory name"
     assert equal one/two "$(dirname one/two/three)"
   end
@@ -188,7 +188,7 @@ describe 'dirname'
   end
 end
 
-describe 'geta'
+describe geta
   it "assigns each line of an input to an element of an array"
     unset -v results
     geta results <<'EOS'
@@ -215,7 +215,7 @@ EOS
   end
 end
 
-describe 'has_length'
+describe has_length
   it "reports whether an array has a certain length"
     samples=( 0 )
     has_length 1 samples
@@ -229,7 +229,7 @@ describe 'has_length'
   end
 end
 
-describe 'is_directory'
+describe is_directory
   it "identifies a directory"
     dir=$($mktempd)
     validate_dirname "$dir" || return
@@ -271,7 +271,7 @@ describe 'is_directory'
   end
 end
 
-describe 'is_executable'
+describe is_executable
   it "identifies an executable file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
@@ -363,7 +363,7 @@ describe 'is_executable'
   end
 end
 
-describe 'is_file'
+describe is_file
   it "identifies a file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
@@ -405,7 +405,7 @@ describe 'is_file'
   end
 end
 
-describe 'is_given'
+describe is_given
   it "detects an empty value"
     sample=''
     stop_on_error off
@@ -457,7 +457,7 @@ describe 'is_given'
   end
 end
 
-describe 'is_same_as'
+describe is_same_as
   it "detects equivalent strings"
     is_same_as one one
     assert equal 0 $?
@@ -471,7 +471,7 @@ describe 'is_same_as'
   end
 end
 
-describe 'is_set'
+describe is_set
   it "returns true if a variable is set"
     sample=true
     is_set sample
@@ -493,7 +493,7 @@ describe 'is_set'
   end
 end
 
-describe 'is_symlink'
+describe is_symlink
   it "doesn't identify a file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
@@ -535,7 +535,7 @@ describe 'is_symlink'
   end
 end
 
-describe 'joina'
+describe joina
   it "joins an array with a delimiter"
     declare -a samples=([0]=zero [1]=one)
     assert equal 'zero@one' "$(joina '@' samples)"
@@ -547,19 +547,19 @@ describe 'joina'
   end
 end
 
-describe 'puts'
+describe puts
   it "outputs a string on stdout"
     assert equal sample "$(puts 'sample')"
   end
 end
 
-describe 'putserr'
+describe putserr
   it "outputs a string on stderr"
     assert equal sample "$(putserr 'sample' 2>&1)"
   end
 end
 
-describe 'splits'
+describe splits
   it "splits a string into an array on a partition character"
     results=()
     sample='a=b'
@@ -569,7 +569,7 @@ describe 'splits'
   end
 end
 
-describe 'starts_with'
+describe starts_with
   it "detects if a string starts with a specified character"
     starts_with / /test
     assert equal 0 $?
@@ -583,7 +583,7 @@ describe 'starts_with'
   end
 end
 
-describe 'stripa'
+describe stripa
   it "strips each element of an array"
     results=("    zero" "    one" "    two")
     stripa results
@@ -600,13 +600,13 @@ describe 'stripa'
   end
 end
 
-describe 'to_lower'
+describe to_lower
   it "should lower-case a string"
     assert equal upper "$(to_lower UPPER)"
   end
 end
 
-describe 'to_upper'
+describe to_upper
   it "should upper-case a string"
     assert equal LOWER "$(to_upper lower)"
   end
