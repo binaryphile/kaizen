@@ -224,248 +224,274 @@ describe geta
   end
 end
 
-# describe has_length
-#   it "reports whether an array has a certain length"
-#     samples=( 0 )
-#     has_length 1 samples
-#     assert equal 0 $?
-#   end
-#
-#   it "works for length zero"
-#     samples=()
-#     has_length 0 samples
-#     assert equal 0 $?
-#   end
-# end
-#
-# describe is_directory
-#   it "identifies a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     is_directory "$dir"
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a symlink to a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     $ln . "$dir"/dirlink
-#     is_directory "$dir"/dirlink
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a symlink to a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/filelink
-#     stop_on_error off
-#     is_directory "$dir"/filelink
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     stop_on_error off
-#     is_directory "$dir"/file
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
-# describe is_executable
-#   it "identifies an executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     chmod 755 "$dir"/file
-#     is_executable "$dir"/file
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies an executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 755 "$dir"/dir
-#     is_executable "$dir"/dir
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify an non-executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     stop_on_error off
-#     is_executable "$dir"/file
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a non-executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 664 "$dir"/dir
-#     stop_on_error off
-#     is_executable "$dir"/dir
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a link to an executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     chmod 755 "$dir"/file
-#     $ln file "$dir"/link
-#     is_executable "$dir"/link
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a link to an executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 755 "$dir"/dir
-#     $ln dir "$dir"/link
-#     is_executable "$dir"/link
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a link to a non-executable file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/link
-#     stop_on_error off
-#     is_executable "$dir"/link
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a link to a non-executable directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     mkdir "$dir"/dir
-#     chmod 664 "$dir"/dir
-#     $ln dir "$dir"/link
-#     stop_on_error off
-#     is_executable "$dir"/link
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
-# describe is_file
-#   it "identifies a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     is_file "$dir"/file
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "identifies a symlink to a file"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/filelink
-#     is_file "$dir"/filelink
-#     assert equal 0 $?
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a symlink to a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     $ln . "$dir"/dirlink
-#     stop_on_error off
-#     is_file "$dir"/dirlink
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-#
-#   it "doesn't identify a directory"
-#     dir=$($mktempd)
-#     validate_dirname "$dir" || return
-#     stop_on_error off
-#     is_file "$dir"
-#     assert unequal 0 $?
-#     stop_on_error
-#     shpec_cleanup "$dir"
-#   end
-# end
-#
-# describe is_given
-#   it "detects an empty value"
-#     sample=''
-#     stop_on_error off
-#     is_given sample
-#     assert unequal 0 $?
-#     stop_on_error
-#   end
-#
-#   it "detects a non-empty value"
-#     sample=value
-#     is_given sample
-#     assert equal 0 $?
-#   end
-#
-#   it "detects an unset reference"
-#     unset -v sample
-#     stop_on_error off
-#     is_given sample
-#     assert unequal 0 $?
-#     stop_on_error
-#   end
-#
-#   it "detects an empty array"
-#     samples=()
-#     stop_on_error off
-#     is_given samples
-#     assert unequal 0 $?
-#     stop_on_error
-#   end
-#
-#   it "detects a non-empty array"
-#     samples=( value )
-#     is_given samples
-#     assert equal 0 $?
-#   end
-#
-#   it "detects an empty hash"
-#     declare -A sampleh=()
-#     stop_on_error off
-#     is_given sampleh
-#     assert unequal 0 $?
-#     stop_on_error
-#   end
-#
-#   it "detects a non-empty hash"
-#     declare -A sampleh=( [one]=1 )
-#     is_given sampleh
-#     assert equal 0 $?
-#   end
-# end
-#
+describe has_length
+  it "reports whether an array has a certain length"; ( _shpec_failures=0
+    samples=( 0 )
+    has_length 1 samples
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "works for length zero"; ( _shpec_failures=0
+    samples=()
+    has_length 0 samples
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe is_directory
+  it "identifies a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    is_directory "$dir"
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies a symlink to a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    $ln . "$dir"/dirlink
+    is_directory "$dir"/dirlink
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a symlink to a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    stop_on_error off
+    is_directory "$dir"/filelink
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    stop_on_error off
+    is_directory "$dir"/file
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe is_executable
+  it "identifies an executable file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    is_executable "$dir"/file
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies an executable directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    is_executable "$dir"/dir
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify an non-executable file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    stop_on_error off
+    is_executable "$dir"/file
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a non-executable directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    stop_on_error off
+    is_executable "$dir"/dir
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies a link to an executable file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    chmod 755 "$dir"/file
+    $ln file "$dir"/link
+    is_executable "$dir"/link
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies a link to an executable directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 755 "$dir"/dir
+    $ln dir "$dir"/link
+    is_executable "$dir"/link
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a link to a non-executable file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/link
+    stop_on_error off
+    is_executable "$dir"/link
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a link to a non-executable directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    mkdir "$dir"/dir
+    chmod 664 "$dir"/dir
+    $ln dir "$dir"/link
+    stop_on_error off
+    is_executable "$dir"/link
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe is_file
+  it "identifies a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    is_file "$dir"/file
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies a symlink to a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    is_file "$dir"/filelink
+    assert equal 0 $?
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a symlink to a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    $ln . "$dir"/dirlink
+    stop_on_error off
+    is_file "$dir"/dirlink
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    validate_dirname "$dir" || return
+    stop_on_error off
+    is_file "$dir"
+    assert unequal 0 $?
+    stop_on_error
+    shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe is_given
+  it "detects an empty value"; ( _shpec_failures=0
+    sample=''
+    stop_on_error off
+    is_given sample
+    assert unequal 0 $?
+    stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects a non-empty value"; ( _shpec_failures=0
+    sample=value
+    is_given sample
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects an unset reference"; ( _shpec_failures=0
+    declare sample
+    unset -v sample
+    stop_on_error off
+    is_given sample
+    assert unequal 0 $?
+    stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects an empty array"; ( _shpec_failures=0
+    samples=()
+    stop_on_error off
+    is_given samples
+    assert unequal 0 $?
+    stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects a non-empty array"; ( _shpec_failures=0
+    samples=( value )
+    is_given samples
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects an empty hash"; ( _shpec_failures=0
+    declare -A sampleh=()
+    stop_on_error off
+    is_given sampleh
+    assert unequal 0 $?
+    stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "detects a non-empty hash"; ( _shpec_failures=0
+    declare -A sampleh=( [one]=1 )
+    is_given sampleh
+    assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 # describe is_same_as
 #   it "detects equivalent strings"
 #     is_same_as one one

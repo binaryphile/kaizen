@@ -103,8 +103,12 @@ is_file () {
 is_given () {
   local declaration
 
-  declaration=$(declare -p "$1" 2>/dev/null) || return
-  [[ $declaration != *'=""' && $declaration != *"='()'" ]]
+  declaration=$(declare -p "$1" 2>/dev/null)  || return
+  [[ $declaration == *=* ]]                   || return
+  declaration=${declaration#*=}
+  declaration=${declaration#\'}
+  declaration=${declaration%\'}
+  [[ $declaration != '""' && $declaration != "()" ]]
 }
 
 is_nonexecutable_file () {
