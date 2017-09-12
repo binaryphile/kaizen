@@ -71,46 +71,46 @@ describe contains?
   end
 end
 
-# describe directory?
-#   it "identifies a directory"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir"
-#     assert equal 0 $?
-#     $rmdir "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-#
-#   it "identifies a symlink to a directory"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir" || return
-#     $ln . "$dir"/dirlink
-#     directory? "$dir"/dirlink
-#     assert equal 0 $?
-#     $rmtree "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-#
-#   it "doesn't identify a symlink to a file"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir" || return
-#     touch "$dir"/file
-#     $ln file "$dir"/filelink
-#     directory? "$dir"/filelink
-#     assert unequal 0 $?
-#     $rmtree "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-#
-#   it "doesn't identify a file"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir" || return
-#     touch "$dir"/file
-#     directory? "$dir"/file
-#     assert unequal 0 $?
-#     $rmtree "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-# end
+describe directory?
+  it "identifies a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir"
+    assert equal 0 $?
+    $rmdir "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "identifies a symlink to a directory"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    $ln . "$dir"/dirlink
+    directory? "$dir"/dirlink
+    assert equal 0 $?
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a symlink to a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    directory? "$dir"/filelink
+    assert unequal 0 $?
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "doesn't identify a file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    directory? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
 
 describe ends_with?
   it "detects if a string ends with a specified character"; ( _shpec_failures=0
