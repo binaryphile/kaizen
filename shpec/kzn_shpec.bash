@@ -135,43 +135,37 @@ describe defa
   end
 end
 
-# describe defs
-#   it "strips each line of a heredoc and assigns to a string"
-#     defs result <<'EOS'
-#       one
-#       two
-#       three
-# EOS
-#     expected='declare -- result="one\ntwo\nthree"'
-#     printf -v expected "$expected"
-#     assert equal "$expected" "$(declare -p result)"
-#   end
-#
-#   it "doesn't preserve existing contents"
-#     result='four'
-#     defs result <<'EOS'
-#       one
-#       two
-#       three
-# EOS
-#     expected='declare -- result="one\ntwo\nthree"'
-#     printf -v expected "$expected"
-#     assert equal "$expected" "$(declare -p result)"
-#   end
-#
-#   it "leaves a blank line intact"
-#     defs result <<'EOS'
-#       one
-#       two
-#
-#       four
-# EOS
-#     expected='declare -- result="one\ntwo\n\nfour"'
-#     printf -v expected "$expected"
-#     assert equal "$expected" "$(declare -p result)"
-#   end
-# end
-#
+describe defs
+  it "strips each line of a heredoc and assigns to a string"
+    defs result <<'    EOS'
+      one
+      two
+      three
+    EOS
+    assert equal $'one\ntwo\nthree' "$result"
+  end
+
+  it "doesn't preserve existing contents"
+    result=four
+    defs result <<'    EOS'
+      one
+      two
+      three
+    EOS
+    assert equal $'one\ntwo\nthree' "$result"
+  end
+
+  it "leaves a blank line intact"
+    defs result <<'    EOS'
+      one
+      two
+
+      four
+    EOS
+    assert equal $'one\ntwo\n\nfour' "$result"
+  end
+end
+
 # describe dirname
 #   it "finds the directory name"
 #     assert equal one/two "$(dirname one/two/three)"
