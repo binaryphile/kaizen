@@ -3,33 +3,33 @@ set -o nounset
 source concorde.bash
 $(require_relative ../lib/kaizen)
 
-# $(grab '(
-#   ln
-#   mktempd
-#   rmdir
-#   rmtree
-# )' fromns concorde.macros)
-#
-# describe append_to_file
-#   it "makes a new file"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir" || return
-#     append_to_file "$dir"/file hello
-#     assert equal hello "$(< "$dir"/file )"
-#     $rmtree "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-#
-#   it "appends to an existing file"; ( _shpec_failures=0
-#     dir=$($mktempd)
-#     directory? "$dir" || return
-#     echo -n 'hello ' >"$dir"/file
-#     append_to_file "$dir"/file there
-#     assert equal 'hello there' "$(< "$dir"/file )"
-#     $rmtree "$dir"
-#     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-#   end
-# end
+$(grab '
+  ln
+  mktempd
+  rmdir
+  rmtree
+' fromns concorde.macros)
+
+describe append_to_file
+  it "makes a new file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    append_to_file "$dir"/file hello
+    assert equal hello "$(< "$dir"/file )"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "appends to an existing file"; ( _shpec_failures=0
+    dir=$($mktempd)
+    directory? "$dir" || return
+    echo -n 'hello ' >"$dir"/file
+    append_to_file "$dir"/file there
+    assert equal 'hello there' "$(< "$dir"/file )"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
 
 describe args?
   it "detects no arguments"; ( _shpec_failures=0
