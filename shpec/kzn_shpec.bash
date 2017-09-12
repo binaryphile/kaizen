@@ -15,39 +15,43 @@ stop_on_error
 shpec_source lib/kzn.bash
 
 describe absolute_path
-  it "determines the path of a directory from the parent"
+  it "determines the path of a directory from the parent"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     assert equal "$dir"/mydir "$(absolute_path mydir)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from the parent"
+  it "determines the path of a file from the parent"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     touch mydir/myfile
     assert equal "$dir"/mydir/myfile "$(absolute_path mydir/myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from itself"
+  it "determines the path of a directory from itself"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     assert equal "$dir" "$(absolute_path .)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from the itself"
+  it "determines the path of a file from the itself"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     touch myfile
     assert equal "$dir"/myfile "$(absolute_path myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from a sibling"
+  it "determines the path of a directory from a sibling"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
@@ -55,9 +59,10 @@ describe absolute_path
     cd mydir2
     assert equal "$dir"/mydir1 "$(absolute_path ../mydir1)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from a sibling"
+  it "determines the path of a file from a sibling"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
@@ -66,18 +71,20 @@ describe absolute_path
     cd mydir2
     assert equal "$dir"/mydir1/myfile "$(absolute_path ../mydir1/myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from a child"
+  it "determines the path of a directory from a child"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     cd mydir
     assert equal "$dir" "$(absolute_path ..)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from a child"
+  it "determines the path of a file from a child"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
@@ -85,35 +92,39 @@ describe absolute_path
     cd mydir
     assert equal "$dir"/myfile "$(absolute_path ../myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "fails on a nonexistent file path"
+  it "fails on a nonexistent file path"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     stop_on_error off
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
     stop_on_error
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "fails on a nonexistent directory path"
+  it "fails on a nonexistent directory path"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     shpec_cleanup "$dir"
     stop_on_error off
     absolute_path "$dir" >/dev/null
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
 describe basename
-  it "returns everything past the last slash"
+  it "returns everything past the last slash"; ( _shpec_failures=0
     assert equal name "$(basename /my/name)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
 describe defa
-  it "strips each line of a heredoc and assigns each to an element of an array"
+  it "strips each line of a heredoc and assigns each to an element of an array"; ( _shpec_failures=0
     defa results <<'    EOS'
       one
       two
@@ -121,9 +132,10 @@ describe defa
     EOS
     result=$(printf '(%s) ' "${results[@]}")
     assert equal '(one) (two) (three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't preserve existing contents"
+  it "doesn't preserve existing contents"; ( _shpec_failures=0
     results=( four )
     defa results <<'    EOS'
       one
@@ -132,20 +144,22 @@ describe defa
     EOS
     result=$(printf '(%s) ' "${results[@]}")
     assert equal '(one) (two) (three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
 describe defs
-  it "strips each line of a heredoc and assigns to a string"
+  it "strips each line of a heredoc and assigns to a string"; ( _shpec_failures=0
     defs result <<'    EOS'
       one
       two
       three
     EOS
     assert equal $'one\ntwo\nthree' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't preserve existing contents"
+  it "doesn't preserve existing contents"; ( _shpec_failures=0
     result=four
     defs result <<'    EOS'
       one
@@ -153,9 +167,10 @@ describe defs
       three
     EOS
     assert equal $'one\ntwo\nthree' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "leaves a blank line intact"
+  it "leaves a blank line intact"; ( _shpec_failures=0
     defs result <<'    EOS'
       one
       two
@@ -163,50 +178,52 @@ describe defs
       four
     EOS
     assert equal $'one\ntwo\n\nfour' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-# describe dirname
-#   it "finds the directory name"
-#     assert equal one/two "$(dirname one/two/three)"
-#   end
-#
-#   it "finds the directory name with trailing slash"
-#     assert equal one/two "$(dirname one/two/three/)"
-#   end
-#
-#   it "finds the directory name without slash"
-#     assert equal . "$(dirname one)"
-#   end
-# end
-#
-# describe geta
-#   it "assigns each line of an input to an element of an array"
-#     unset -v results
-#     geta results <<'EOS'
-#       zero
-#       one
-#       two
-# EOS
-#     expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="      two")%s'
-#     printf -v expected "$expected" \' \'
-#     assert equal "$expected" "$(declare -p results)"
-#   end
-#
-#   it "preserves a blank line"
-#     unset -v results
-#     geta results <<'EOS'
-#       zero
-#       one
-#
-#       three
-# EOS
-#     expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
-#     printf -v expected "$expected" \' \'
-#     assert equal "$expected" "$(declare -p results)"
-#   end
-# end
-#
+describe dirname
+  it "finds the directory name"; ( _shpec_failures=0
+    assert equal one/two "$(dirname one/two/three)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "finds the directory name with trailing slash"; ( _shpec_failures=0
+    assert equal one/two "$(dirname one/two/three/)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "finds the directory name without slash"; ( _shpec_failures=0
+    assert equal . "$(dirname one)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe geta
+  it "assigns each line of an input to an element of an array"; ( _shpec_failures=0
+    geta results <<'    EOS'
+      zero
+      one
+      two
+    EOS
+    result=$(printf '(%s) ' "${results[@]}")
+    assert equal "(      zero) (      one) (      two)" "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "preserves a blank line"; ( _shpec_failures=0
+    geta results <<'    EOS'
+      zero
+      one
+
+      three
+    EOS
+    result=$(printf '(%s) ' "${results[@]}")
+    assert equal '(      zero) (      one) () (      three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 # describe has_length
 #   it "reports whether an array has a certain length"
 #     samples=( 0 )
