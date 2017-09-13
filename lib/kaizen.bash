@@ -1,10 +1,10 @@
 source concorde.bash
 $(feature kaizen)
 
-dependencies='(
+dependencies='
   executable?
   file?
-)'
+'
 stuff dependencies intons kaizen
 unset -v dependencies
 
