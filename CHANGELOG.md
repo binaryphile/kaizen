@@ -7,12 +7,17 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
-[unreleased]
-------------
+[v0.6.0] - 2017-09-14
+---------------------
 
 ### Added
 
 -   concorde dependency
+
+-   `glob?` function
+
+-   copy of the deprecated `lib/kzn.bash`, `macros.bash` and
+    `darwin-macros.bash` for backward compatibility
 
 ### Changed
 
@@ -24,11 +29,16 @@ Latest Changes
 
 -   `shpec-helper.bash` - will rework if necessary
 
+-   almost all functions, will bring back in as necessary
+
+### Deprecated
+
+-   old `kzn.bash` named file
+
 -   `macros.bash` - macros are in concorde
 
 -   `darwin-macros.bash` - in concorde
 
--   almost all functions, will bring back in as necessary
 
 [v0.5.3] - 2017-05-12
 ---------------------
@@ -119,7 +129,7 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
-  [unreleased]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5
+  [v0.6.0]: https://github.com/binaryphile/kaizen/compare/v0.5.3...v0.6.0
   [v0.5.3]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5.3
   [v0.5.2]: https://github.com/binaryphile/kaizen/compare/v0.5.1...v0.5.2
   [v0.5.1]: https://github.com/binaryphile/kaizen/compare/v0.5.0...v0.5.1
