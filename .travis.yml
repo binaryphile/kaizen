@@ -1,11 +1,22 @@
 language: sh
 dist:     trusty
-sudo:     false
+sudo:     true
 install:
-  - git clone git://github.com/rylnd/shpec        --branch 0.2.2      --depth 1 "$HOME"/shpec
-  - git clone git://github.com/binaryphile/nano   --branch v10.11.12  --depth 1 "$TRAVIS_BUILD_DIR"/../nano
-  - git clone git://github.com/binaryphile/sorta  --branch v11.10.11  --depth 1 "$TRAVIS_BUILD_DIR"/../sorta
-  - export PATH=$HOME/shpec/bin:$TRAVIS_BUILD_DIR/lib:$TRAVIS_BUILD_DIR/../nano/lib:$TRAVIS_BUILD_DIR/../sorta/lib:$PATH
-script:   ./all-shpecs
+  - git clone git://github.com/rylnd/shpec          --branch=0.2.2  --depth=1 ~/shpec
+  - git clone git://github.com/binaryphile/nano     --branch=v0.1.3 --depth=1 "$TRAVIS_BUILD_DIR"/../nano
+  - git clone git://github.com/binaryphile/sorta    --branch=v1.0.4 --depth=1 "$TRAVIS_BUILD_DIR"/../sorta
+  - git clone git://github.com/binaryphile/concorde --branch=v0.2   --depth=1 "$TRAVIS_BUILD_DIR"/../concorde
+  - git clone git://github.com/binaryphile/nixpkgs-travis ~/nix
+  - wget -P ~ https://nixos.org/releases/nix/nix-1.11.9/nix-1.11.9-x86_64-linux.tar.bz2
+  - tar xjf ~/nix-1.11.9-x86_64-linux.tar.bz2 -C ~
+  - ~/nix-1.11.9-x86_64-linux/install
+  - source ~/.nix-profile/etc/profile.d/nix.sh
+  - export PATH=~/shpec/bin:"$TRAVIS_BUILD_DIR/lib:$TRAVIS_BUILD_DIR/../nano/lib:$TRAVIS_BUILD_DIR/../sorta/lib:$TRAVIS_BUILD_DIR/../concorde/lib:$PATH"
+script:
+  - ./all-shpecs
+  - nix-env -ib -f ~/nix/default.nix bash
+  - ./all-shpecs
+  - nix-env -ibA nixpkgs.bash
+  - ./all-shpecs
 git:
   depth:  1

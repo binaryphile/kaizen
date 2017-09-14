@@ -14,40 +14,44 @@ stop_on_error
 
 shpec_source lib/kzn.bash
 
-describe 'absolute_path'
-  it "determines the path of a directory from the parent"
+describe absolute_path
+  it "determines the path of a directory from the parent"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     assert equal "$dir"/mydir "$(absolute_path mydir)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from the parent"
+  it "determines the path of a file from the parent"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     touch mydir/myfile
     assert equal "$dir"/mydir/myfile "$(absolute_path mydir/myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from itself"
+  it "determines the path of a directory from itself"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     assert equal "$dir" "$(absolute_path .)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from the itself"
+  it "determines the path of a file from the itself"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     touch myfile
     assert equal "$dir"/myfile "$(absolute_path myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from a sibling"
+  it "determines the path of a directory from a sibling"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
@@ -55,9 +59,10 @@ describe 'absolute_path'
     cd mydir2
     assert equal "$dir"/mydir1 "$(absolute_path ../mydir1)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from a sibling"
+  it "determines the path of a file from a sibling"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir1
@@ -66,18 +71,20 @@ describe 'absolute_path'
     cd mydir2
     assert equal "$dir"/mydir1/myfile "$(absolute_path ../mydir1/myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a directory from a child"
+  it "determines the path of a directory from a child"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
     cd mydir
     assert equal "$dir" "$(absolute_path ..)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "determines the path of a file from a child"
+  it "determines the path of a file from a child"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     cd "$dir"
     $mkdir mydir
@@ -85,169 +92,175 @@ describe 'absolute_path'
     cd mydir
     assert equal "$dir"/myfile "$(absolute_path ../myfile)"
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "fails on a nonexistent file path"
+  it "fails on a nonexistent file path"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     stop_on_error off
     absolute_path "$dir"/myfile >/dev/null
     assert unequal 0 $?
     stop_on_error
     $rm "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "fails on a nonexistent directory path"
+  it "fails on a nonexistent directory path"; ( _shpec_failures=0
     dir=$($mktempd) || return 1
     shpec_cleanup "$dir"
     stop_on_error off
     absolute_path "$dir" >/dev/null
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'basename'
-  it "returns everything past the last slash"
+describe basename
+  it "returns everything past the last slash"; ( _shpec_failures=0
     assert equal name "$(basename /my/name)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'defa'
-  it "strips each line of a heredoc and assigns each to an element of an array"
-    defa results <<'EOS'
+describe defa
+  it "strips each line of a heredoc and assigns each to an element of an array"; ( _shpec_failures=0
+    defa results <<'    EOS'
       one
       two
       three
-EOS
-    expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
-    printf -v expected "$expected" \' \'
-    assert equal "$expected" "$(declare -p results)"
+    EOS
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal '(one) (two) (three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't preserve existing contents"
+  it "doesn't preserve existing contents"; ( _shpec_failures=0
     results=( four )
-    defa results <<'EOS'
+    defa results <<'    EOS'
       one
       two
       three
-EOS
-    expected='declare -a results=%s([0]="one" [1]="two" [2]="three")%s'
-    printf -v expected "$expected" \' \'
-    assert equal "$expected" "$(declare -p results)"
+    EOS
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal '(one) (two) (three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'defs'
-  it "strips each line of a heredoc and assigns to a string"
-    defs result <<'EOS'
+describe defs
+  it "strips each line of a heredoc and assigns to a string"; ( _shpec_failures=0
+    defs result <<'    EOS'
       one
       two
       three
-EOS
-    expected='declare -- result="one\ntwo\nthree"'
-    printf -v expected "$expected"
-    assert equal "$expected" "$(declare -p result)"
+    EOS
+    assert equal $'one\ntwo\nthree' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't preserve existing contents"
-    result='four'
-    defs result <<'EOS'
+  it "doesn't preserve existing contents"; ( _shpec_failures=0
+    result=four
+    defs result <<'    EOS'
       one
       two
       three
-EOS
-    expected='declare -- result="one\ntwo\nthree"'
-    printf -v expected "$expected"
-    assert equal "$expected" "$(declare -p result)"
+    EOS
+    assert equal $'one\ntwo\nthree' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "leaves a blank line intact"
-    defs result <<'EOS'
+  it "leaves a blank line intact"; ( _shpec_failures=0
+    defs result <<'    EOS'
       one
       two
 
       four
-EOS
-    expected='declare -- result="one\ntwo\n\nfour"'
-    printf -v expected "$expected"
-    assert equal "$expected" "$(declare -p result)"
+    EOS
+    assert equal $'one\ntwo\n\nfour' "$result"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'dirname'
-  it "finds the directory name"
+describe dirname
+  it "finds the directory name"; ( _shpec_failures=0
     assert equal one/two "$(dirname one/two/three)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "finds the directory name with trailing slash"
+  it "finds the directory name with trailing slash"; ( _shpec_failures=0
     assert equal one/two "$(dirname one/two/three/)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "finds the directory name without slash"
+  it "finds the directory name without slash"; ( _shpec_failures=0
     assert equal . "$(dirname one)"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'geta'
-  it "assigns each line of an input to an element of an array"
-    unset -v results
-    geta results <<'EOS'
+describe geta
+  it "assigns each line of an input to an element of an array"; ( _shpec_failures=0
+    geta results <<'    EOS'
       zero
       one
       two
-EOS
-    expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="      two")%s'
-    printf -v expected "$expected" \' \'
-    assert equal "$expected" "$(declare -p results)"
+    EOS
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal "(      zero) (      one) (      two)" "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "preserves a blank line"
-    unset -v results
-    geta results <<'EOS'
+  it "preserves a blank line"; ( _shpec_failures=0
+    geta results <<'    EOS'
       zero
       one
 
       three
-EOS
-    expected='declare -a results=%s([0]="      zero" [1]="      one" [2]="" [3]="      three")%s'
-    printf -v expected "$expected" \' \'
-    assert equal "$expected" "$(declare -p results)"
+    EOS
+    result=$(printf '(%s) ' "${results[@]}")
+    assert equal '(      zero) (      one) () (      three)' "${result% }"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'has_length'
-  it "reports whether an array has a certain length"
+describe has_length
+  it "reports whether an array has a certain length"; ( _shpec_failures=0
     samples=( 0 )
     has_length 1 samples
     assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "works for length zero"
+  it "works for length zero"; ( _shpec_failures=0
     samples=()
     has_length 0 samples
     assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'is_directory'
-  it "identifies a directory"
+describe is_directory
+  it "identifies a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     is_directory "$dir"
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a symlink to a directory"
+  it "identifies a symlink to a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     $ln . "$dir"/dirlink
     is_directory "$dir"/dirlink
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a symlink to a file"
+  it "doesn't identify a symlink to a file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -257,9 +270,10 @@ describe 'is_directory'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a file"
+  it "doesn't identify a file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -268,11 +282,12 @@ describe 'is_directory'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'is_executable'
-  it "identifies an executable file"
+describe is_executable
+  it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -280,9 +295,10 @@ describe 'is_executable'
     is_executable "$dir"/file
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies an executable directory"
+  it "identifies an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
@@ -290,9 +306,10 @@ describe 'is_executable'
     is_executable "$dir"/dir
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify an non-executable file"
+  it "doesn't identify an non-executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -301,9 +318,10 @@ describe 'is_executable'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a non-executable directory"
+  it "doesn't identify a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
@@ -313,9 +331,10 @@ describe 'is_executable'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a link to an executable file"
+  it "identifies a link to an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -324,9 +343,10 @@ describe 'is_executable'
     is_executable "$dir"/link
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a link to an executable directory"
+  it "identifies a link to an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
@@ -335,9 +355,10 @@ describe 'is_executable'
     is_executable "$dir"/link
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a link to a non-executable file"
+  it "doesn't identify a link to a non-executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -347,9 +368,10 @@ describe 'is_executable'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a link to a non-executable directory"
+  it "doesn't identify a link to a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     mkdir "$dir"/dir
@@ -360,20 +382,22 @@ describe 'is_executable'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'is_file'
-  it "identifies a file"
+describe is_file
+  it "identifies a file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
     is_file "$dir"/file
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "identifies a symlink to a file"
+  it "identifies a symlink to a file"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     touch "$dir"/file
@@ -381,9 +405,10 @@ describe 'is_file'
     is_file "$dir"/filelink
     assert equal 0 $?
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a symlink to a directory"
+  it "doesn't identify a symlink to a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     $ln . "$dir"/dirlink
@@ -392,9 +417,10 @@ describe 'is_file'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "doesn't identify a directory"
+  it "doesn't identify a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     validate_dirname "$dir" || return
     stop_on_error off
@@ -402,62 +428,71 @@ describe 'is_file'
     assert unequal 0 $?
     stop_on_error
     shpec_cleanup "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'is_given'
-  it "detects an empty value"
+describe is_given
+  it "detects an empty value"; ( _shpec_failures=0
     sample=''
     stop_on_error off
     is_given sample
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects a non-empty value"
+  it "detects a non-empty value"; ( _shpec_failures=0
     sample=value
     is_given sample
     assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects an unset reference"
+  it "detects an unset reference"; ( _shpec_failures=0
+    declare sample
     unset -v sample
     stop_on_error off
     is_given sample
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects an empty array"
+  it "detects an empty array"; ( _shpec_failures=0
     samples=()
     stop_on_error off
     is_given samples
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects a non-empty array"
+  it "detects a non-empty array"; ( _shpec_failures=0
     samples=( value )
     is_given samples
     assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects an empty hash"
+  it "detects an empty hash"; ( _shpec_failures=0
     declare -A sampleh=()
     stop_on_error off
     is_given sampleh
     assert unequal 0 $?
     stop_on_error
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
-  it "detects a non-empty hash"
+  it "detects a non-empty hash"; ( _shpec_failures=0
     declare -A sampleh=( [one]=1 )
     is_given sampleh
     assert equal 0 $?
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 end
 
-describe 'is_same_as'
+describe is_same_as
   it "detects equivalent strings"
     is_same_as one one
     assert equal 0 $?
@@ -471,7 +506,7 @@ describe 'is_same_as'
   end
 end
 
-describe 'is_set'
+describe is_set
   it "returns true if a variable is set"
     sample=true
     is_set sample
@@ -493,7 +528,7 @@ describe 'is_set'
   end
 end
 
-describe 'is_symlink'
+describe is_symlink
   it "doesn't identify a file"
     dir=$($mktempd)
     validate_dirname "$dir" || return
@@ -535,7 +570,7 @@ describe 'is_symlink'
   end
 end
 
-describe 'joina'
+describe joina
   it "joins an array with a delimiter"
     declare -a samples=([0]=zero [1]=one)
     assert equal 'zero@one' "$(joina '@' samples)"
@@ -547,29 +582,29 @@ describe 'joina'
   end
 end
 
-describe 'puts'
+describe puts
   it "outputs a string on stdout"
     assert equal sample "$(puts 'sample')"
   end
 end
 
-describe 'putserr'
+describe putserr
   it "outputs a string on stderr"
     assert equal sample "$(putserr 'sample' 2>&1)"
   end
 end
 
-describe 'splits'
+describe splits
   it "splits a string into an array on a partition character"
     results=()
-    sample='a=b'
-    splits '=' sample results
-    printf -v expected 'declare -a results=%s([0]="a" [1]="b")%s' \' \'
-    assert equal "$expected" "$(declare -p results)"
+    sample=a=b
+    splits = sample results
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal '(a) (b)' "${result% }"
   end
 end
 
-describe 'starts_with'
+describe starts_with
   it "detects if a string starts with a specified character"
     starts_with / /test
     assert equal 0 $?
@@ -583,31 +618,30 @@ describe 'starts_with'
   end
 end
 
-describe 'stripa'
+describe stripa
   it "strips each element of an array"
     results=("    zero" "    one" "    two")
     stripa results
-    expected=$(printf 'declare -a results=%s([0]="zero" [1]="one" [2]="two")%s' \' \')
-    assert equal "$expected" "$(declare -p results)"
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal '(zero) (one) (two)' "${result% }"
   end
 
   it "leaves a blank element intact"
     results=("    zero" "    one"  "" "    three")
     stripa results
-    expected='declare -a results=%s([0]="zero" [1]="one" [2]="" [3]="three")%s'
-    printf -v expected "$expected" \' \'
-    assert equal "$expected" "$(declare -p results)"
+    printf -v result '(%s) ' "${results[@]}"
+    assert equal '(zero) (one) () (three)' "${result% }"
   end
 end
 
-describe 'to_lower'
-  it "should lower-case a string"
+describe to_lower
+  it "lower-cases a string"
     assert equal upper "$(to_lower UPPER)"
   end
 end
 
-describe 'to_upper'
-  it "should upper-case a string"
+describe to_upper
+  it "upper-cases a string"
     assert equal LOWER "$(to_upper lower)"
   end
 end
