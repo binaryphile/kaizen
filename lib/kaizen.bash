@@ -8,16 +8,16 @@ dependencies='
 stuff dependencies intons kaizen
 unset -v dependencies
 
-append_to_file      () { put "$2" >>"$1"                  ;}
-args?               () { (( $# ))                         ;}
-contains?           () { [[ $2 == *"$1"*  ]]              ;}
-directory?          () { [[ -d $1         ]]              ;}
-ends_with?          () { [[ $2 == *$1     ]]              ;}
-executable?         () { [[ -x $1         ]]              ;}
-executable_file?    () { file? "$1" && executable? "$1"   ;}
-false?              () { ! (( ${!1:-}     ))              ;}
-file?               () { [[ -f $1         ]]              ;}
-given?              () { [[ -n ${!1:-}    ]]              ;}
+append_to_file    () { put "$2" >>"$1"                  ;}
+args?             () { (( $# ))                         ;}
+contains?         () { [[ $2 == *"$1"*  ]]              ;}
+directory?        () { [[ -d $1         ]]              ;}
+ends_with?        () { [[ $2 == *$1     ]]              ;}
+executable?       () { [[ -x $1         ]]              ;}
+executable_file?  () { file? "$1" && executable? "$1"   ;}
+false?            () { ! (( ${!1:-}     ))              ;}
+file?             () { [[ -f $1         ]]              ;}
+given?            () { [[ -n ${!1:-}    ]]              ;}
 
 glob () {
   local ary=()
