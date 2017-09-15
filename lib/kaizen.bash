@@ -28,6 +28,14 @@ glob () {
   repr ary
 }
 
+glob_mode () {
+  case $1 in
+    on  ) set +o noglob ;;
+    off ) set -o noglob ;;
+    *   ) return 1      ;;
+  esac
+}
+
 less_than?          () { (( ($# - 1) < $1 ))              ;}
 more_than?          () { (( ($# - 1) > $1 ))              ;}
 nonexecutable_file? () { file? "$1" && ! executable? "$1" ;}

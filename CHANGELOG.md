@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
+[v0.6.1] - 2017-09-15
+---------------------
+
+### Added
+
+-   `glob_mode` function
+
 [v0.6.0] - 2017-09-14
 ---------------------
 
@@ -14,7 +21,7 @@ Latest Changes
 
 -   concorde dependency
 
--   `glob?` function
+-   `glob` function
 
 -   copy of the deprecated `lib/kzn.bash`, `macros.bash` and
     `darwin-macros.bash` for backward compatibility
@@ -129,6 +136,7 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
+  [v0.6.0]: https://github.com/binaryphile/kaizen/compare/v0.6.0...v0.6.1
   [v0.6.0]: https://github.com/binaryphile/kaizen/compare/v0.5.3...v0.6.0
   [v0.5.3]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5.3
   [v0.5.2]: https://github.com/binaryphile/kaizen/compare/v0.5.1...v0.5.2
