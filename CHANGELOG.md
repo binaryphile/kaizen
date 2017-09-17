@@ -7,12 +7,14 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
-[v0.6.1] - 2017-09-15
+[v0.6.1] - 2017-09-18
 ---------------------
 
 ### Added
 
 -   `glob_mode` function
+
+-   `symlink?` function
 
 [v0.6.0] - 2017-09-14
 ---------------------

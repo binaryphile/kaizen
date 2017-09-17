@@ -440,6 +440,44 @@ describe nonexecutable_file?
   end
 end
 
+describe symlink?
+  it "doesn't identify a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    symlink? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a symlink to a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    symlink? "$dir"/filelink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a symlink to a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    $ln . "$dir"/dirlink
+    symlink? "$dir"/dirlink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    symlink? "$dir"
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+end
+
 describe trim_from_last
   it "trims from the last single-character specifier"; ( _shpec_failures=0
     trim_from_last e stereo
