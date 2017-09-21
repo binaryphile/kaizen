@@ -377,6 +377,22 @@ describe glob
     assert equal 'file 1' "${result_ary[0]}"
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
+
+  it "preserves glob_mode when off"; ( _shpec_failures=0
+    glob_mode off
+    glob *
+    glob_mode status
+    assert equal off "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "preserves glob_mode when on"; ( _shpec_failures=0
+    glob_mode on
+    glob *
+    glob_mode status
+    assert equal on "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
 end
 
 describe glob_mode

@@ -21,10 +21,13 @@ given?            () { [[ -n ${!1:-}    ]]              ;}
 
 glob () {
   local ary=()
+  local status
 
-  set +o noglob
+  glob_mode status
+  status=$__
+  glob_mode on
   eval "ary=( $* )"
-  set -o noglob
+  glob_mode "$status"
   repr ary
 }
 
