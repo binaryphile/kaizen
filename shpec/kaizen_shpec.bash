@@ -379,6 +379,48 @@ describe glob
   end
 end
 
+describe glob_mode
+  it "turns of globbing"; ( _shpec_failures=0
+    glob_mode on
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    result1=$( echo "$dir"/* )
+    glob_mode off
+    result2=$( echo "$dir"/* )
+    assert equal "($dir/file) ($dir/*)" "($result1) ($result2)"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "turns on globbing"; ( _shpec_failures=0
+    glob_mode off
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    result1=$( echo "$dir"/* )
+    glob_mode on
+    result2=$( echo "$dir"/* )
+    assert equal "($dir/*) ($dir/file)" "($result1) ($result2)"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "reports status on"; ( _shpec_failures=0
+    glob_mode on
+    glob_mode status
+    assert equal on "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "reports status on"; ( _shpec_failures=0
+    glob_mode off
+    glob_mode status
+    assert equal off "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe less_than?
   it "should identify numbers of arguments less than specified"; ( _shpec_failures=0
     less_than? 2 one
