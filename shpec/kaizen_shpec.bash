@@ -377,6 +377,64 @@ describe glob
     assert equal 'file 1' "${result_ary[0]}"
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
+
+  it "preserves glob_mode when off"; ( _shpec_failures=0
+    glob_mode off
+    glob *
+    glob_mode status
+    assert equal off "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "preserves glob_mode when on"; ( _shpec_failures=0
+    glob_mode on
+    glob *
+    glob_mode status
+    assert equal on "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe glob_mode
+  it "turns of globbing"; ( _shpec_failures=0
+    glob_mode on
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    result1=$( echo "$dir"/* )
+    glob_mode off
+    result2=$( echo "$dir"/* )
+    assert equal "($dir/file) ($dir/*)" "($result1) ($result2)"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "turns on globbing"; ( _shpec_failures=0
+    glob_mode off
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    result1=$( echo "$dir"/* )
+    glob_mode on
+    result2=$( echo "$dir"/* )
+    assert equal "($dir/*) ($dir/file)" "($result1) ($result2)"
+    $rmtree "$dir"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "reports status on"; ( _shpec_failures=0
+    glob_mode on
+    glob_mode status
+    assert equal on "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+
+  it "reports status on"; ( _shpec_failures=0
+    glob_mode off
+    glob_mode status
+    assert equal off "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
 end
 
 describe less_than?
@@ -437,6 +495,44 @@ describe nonexecutable_file?
     assert unequal 0 $?
     $rmtree "$dir"
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
+describe symlink?
+  it "doesn't identify a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    symlink? "$dir"/file
+    assert unequal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a symlink to a file"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    touch "$dir"/file
+    $ln file "$dir"/filelink
+    symlink? "$dir"/filelink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "identifies a symlink to a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    $ln . "$dir"/dirlink
+    symlink? "$dir"/dirlink
+    assert equal 0 $?
+    $rmtree "$dir"
+  end
+
+  it "doesn't identify a directory"
+    dir=$($mktempd)
+    directory? "$dir" || return
+    symlink? "$dir"
+    assert unequal 0 $?
+    $rmtree "$dir"
   end
 end
 

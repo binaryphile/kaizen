@@ -21,21 +21,39 @@ given?            () { [[ -n ${!1:-}    ]]              ;}
 
 glob () {
   local ary=()
+  local status
 
-  set +o noglob
+  glob_mode status
+  status=$__
+  glob_mode on
   eval "ary=( $* )"
-  set -o noglob
+  glob_mode "$status"
   repr ary
+}
+
+glob_mode () {
+  case $1 in
+    on      ) set +o noglob;;
+    off     ) set -o noglob;;
+    status  )
+      case $- in
+        *f* ) __=off;;
+        *   ) __=on ;;
+      esac
+      ;;
+    * ) return 1;;
+  esac
 }
 
 less_than?          () { (( ($# - 1) < $1 ))              ;}
 more_than?          () { (( ($# - 1) > $1 ))              ;}
 nonexecutable_file? () { file? "$1" && ! executable? "$1" ;}
-starts_with?        () { [[ $2 == $1*     ]]              ;}
+starts_with?        () { [[ $2 == $1* ]]                  ;}
 sourced?            () { [[ ${FUNCNAME[1]} == source ]]   ;}
+symlink?            () { [[ -h $1 ]]                      ;}
 trim_from_last      () { __=${2%$1*}                      ;}
 trim_to_last        () { __=${2##*$1}                     ;}
-true?               () { (( ${!1:-}       ))              ;}
+true?               () { (( ${!1:-} ))                    ;}
 write_to_file       () { put "$2" >"$1"                   ;}
 
 kaizen_init () {
