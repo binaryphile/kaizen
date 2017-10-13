@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog] and this project adheres to
 Latest Changes
 ==============
 
+[unreleased]
+------------
+
 [v0.6.1] - 2017-09-21
 ---------------------
 
@@ -48,6 +51,8 @@ Latest Changes
 
 -   `darwin-macros.bash` - in concorde
 
+Older Changes
+=============
 
 [v0.5.3] - 2017-05-12
 ---------------------
@@ -71,9 +76,6 @@ Latest Changes
 
 -   `shpec_cwd` correctly locates the calling file, not
     shpec-helper.bash
-
-Older Changes
-=============
 
 [v0.5.1] - 2017-04-07
 ---------------------
@@ -138,6 +140,7 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
+  [unreleased]: https://github.com/binaryphile/kaizen/compare/v0.6.1...v0.6
   [v0.6.1]: https://github.com/binaryphile/kaizen/compare/v0.6.0...v0.6.1
   [v0.6.0]: https://github.com/binaryphile/kaizen/compare/v0.5.3...v0.6.0
   [v0.5.3]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5.3
