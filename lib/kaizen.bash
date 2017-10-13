@@ -23,11 +23,12 @@ glob () {
   local ary=()
   local status
 
-  glob_mode status
+  [[ $- == *f* ]] && status=+ || status=-
   status=$__
+  set -o noglob
   glob_mode on
   eval "ary=( $* )"
-  glob_mode "$status"
+  eval "set ${status}o noglob"
   repr ary
 }
 
