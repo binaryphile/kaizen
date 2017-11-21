@@ -1,64 +1,135 @@
 source concorde.bash
 $(feature kaizen)
 
-dependencies='
-  executable?
-  file?
-'
-stuff dependencies intons kaizen
-unset -v dependencies
+set -o noglob
 
-append_to_file    () { put "$2" >>"$1"                  ;}
-args?             () { (( $# ))                         ;}
-contains?         () { [[ $2 == *"$1"*  ]]              ;}
-directory?        () { [[ -d $1         ]]              ;}
-ends_with?        () { [[ $2 == *$1     ]]              ;}
-executable?       () { [[ -x $1         ]]              ;}
-executable_file?  () { file? "$1" && executable? "$1"   ;}
-false?            () { ! (( ${!1:-}     ))              ;}
-file?             () { [[ -f $1         ]]              ;}
-given?            () { [[ -n ${!1:-}    ]]              ;}
+get <<'EOS'
+  append_to_file
+  args
+  contains
+  directory
+  ends_with
+  executable
+  executable_file
+  false
+  file
+  given
+  glob
+  globbing
+  less_than
+  more_than
+  nonexecutable_file
+  sourced
+  starts_with
+  symlink
+  trim_from_last
+  trim_to_last
+  true
+  write_to_file
+EOS
+for __ in $__; do
+  constant "$__=kaizen::$__"
+done
 
-glob () {
+kaizen::append_to_file () {
+  put "$2" >>"$1"
+}
+
+kaizen::args? () {
+  (( $# ))
+}
+
+kaizen::contains? () {
+  [[ $2 == *"$1"* ]]
+}
+
+kaizen::directory? () {
+  [[ -d $1 ]]
+}
+
+kaizen::ends_with? () {
+  [[ $2 == *$1 ]]
+}
+
+kaizen::executable? () {
+  [[ -x $1 ]]
+}
+
+kaizen::executable_file? () {
+  kaizen::file? "$1" && kaizen::executable? "$1"
+}
+
+kaizen::false? () {
+  ! (( ${!1:-} ))
+}
+
+kaizen::file? () {
+  [[ -f $1 ]]
+}
+
+kaizen::given? () {
+  [[ -n ${!1:-} ]]
+}
+
+kaizen::glob () {
   local ary=()
   local status
 
-  [[ $- == *f* ]] && status=+ || status=-
-  status=$__
-  set -o noglob
-  glob_mode on
+  [[ $- == *f* ]] && status=- || status=+
+  set +o noglob
   eval "ary=( $* )"
   eval "set ${status}o noglob"
   repr ary
 }
 
-glob_mode () {
+kaizen::globbing () {
   case $1 in
     on      ) set +o noglob;;
     off     ) set -o noglob;;
-    status  )
-      case $- in
-        *f* ) __=off;;
-        *   ) __=on ;;
-      esac
-      ;;
     * ) return 1;;
   esac
 }
 
-less_than?          () { (( ($# - 1) < $1 ))              ;}
-more_than?          () { (( ($# - 1) > $1 ))              ;}
-nonexecutable_file? () { file? "$1" && ! executable? "$1" ;}
-starts_with?        () { [[ $2 == $1* ]]                  ;}
-sourced?            () { [[ ${FUNCNAME[1]} == source ]]   ;}
-symlink?            () { [[ -h $1 ]]                      ;}
-trim_from_last      () { __=${2%$1*}                      ;}
-trim_to_last        () { __=${2##*$1}                     ;}
-true?               () { (( ${!1:-} ))                    ;}
-write_to_file       () { put "$2" >"$1"                   ;}
-
-kaizen_init () {
-  set -o noglob
+kaizen::globbing? () {
+  [[ $- != *f* ]]
 }
 
-kaizen_init
+kaizen::less_than? () {
+  (( ($# - 1) < $1 ))
+}
+
+kaizen::more_than? () {
+  (( ($# - 1) > $1 ))
+}
+
+kaizen::nonexecutable_file? () {
+  kaizen::file? "$1" && ! kaizen::executable? "$1"
+}
+
+kaizen::starts_with? () {
+  [[ $2 == $1* ]]
+}
+
+kaizen::sourced? () {
+  [[ ${FUNCNAME[1]} == source ]]
+}
+
+kaizen::symlink? () {
+  [[ -h $1 ]]
+}
+
+kaizen::trim_from_last () {
+  __=${2%$1*}
+}
+
+kaizen::trim_to_last () {
+  __=${2##*$1}
+}
+
+kaizen::true? () {
+  (( ${!1:-} ))
+}
+
+kaizen::write_to_file () {
+  put "$2" >"$1"
+}
