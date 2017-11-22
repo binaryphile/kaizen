@@ -10,6 +10,18 @@ Latest Changes
 [unreleased]
 ------------
 
+### Changed
+
+-   updated to concorde v0.3
+
+### Removed
+
+-   old `kzn.bash` named file
+
+-   `macros.bash` - macros are in concorde
+
+-   `darwin-macros.bash` - in concorde
+
 [v0.6.1] - 2017-09-21
 ---------------------
 
@@ -140,7 +152,7 @@ Older Changes
 
   [Keep a Changelog]: http://keepachangelog.com/
   [Semantic Versioning]: http://semver.org/
-  [unreleased]: https://github.com/binaryphile/kaizen/compare/v0.6.1...v0.6
+  [unreleased]: https://github.com/binaryphile/kaizen/compare/v0.6.1...v0.7
   [v0.6.1]: https://github.com/binaryphile/kaizen/compare/v0.6.0...v0.6.1
   [v0.6.0]: https://github.com/binaryphile/kaizen/compare/v0.5.3...v0.6.0
   [v0.5.3]: https://github.com/binaryphile/kaizen/compare/v0.5.2...v0.5.3
