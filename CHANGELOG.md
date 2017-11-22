@@ -14,6 +14,10 @@ Latest Changes
 
 -   updated to concorde v0.3
 
+### Added
+
+-   bash-libs from earlier version for jiff update
+
 ### Removed
 
 -   old `kzn.bash` named file
