@@ -1,18 +1,18 @@
 set -o nounset
 
-source concorde.bash
-$(require_relative ../lib/kaizen)
+source "$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")"/../lib/kaizen.bash
 
-$(bring '
+$(kaizen::bring bring from kaizen)
+$($bring '
   ln
   mktempd
   rmdir
   rmtree
   touch
-' from concorde.macros)
+' from kaizen.commands)
 
 describe append_to_file
-  $(bring append_to_file from kaizen)
+  $($bring append_to_file from kaizen)
 
   it "makes a new file"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -35,7 +35,7 @@ describe append_to_file
 end
 
 describe args?
-  $(bring args from kaizen)
+  $($bring args from kaizen)
 
   it "detects no arguments"; ( _shpec_failures=0
     $args?
@@ -57,7 +57,7 @@ describe args?
 end
 
 describe contains?
-  $(bring contains from kaizen)
+  $($bring contains from kaizen)
 
   it "identifies a character in a string"; ( _shpec_failures=0
     $contains? / one/two
@@ -79,7 +79,7 @@ describe contains?
 end
 
 describe directory?
-  $(bring directory from kaizen)
+  $($bring directory from kaizen)
 
   it "identifies a directory"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -122,7 +122,7 @@ describe directory?
 end
 
 describe ends_with?
-  $(bring ends_with from kaizen)
+  $($bring ends_with from kaizen)
 
   it "detects if a string ends with a specified character"; ( _shpec_failures=0
     $ends_with? / test/
@@ -138,7 +138,7 @@ describe ends_with?
 end
 
 describe executable?
-  $(bring executable from kaizen)
+  $($bring executable from kaizen)
 
   it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -232,7 +232,7 @@ describe executable?
 end
 
 describe executable_file?
-  $(bring executable_file from kaizen)
+  $($bring executable_file from kaizen)
 
   it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -258,7 +258,7 @@ describe executable_file?
 end
 
 describe false?
-  $(bring false from kaizen)
+  $($bring false from kaizen)
 
   it "doesn't detect a reference to a positive value"; ( _shpec_failures=0
     sample=1
@@ -284,7 +284,7 @@ describe false?
 end
 
 describe file?
-  $(bring file from kaizen)
+  $($bring file from kaizen)
 
   it "identifies a file"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -328,7 +328,7 @@ describe file?
 end
 
 describe given?
-  $(bring given from kaizen)
+  $($bring given from kaizen)
 
   it "detects a non-empty value"; ( _shpec_failures=0
     sample=one
@@ -354,7 +354,7 @@ describe given?
 end
 
 describe glob
-  $(bring glob from kaizen)
+  $($bring glob from kaizen)
 
   it "expands a glob"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -419,7 +419,7 @@ describe glob
 end
 
 describe globbing
-  $(bring globbing from kaizen)
+  $($bring globbing from kaizen)
 
   it "turns off globbing"; ( _shpec_failures=0
     $globbing on
@@ -449,7 +449,7 @@ describe globbing
 end
 
 describe globbing?
-  $(bring globbing from kaizen)
+  $($bring globbing from kaizen)
 
   it "reports on"; ( _shpec_failures=0
     set +o noglob
@@ -467,7 +467,7 @@ describe globbing?
 end
 
 describe less_than?
-  $(bring less_than from kaizen)
+  $($bring less_than from kaizen)
 
   it "should identify numbers of arguments less than specified"; ( _shpec_failures=0
     $less_than? 2 one
@@ -483,7 +483,7 @@ describe less_than?
 end
 
 describe more_than?
-  $(bring more_than from kaizen)
+  $($bring more_than from kaizen)
 
   it "should identify numbers of arguments greater than specified"; ( _shpec_failures=0
     $more_than? 2 one two three
@@ -499,7 +499,7 @@ describe more_than?
 end
 
 describe nonexecutable_file?
-  $(bring nonexecutable_file from kaizen)
+  $($bring nonexecutable_file from kaizen)
 
   it "identifies a nonexecutable file"; ( _shpec_failures=0
     dir=$($mktempd)
@@ -534,7 +534,7 @@ describe nonexecutable_file?
 end
 
 describe symlink?
-  $(bring symlink from kaizen)
+  $($bring symlink from kaizen)
 
   it "doesn't identify a file"
     dir=$($mktempd)
@@ -574,7 +574,7 @@ describe symlink?
 end
 
 describe trim_from_last
-  $(bring trim_from_last from kaizen)
+  $($bring trim_from_last from kaizen)
 
   it "trims from the last single-character specifier"; ( _shpec_failures=0
     $trim_from_last e stereo
@@ -596,7 +596,7 @@ describe trim_from_last
 end
 
 describe trim_to_last
-  $(bring trim_to_last from kaizen)
+  $($bring trim_to_last from kaizen)
 
   it "trims up to the last single character specifier"; ( _shpec_failures=0
     $trim_to_last e stereo
@@ -618,7 +618,7 @@ describe trim_to_last
 end
 
 describe true?
-  $(bring true from kaizen)
+  $($bring true from kaizen)
 
   it "detects a reference to a positive value"; ( _shpec_failures=0
     sample=1
@@ -644,7 +644,7 @@ describe true?
 end
 
 describe write_to_file
-  $(bring write_to_file from kaizen)
+  $($bring write_to_file from kaizen)
 
   it "makes a new file"; ( _shpec_failures=0
     dir=$($mktempd)
