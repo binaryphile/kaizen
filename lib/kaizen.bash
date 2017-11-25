@@ -84,9 +84,9 @@ kaizen::glob () {
 
 kaizen::globbing () {
   case $1 in
-    on      ) set +o noglob;;
-    off     ) set -o noglob;;
-    * ) return 1;;
+    on  ) set +o noglob ;;
+    off ) set -o noglob ;;
+    *   ) return 1      ;;
   esac
 }
 
