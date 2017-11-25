@@ -573,6 +573,16 @@ describe symlink?
   end
 end
 
+describe to_upper
+  $($bring to_upper from kaizen)
+
+  it "uppercases text"; ( _shpec_failures=0
+    $to_upper sample
+    assert equal SAMPLE "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe trim_from_last
   $($bring trim_from_last from kaizen)
 
