@@ -573,6 +573,16 @@ describe symlink?
   end
 end
 
+describe to_lower
+  $($bring to_lower from kaizen)
+
+  it "lowercases text"; ( _shpec_failures=0
+    $to_lower SAMPLE
+    assert equal sample "$__"
+    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
+  end
+end
+
 describe to_upper
   $($bring to_upper from kaizen)
 

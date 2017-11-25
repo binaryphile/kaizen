@@ -30,6 +30,7 @@ concorde::get <<'EOS'
   starts_with=kaizen::starts_with
   strict_mode=concorde::strict_mode
   symlink=kaizen::symlink
+  to_lower=kaizen::to_lower
   to_upper=kaizen::to_upper
   trim_from_last=kaizen::trim_from_last
   trim_to_last=kaizen::trim_to_last
@@ -150,6 +151,10 @@ kaizen::sourced? () {
 
 kaizen::symlink? () {
   [[ -h $1 ]]
+}
+
+kaizen::to_lower () {
+  __=${1,,}
 }
 
 kaizen::to_upper () {
