@@ -23,10 +23,12 @@ concorde::get <<'EOS'
   hash=concorde::hash
   hashkw=concorde::hashkw
   less_than=kaizen::less_than
+  module=concorde::module
   more_than=kaizen::more_than
   nonexecutable_file=kaizen::nonexecutable_file
   sourced=kaizen::sourced
   starts_with=kaizen::starts_with
+  strict_mode=concorde::strict_mode
   symlink=kaizen::symlink
   trim_from_last=kaizen::trim_from_last
   trim_to_last=kaizen::trim_to_last
