@@ -43,7 +43,6 @@ for __ in $__; do
   }
   concorde::constant "$__"
 done
-declare -g bring=concorde::bring
 
 $(concorde::module kaizen)
 
