@@ -1,5 +1,4 @@
 source concorde.bash
-$(concorde::module kaizen)
 
 set -o noglob
 
@@ -8,7 +7,7 @@ concorde::get <<'EOS'
   args=kaizen::args
   array=concorde::array
   arraynl=concorde::arraynl
-  bring=kaizen::bring
+  bring=concorde::bring
   contains=kaizen::contains
   directory=kaizen::directory
   ends_with=kaizen::ends_with
@@ -16,6 +15,7 @@ concorde::get <<'EOS'
   executable_file=kaizen::executable_file
   false=kaizen::false
   file=kaizen::file
+  get=concorde::get
   given=kaizen::given
   glob=kaizen::glob
   globbing=kaizen::globbing
@@ -38,9 +38,14 @@ concorde::get <<'EOS'
   write_to_file=kaizen::write_to_file
 EOS
 for __ in $__; do
-  [[ $1 == variables=1 ]] && eval "$__"
+  [[ -n ${1:-} ]] && {
+    [[ $1 == all=1 || " ${1#globals=} " == *" ${__%%=*} "* ]] && eval "declare -g $__"
+  }
   concorde::constant "$__"
 done
+declare -g bring=concorde::bring
+
+$(concorde::module kaizen)
 
 concorde::get <<EOS
   basename='basename --'
@@ -68,10 +73,6 @@ kaizen::append_to_file () {
 
 kaizen::args? () {
   (( $# ))
-}
-
-kaizen::bring () {
-  concorde::bring "$@"
 }
 
 kaizen::contains? () {
