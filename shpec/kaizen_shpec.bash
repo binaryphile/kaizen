@@ -1,8 +1,8 @@
 set -o nounset
+set --
 
 source "$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")"/../lib/kaizen.bash
 
-$(kaizen::bring bring from kaizen)
 $($bring '
   ln
   mktempd
@@ -332,22 +332,14 @@ describe given?
 
   it "detects a non-empty value"; ( _shpec_failures=0
     sample=one
-    $given? sample
+    $given? "$sample"
     assert equal 0 $?
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end
 
   it "doesn't detect an empty value"; ( _shpec_failures=0
     sample=''
-    $given? sample
-    assert unequal 0 $?
-    return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
-  end
-
-  it "doesn't detect an unset value"; ( _shpec_failures=0
-    sample=''
-    unset -v sample
-    $given? sample
+    $given? "$sample"
     assert unequal 0 $?
     return "$_shpec_failures" ); : $(( _shpec_failures += $? ))
   end

@@ -104,7 +104,7 @@ kaizen::file? () {
 }
 
 kaizen::given? () {
-  [[ -n ${!1:-} ]]
+  [[ -n ${1:-} ]]
 }
 
 kaizen::glob () {
