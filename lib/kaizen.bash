@@ -50,6 +50,7 @@ concorde::get <<EOS
   basename='basename --'
   cptree='cp --recursive --'
   dirname='dirname --'
+  echo='printf %s\n'
   install='install -bm 644 --'
   installd='install -dm 755 --'
   installx='install -bm 755 --'
