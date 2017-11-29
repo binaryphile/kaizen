@@ -1,47 +1,47 @@
-source concorde.bash
+source concorde.bash all=0
 
 set -o noglob
 
 concorde::get <<'EOS'
   append_to_file=kaizen::append_to_file
-  args=kaizen::args
+  args?=kaizen::args?
   array=concorde::array
   arraynl=concorde::arraynl
   bring=concorde::bring
-  contains=kaizen::contains
-  directory=kaizen::directory
-  ends_with=kaizen::ends_with
-  executable=kaizen::executable
-  executable_file=kaizen::executable_file
-  false=kaizen::false
-  file=kaizen::file
+  contains?=kaizen::contains?
+  directory?=kaizen::directory?
+  ends_with?=kaizen::ends_with?
+  executable?=kaizen::executable?
+  executable_file?=kaizen::executable_file?
+  false?=kaizen::false?
+  file?=kaizen::file?
   get=concorde::get
-  given=kaizen::given
+  given?=kaizen::given?
   glob=kaizen::glob
   globbing=kaizen::globbing
+  globbing?=kaizen::globbing?
   grabkw=concorde::grabkw
   hash=concorde::hash
   hashkw=concorde::hashkw
-  less_than=kaizen::less_than
+  less_than?=kaizen::less_than?
   module=concorde::module
-  more_than=kaizen::more_than
-  nonexecutable_file=kaizen::nonexecutable_file
-  sourced=kaizen::sourced
-  starts_with=kaizen::starts_with
+  more_than?=kaizen::more_than?
+  nonexecutable_file?=kaizen::nonexecutable_file?
+  sourced?=kaizen::sourced?
+  starts_with?=kaizen::starts_with?
   strict_mode=concorde::strict_mode
-  symlink=kaizen::symlink
+  symlink?=kaizen::symlink?
   to_lower=kaizen::to_lower
   to_upper=kaizen::to_upper
   trim_from_last=kaizen::trim_from_last
   trim_to_last=kaizen::trim_to_last
-  true=kaizen::true
+  true?=kaizen::true?
   write_to_file=kaizen::write_to_file
 EOS
-for __ in $__; do
-  [[ -n ${1:-} ]] && {
-    [[ $1 == all=1 || " ${1#globals=} " == *" ${__%%=*} "* ]] && eval "declare -g $__"
-  }
-  concorde::constant "$__"
+concorde::constant imports="${__//$'\n'/ }"
+__=__${__id_hsh[$BASH_SOURCE]}[imports]
+for __ in ${!__}; do
+  [[ -z ${1:-} || " ${1#import=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
 done
 
 $(concorde::module kaizen)
@@ -147,7 +147,10 @@ kaizen::starts_with? () {
 }
 
 kaizen::sourced? () {
-  [[ ${FUNCNAME[1]} == source ]]
+  local index
+
+  [[ ${FUNCNAME[1]}     == sourced? ]] && index=2 || index=1
+  [[ ${FUNCNAME[index]} == source   ]]
 }
 
 kaizen::symlink? () {
