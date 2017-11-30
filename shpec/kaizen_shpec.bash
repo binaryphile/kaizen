@@ -1,5 +1,4 @@
 set -o nounset
-set --
 
 source "$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")"/../lib/kaizen.bash
 
