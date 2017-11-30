@@ -220,8 +220,6 @@ describe executable?
 end
 
 describe executable_file?
-  $($bring executable_file from kaizen)
-
   it "identifies an executable file"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
