@@ -1,4 +1,4 @@
-source concorde.bash all=0
+source concorde.bash import=0
 
 set -o noglob
 
@@ -40,9 +40,11 @@ concorde::get <<'EOS'
 EOS
 concorde::constant imports="${__//$'\n'/ }"
 __=__${__id_hsh[$BASH_SOURCE]}[imports]
-for __ in ${!__}; do
-  [[ -z ${1:-} || " ${1#import=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
-done
+[[ ${1:-} != import=0 ]] && {
+  for __ in ${!__}; do
+    [[ -z ${1:-} || ${1#imports=} == "$1" || " ${1#imports=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
+  done
+}
 
 $(concorde::module kaizen)
 
