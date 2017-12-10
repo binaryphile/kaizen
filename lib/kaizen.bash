@@ -1,4 +1,4 @@
-source concorde.bash import=0
+source concorde.bash imports=''
 
 set -o noglob
 
@@ -9,7 +9,9 @@ concorde::get <<'EOS'
   arraynl=concorde::arraynl
   bring=concorde::bring
   contains?=kaizen::contains?
+  die=concorde::die
   directory?=kaizen::directory?
+  echoerr=concorde::echoerr
   ends_with?=kaizen::ends_with?
   executable?=kaizen::executable?
   executable_file?=kaizen::executable_file?
@@ -20,6 +22,7 @@ concorde::get <<'EOS'
   glob=kaizen::glob
   globbing=kaizen::globbing
   globbing?=kaizen::globbing?
+  grab=concorde::grab
   grabkw=concorde::grabkw
   hash=concorde::hash
   hashkw=concorde::hashkw
@@ -27,7 +30,8 @@ concorde::get <<'EOS'
   module=concorde::module
   more_than?=kaizen::more_than?
   nonexecutable_file?=kaizen::nonexecutable_file?
-  sourced?=kaizen::sourced?
+  parse_options=concorde::parse_options
+  sourced?=concorde::sourced?
   starts_with?=kaizen::starts_with?
   strict_mode=concorde::strict_mode
   symlink?=kaizen::symlink?
@@ -40,16 +44,25 @@ concorde::get <<'EOS'
 EOS
 concorde::constant imports="${__//$'\n'/ }"
 __=__${__id_hsh[$BASH_SOURCE]}[imports]
-[[ ${1:-} != import=0 ]] && {
-  for __ in ${!__}; do
-    [[ -z ${1:-} || ${1#imports=} == "$1" || " ${1#imports=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
-  done
-}
+while (( $# )); do
+  [[ $1 == imports=* ]] || { shift; continue ;}
+  case $1 in
+    imports=  ) ;;
+    *         )
+      for __ in ${!__}; do
+        [[ " ${1#imports=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
+      done
+      ;;
+  esac
+  break
+done
+(( ! $# )) && for __ in ${!__}; do eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"; done
 
 $(concorde::module kaizen)
 
 concorde::get <<EOS
   basename='basename --'
+  cd='cd --'
   cptree='cp --recursive --'
   dirname='dirname --'
   echo='printf %s\n'
@@ -146,13 +159,6 @@ kaizen::nonexecutable_file? () {
 
 kaizen::starts_with? () {
   [[ $2 == $1* ]]
-}
-
-kaizen::sourced? () {
-  local index
-
-  [[ ${FUNCNAME[1]}     == sourced? ]] && index=2 || index=1
-  [[ ${FUNCNAME[index]} == source   ]]
 }
 
 kaizen::symlink? () {
