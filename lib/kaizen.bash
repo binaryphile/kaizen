@@ -3,6 +3,8 @@ source concorde.bash imports=''
 set -o noglob
 
 concorde::get <<'EOS'
+  absolute_dirname=kaizen::absolute_dirname
+  absolute_path=kaizen::absolute_path
   append_to_file=kaizen::append_to_file
   args?=kaizen::args?
   array=concorde::array
@@ -31,7 +33,7 @@ concorde::get <<'EOS'
   more_than?=kaizen::more_than?
   nonexecutable_file?=kaizen::nonexecutable_file?
   parse_options=concorde::parse_options
-  sourced?=concorde::sourced?
+  sourced?=concorde::sourced
   starts_with?=kaizen::starts_with?
   strict_mode=concorde::strict_mode
   symlink?=kaizen::symlink?
@@ -44,19 +46,20 @@ concorde::get <<'EOS'
 EOS
 concorde::constant imports="${__//$'\n'/ }"
 __=__${__id_hsh[$BASH_SOURCE]}[imports]
-while (( $# )); do
-  [[ $1 == imports=* ]] || { shift; continue ;}
-  case $1 in
-    imports=  ) ;;
-    *         )
-      for __ in ${!__}; do
-        [[ " ${1#imports=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
-      done
-      ;;
-  esac
-  break
-done
-(( ! $# )) && for __ in ${!__}; do eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"; done
+case $1 in
+  imports=  );;
+  imports=* )
+    set -- "${1//$'\n'/ }" "${@:2}"
+    for __ in ${!__}; do
+      [[ " ${1#imports=} " == *" ${__%%=*} "* ]] && eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
+    done
+    ;;
+  * )
+    for __ in ${!__}; do
+      eval "${__%%=*} () { ${__#*=} \"\$@\" ;}"
+    done
+    ;;
+esac
 
 $(concorde::module kaizen)
 
@@ -81,6 +84,17 @@ concorde::get <<EOS
   touch='touch --'
 EOS
 concorde::constant commands="${__//$'\n'/ }"
+
+kaizen::absolute_dirname () {
+  __=$(dirname -- "$1")
+  kaizen::absolute_path "$__"
+}
+
+kaizen::absolute_path () {
+  $(concorde::bring readlink from kaizen.commands)
+
+  __=$($readlink "$1")
+}
 
 kaizen::append_to_file () {
   printf %s "$2" >>"$1"
@@ -124,13 +138,13 @@ kaizen::given? () {
 
 kaizen::glob () {
   local ary=()
-  local status
+  local noglob
 
-  [[ $- == *f* ]] && status=- || status=+
+  [[ $- != *f* ]] && noglob=$? || noglob=$?
   set +o noglob
   eval "ary=( $* )"
-  eval "set ${status}o noglob"
-  concorde::repr ary
+  (( noglob )) && set -o noglob
+  concorde::repr_ary ary
 }
 
 kaizen::globbing () {
