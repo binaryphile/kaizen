@@ -33,6 +33,7 @@ concorde::get <<'EOS'
   more_than?=kaizen::more_than?
   nonexecutable_file?=kaizen::nonexecutable_file?
   parse_options=concorde::parse_options
+  raise=concorde::raise
   sourced?=concorde::sourced
   starts_with?=kaizen::starts_with?
   strict_mode=concorde::strict_mode
@@ -66,9 +67,12 @@ $(concorde::module kaizen)
 concorde::get <<EOS
   basename='basename --'
   cd='cd --'
+  chmod='chmod --'
+  chmodtree='chmod -R --'
   cptree='cp --recursive --'
   dirname='dirname --'
   echo='printf %s\n'
+  head='head --'
   install='install -bm 644 --'
   installd='install -dm 755 --'
   installx='install -bm 755 --'
