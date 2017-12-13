@@ -85,6 +85,7 @@ concorde::get <<EOS
   rmtree='rm --recursive --force --'
   rm='rm --force --'
   sed='sed -i.bak'
+  tail='tail --'
   touch='touch --'
 EOS
 concorde::constant commands="${__//$'\n'/ }"
