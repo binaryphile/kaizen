@@ -34,6 +34,7 @@ concorde::get <<'EOS'
   nonexecutable_file?=kaizen::nonexecutable_file?
   parse_options=concorde::parse_options
   raise=concorde::raise
+  source_relative=concorde::source_relative
   sourced?=concorde::sourced
   starts_with?=kaizen::starts_with?
   strict_mode=concorde::strict_mode
@@ -80,7 +81,7 @@ concorde::get <<EOS
   mkdir='mkdir --parents --'
   mktemp='mktemp --quiet --'
   mktempd='mktemp --quiet --directory --'
-  readlink="$(type greadlink >/dev/null 2>&1 && echo 'greadlink -f --' || echo 'readlink -f --')"
+  readlink="$(type greadlink >/dev/null 2>&1 && echo 'greadlink --canonicalize --' || echo 'readlink --canonicalize --')"
   rmdir='rmdir --'
   rmtree='rm --recursive --force --'
   rm='rm --force --'
@@ -91,7 +92,10 @@ EOS
 concorde::constant commands="${__//$'\n'/ }"
 
 kaizen::absolute_dirname () {
-  __=$(dirname -- "$1")
+  $(concorde::bring 'dirname readlink' from kaizen.commands)
+
+  __=$($readlink "$1")
+  __=$($dirname "$__")
   kaizen::absolute_path "$__"
 }
 

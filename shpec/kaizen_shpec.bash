@@ -3,12 +3,114 @@ set -o nounset
 source "$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")"/../lib/kaizen.bash
 
 $(bring '
+  cd
+  chmod
   ln
+  mkdir
   mktempd
   rmdir
   rmtree
   touch
 ' from kaizen.commands)
+
+describe absolute_dirname
+  it "finds the dirname of a file"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $cd "$dir"
+    $touch file
+    absolute_dirname file
+    assert equal "$dir" "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures" );: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the dirname through a link"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $mkdir "$dir"/dir
+    $ln dir "$dir"/link
+    $cd "$dir"/link
+    $touch file
+    absolute_dirname file
+    assert equal "$dir"/dir "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures" );: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the dirname through a file link to a child dir"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $mkdir "$dir"/dir
+    $touch "$dir"/dir/file
+    $cd "$dir"
+    $ln dir/file link
+    absolute_dirname link
+    assert equal "$dir"/dir "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures" );: $(( _shpec_failures += $? ))
+  end
+end
+
+describe absolute_path
+  it "finds an absolute pathname from a dot"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $cd "$dir"
+    absolute_path .
+    assert equal "$dir" "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the pathname for a subdirectory"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $mkdir "$dir"/dir
+    $cd "$dir"
+    absolute_path dir
+    assert equal "$dir"/dir "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+
+  it "finds an absolute pathname for a file"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $touch "$dir"/file
+    $cd "$dir"
+    absolute_path file
+    assert equal "$dir"/file "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the pathname for a parent"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $cd "$dir"
+    absolute_path ..
+    assert equal "${dir%/*}" "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the pathname of a symlink"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $cd "$dir"
+    $mkdir dir
+    $ln dir link
+    absolute_path link
+    assert equal "${dir}"/dir "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+
+  it "finds the pathname through a symlink"; ( _shpec_failures=0
+    dir=$($mktempd) || return
+    $mkdir "$dir"/dir
+    $ln dir "$dir"/link
+    $cd "$dir"/link
+    $touch file
+    absolute_path file
+    assert equal "$dir"/dir/file "$__"
+    $rmtree "$dir"
+    return "$_shpec_failures");: $(( _shpec_failures += $? ))
+  end
+end
 
 describe append_to_file
   it "makes a new file"; ( _shpec_failures=0
@@ -131,7 +233,7 @@ describe executable?
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
     $touch "$dir"/file
-    chmod 755 "$dir"/file
+    $chmod 755 "$dir"/file
     executable? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
@@ -141,8 +243,8 @@ describe executable?
   it "identifies an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
-    chmod 755 "$dir"/dir
+    $mkdir "$dir"/dir
+    $chmod 755 "$dir"/dir
     executable? "$dir"/dir
     assert equal 0 $?
     $rmtree "$dir"
@@ -162,8 +264,8 @@ describe executable?
   it "doesn't identify a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
-    chmod 664 "$dir"/dir
+    $mkdir "$dir"/dir
+    $chmod 664 "$dir"/dir
     executable? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
@@ -174,7 +276,7 @@ describe executable?
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
     $touch "$dir"/file
-    chmod 755 "$dir"/file
+    $chmod 755 "$dir"/file
     $ln file "$dir"/link
     executable? "$dir"/link
     assert equal 0 $?
@@ -185,8 +287,8 @@ describe executable?
   it "identifies a link to an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
-    chmod 755 "$dir"/dir
+    $mkdir "$dir"/dir
+    $chmod 755 "$dir"/dir
     $ln dir "$dir"/link
     executable? "$dir"/link
     assert equal 0 $?
@@ -208,8 +310,8 @@ describe executable?
   it "doesn't identify a link to a non-executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
-    chmod 664 "$dir"/dir
+    $mkdir "$dir"/dir
+    $chmod 664 "$dir"/dir
     $ln dir "$dir"/link
     executable? "$dir"/link
     assert unequal 0 $?
@@ -223,7 +325,7 @@ describe executable_file?
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
     $touch "$dir"/file
-    chmod 755 "$dir"/file
+    $chmod 755 "$dir"/file
     executable_file? "$dir"/file
     assert equal 0 $?
     $rmtree "$dir"
@@ -233,8 +335,8 @@ describe executable_file?
   it "doesn't identify an executable directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
-    chmod 755 "$dir"/dir
+    $mkdir "$dir"/dir
+    $chmod 755 "$dir"/dir
     executable_file? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
@@ -328,7 +430,7 @@ describe glob
   it "expands a glob"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    cd "$dir"
+    $cd "$dir"
     $touch file1
     glob *
     eval "declare -a result_ary=( $__ )"
@@ -339,7 +441,7 @@ describe glob
   it "expands a glob with multiple entries"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    cd "$dir"
+    $cd "$dir"
     $touch file1
     $touch file2
     glob *
@@ -351,7 +453,7 @@ describe glob
   it "expands a glob with a space"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    cd "$dir"
+    $cd "$dir"
     $touch 'file 1'
     glob *
     eval "declare -a result_ary=( $__ )"
@@ -362,7 +464,7 @@ describe glob
   it "doesn't split a non-glob with a space"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    cd "$dir"
+    $cd "$dir"
     $touch 'file 1'
     glob '"file 1"'
     eval "declare -a result_ary=( $__ )"
@@ -474,7 +576,7 @@ describe nonexecutable_file?
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
     $touch "$dir"/file
-    chmod 755 "$dir"/file
+    $chmod 755 "$dir"/file
     nonexecutable_file? "$dir"/file
     assert unequal 0 $?
     $rmtree "$dir"
@@ -484,7 +586,7 @@ describe nonexecutable_file?
   it "doesn't identify a directory"; ( _shpec_failures=0
     dir=$($mktempd)
     kaizen::directory? "$dir" || return
-    mkdir "$dir"/dir
+    $mkdir "$dir"/dir
     nonexecutable_file? "$dir"/dir
     assert unequal 0 $?
     $rmtree "$dir"
