@@ -1,6 +1,7 @@
+Dir=$(dirname "$(readlink -f "$BASH_SOURCE")")/..
 set -o nounset
 
-source concorde.bash
+source "$Dir"/concorde.bash
 $(require_relative ../lib/kaizen)
 
 $(grab '

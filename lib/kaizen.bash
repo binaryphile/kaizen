@@ -1,4 +1,5 @@
-source concorde.bash
+Dir=$(dirname "$(readlink -f "$BASH_SOURCE")")/..
+source "$Dir"/vendor/lib/concorde.bash
 $(feature kaizen)
 
 dependencies='
